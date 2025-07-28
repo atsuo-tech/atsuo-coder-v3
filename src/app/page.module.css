@@ -12,6 +12,7 @@ div.page {
         font-size: 15pt;
         display: grid;
         grid-template-columns: repeat(2, max-content);
+        gap: 3em;
         justify-content: center;
 
         >div {
@@ -21,7 +22,6 @@ div.page {
             align-items: center;
             /* 縦方向中央揃え */
             height: 100%;
-            padding: 0 2em;
 
             >div {
                 display: block;

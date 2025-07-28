@@ -1,13 +1,12 @@
-import Image from 'next/image';
 import styles from './page.module.css';
-import Logo from '@/img/logo.svg';
+import LogoMono from '@/img/logo-mono.svg';
 
 export default function MainPage() {
     return (
         <div className={styles.page}>
             <div className={styles.title}>
                 <div className={styles.logo}>
-                    <Logo />
+                    <LogoMono />
                 </div>
                 <div>
                     <div>
