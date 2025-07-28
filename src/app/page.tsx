@@ -6,7 +6,7 @@ export default function MainPage() {
         <div className={styles.page}>
             <div className={styles.title}>
                 <div className={styles.logo}>
-                    <LogoMono />
+                    <LogoMono height="80%" />
                 </div>
                 <div>
                     <div>
@@ -19,7 +19,10 @@ export default function MainPage() {
                     </div>
                 </div>
             </div>
-            <p>This is the main content of the page.</p>
+
+            <main>
+                <p>This is the main content of the page.</p>
+            </main>
         </div>
     );
 }
