@@ -1,5 +1,7 @@
 import './globals.css';
+import styles from './layout.module.css';
 import { Roboto, Noto_Sans_JP } from 'next/font/google';
+import Logo from '@/img/logo.svg';
 
 export const metadata = {
   title: 'hello world',
@@ -28,7 +30,20 @@ export default function RootLayout({
       <body
         className={`${roboto.variable} ${notoSansJP.variable}`}
       >
-        {children}
+        <nav
+          className={styles.nav}
+        >
+          <h2>
+            <Logo height="1em" width="" />
+            AtsuoCoder
+          </h2>
+        </nav>
+
+        <div
+          className={styles.main}
+        >
+          {children}
+        </div>
       </body>
     </html>
   )
