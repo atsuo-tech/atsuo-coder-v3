@@ -34,7 +34,7 @@ export default function RootLayout({
           className={styles.nav}
         >
           <h2>
-            <Logo height="1em" width="" />
+            <Logo height="1.5em" />
             AtsuoCoder
           </h2>
         </nav>

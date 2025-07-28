@@ -1,7 +1,8 @@
 div.page {
     margin: 0;
     width: 100%;
-    border-radius: 8px;
+    background: #222;
+    color: white;
 
     div.title {
         background-color: #000;
@@ -18,9 +19,7 @@ div.page {
         >div {
             display: flex;
             justify-content: center;
-            /* 横方向中央揃え */
             align-items: center;
-            /* 縦方向中央揃え */
             height: 100%;
 
             >div {
@@ -38,6 +37,44 @@ div.page {
             zoom: 1.5;
             width: max-content;
             /*float: right;*/
+        }
+    }
+
+    div.menu {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+
+        >div {
+            background: white;
+            color: black;
+
+            >div {
+                padding: 1rem 2rem;
+
+                &:hover {
+                    background: #eee;
+                }
+
+                >span.type {
+                    background: black;
+                    color: white;
+                    padding: .2rem 1.4rem;
+                    font-size: 0.9em;
+                }
+
+                >span.schedule {
+                    color: #777;
+                    margin-left: 1rem;
+                    font-size: 0.9em;
+                }
+
+                >h4 {
+                    font-weight: 400;
+                    line-height: 0;
+                    margin: 1.5rem 0 1rem 0;
+                }
+            }
         }
     }
 }

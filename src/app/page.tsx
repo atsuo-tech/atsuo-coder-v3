@@ -21,7 +21,41 @@ export default function MainPage() {
             </div>
 
             <main>
-                <p>This is the main content of the page.</p>
+
+                <div
+                    className={styles.menu}
+                >
+                    <div>
+
+                        <h3>最新コンテスト</h3>
+
+                        <div>
+                            <span
+                                className={styles.type}
+                            >
+                                予定
+                            </span>
+                            <span
+                                className={styles.schedule}
+                            >
+                                2025/07/28 開始
+                            </span>
+                            <h4>AtsuoCoder World Tour Finals</h4>
+                        </div>
+
+                    </div>
+                    <div>
+
+                        <h3>ランキング</h3>
+
+                    </div>
+                    <div>
+
+                        <h3>お知らせ</h3>
+
+                    </div>
+                </div>
+
             </main>
         </div>
     );
