@@ -28,6 +28,18 @@ div.page {
             }
         }
 
+        >div.description {
+            margin: 0 -1.5rem;
+
+            span {
+                font-size: 1.2em;
+            }
+
+            h1 {
+                margin: 1rem 2rem;
+            }
+        }
+
         h1 {
             font-size: 2.5em;
             font-weight: 300;
@@ -43,38 +55,108 @@ div.page {
     div.menu {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
+        gap: 1.5rem;
+        padding: 3rem 1.5rem;
 
         >div {
             background: white;
             color: black;
+            display: flex;
+            flex-direction: column;
+
+            h3 {
+                margin-left: 1.3rem;
+                font-size: 1.4em;
+            }
 
             >div {
                 padding: 1rem 2rem;
+                box-sizing: border-box;
+                border-bottom: 1px solid #ccc;
 
-                &:hover {
-                    background: #eee;
+                &.see_more {
+                    text-align: right;
+                    margin-top: auto;
+                    padding: .1rem 1.4rem;
+                    border-top: 1px solid #ccc;
                 }
+            }
 
-                >span.type {
+            >div:first-of-type {
+                border-top: 1px solid #ccc;
+            }
+
+            &.contests {
+
+                >div {
+
+                    &:hover {
+                        background: #eee;
+                    }
+
+                    &.see_more:hover {
+                        background: white;
+                    }
+
+                    >span.type {
+                        background: black;
+                        color: white;
+                        padding: .2rem 1.4rem;
+                        font-size: 0.9em;
+                    }
+
+                    >span.schedule {
+                        color: #777;
+                        margin-left: 1rem;
+                        font-size: 0.9em;
+                    }
+
+                    >h4 {
+                        font-weight: 400;
+                        margin: 1.5rem 0 1rem 0;
+                    }
+                }
+            }
+
+            &.posts {
+                h4 {
                     background: black;
                     color: white;
-                    padding: .2rem 1.4rem;
-                    font-size: 0.9em;
+                    padding: 1rem;
                 }
 
-                >span.schedule {
-                    color: #777;
-                    margin-left: 1rem;
-                    font-size: 0.9em;
-                }
-
-                >h4 {
-                    font-weight: 400;
-                    line-height: 0;
-                    margin: 1.5rem 0 1rem 0;
+                >div:not(.see_more) {
+                    font-size: .8em;
                 }
             }
         }
     }
+}
+
+@media (max-width: 1200px) {
+
+    div.page {
+        div.title {
+            position: relative;
+
+            >div.logo {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                margin: auto;
+
+                >svg {
+                    height: 7em;
+                    filter: contrast(800%);
+                }
+            }
+
+            >div.description {
+                z-index: 1;
+            }
+        }
+    }
+
 }
