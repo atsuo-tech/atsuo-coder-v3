@@ -5,6 +5,8 @@ import { Lato, Noto_Sans_JP } from 'next/font/google';
 import Logo from '@/img/logo-titled.svg';
 import LogoMono from '@/img/logo-titled-mono.svg';
 import Link from 'next/link';
+import db from '@/lib/db';
+import { cookies } from 'next/headers';
 
 export const metadata = {
   title: 'hello world',
@@ -23,11 +25,20 @@ const notoSansJP = Noto_Sans_JP({
   variable: '--font-noto-sans-jp',
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session_token = (await cookies()).get("SESSION_TOKEN")?.value;
+  const user = session_token && await db.user.findFirst({
+    where: {
+      login_token: {
+        has: session_token,
+      },
+    },
+  });
+
   return (
     <html lang="ja">
       <body
@@ -42,16 +53,24 @@ export default function RootLayout({
             </Link>
           </h2>
           <div className={styles.menu}>
-            <Link href={process.env.LOGIN_URL as string}>
-              <div>
-                ログイン
-              </div>
-            </Link>
-            <Link href={process.env.SIGNUP_URL as string}>
-              <div>
-                新規登録
-              </div>
-            </Link>
+            {
+              user ?
+                <>
+                  <div>{user.username}</div>
+                </> :
+                <>
+                  <Link href={process.env.LOGIN_URL as string}>
+                    <div>
+                      ログイン
+                    </div>
+                  </Link>
+                  <Link href={process.env.SIGNUP_URL as string}>
+                    <div>
+                      新規登録
+                    </div>
+                  </Link>
+                </>
+            }
           </div>
         </nav>
 

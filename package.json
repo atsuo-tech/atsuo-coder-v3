@@ -12,6 +12,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.2.0",
+    "@prisma/client": "^6.12.0",
     "@svgr/webpack": "^8.1.0",
     "material-symbols": "^0.33.0",
     "next": "15.4.4",
@@ -22,6 +23,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "prisma": "^6.12.0",
     "typescript": "^5"
   }
 }
