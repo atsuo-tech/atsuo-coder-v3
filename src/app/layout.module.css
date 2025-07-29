@@ -30,17 +30,15 @@
 		right: 0;
 		height: 100%;
 
-		>div {
+		div {
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			padding: 0 1.5rem;
 			border-left: 1px solid #ccc;
-
-			>a {
-				color: black;
-				font-size: 1.2em;
-			}
+			color: black;
+			font-size: 1.2em;
+			height: 100%;
 		}
 	}
 }

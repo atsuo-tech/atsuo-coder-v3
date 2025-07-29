@@ -7,6 +7,10 @@ body {
 body {
 	font-family: var(--font-lato), var(--font-noto-sans-jp);
 
+	h1 {
+		font-weight: 400;
+	}
+
 	h2 {
 		font-weight: 300;
 		margin-left: .5rem;

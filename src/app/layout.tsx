@@ -42,16 +42,16 @@ export default function RootLayout({
             </Link>
           </h2>
           <div className={styles.menu}>
-            <div>
-              <Link href="/login">
+            <Link href={process.env.LOGIN_URL as string}>
+              <div>
                 ログイン
-              </Link>
-            </div>
-            <div>
-              <Link href="/login">
+              </div>
+            </Link>
+            <Link href={process.env.SIGNUP_URL as string}>
+              <div>
                 新規登録
-              </Link>
-            </div>
+              </div>
+            </Link>
           </div>
         </nav>
 
