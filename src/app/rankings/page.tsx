@@ -23,7 +23,7 @@ export default function RankingsPage() {
 				<tbody>
 					<tr>
 						<td>1</td>
-						<td><User id="okkuu" /></td>
+						<td><User unique_id="okkuu" /></td>
 						<td>126</td>
 						<td>4229</td>
 						<td>4229</td>

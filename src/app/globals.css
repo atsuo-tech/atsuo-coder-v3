@@ -36,6 +36,13 @@ body {
 			padding: .5rem;
 		}
 	}
+
+	ol,
+	ul {
+		li {
+			padding: .5rem;
+		}
+	}
 }
 
 .material-symbols-outlined {

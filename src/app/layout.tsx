@@ -57,7 +57,7 @@ export default async function RootLayout({
             {
               user ?
                 <>
-                  <User id={user.username} />
+                  <User unique_id={user.unique_id} />
                 </> :
                 <>
                   <Link href={process.env.LOGIN_URL as string}>

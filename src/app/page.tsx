@@ -2,8 +2,54 @@ import Link from 'next/link';
 import styles from './page.module.css';
 import LogoMono from '@/img/logo-mono.svg';
 import { OutlinedIcon } from '@/components/material-symbols';
+import atsuocoder_db from '@/lib/atsuocoder_db';
+import User from '@/components/user';
 
-export default function MainPage() {
+export default async function MainPage() {
+
+    // Next-4 Contests + Last-1 Contest
+    const next_contests = await atsuocoder_db.contest.findMany({
+        where: {
+            start_time: {
+                gt: new Date(),
+            },
+            isPublic: true,
+        },
+        orderBy: {
+            start_time: "asc",
+        },
+        take: 4,
+    });
+    const last_contests = await atsuocoder_db.contest.findMany({
+        where: {
+            start_time: {
+                lte: new Date(),
+            },
+            isPublic: true,
+        },
+        orderBy: {
+            start_time: "desc",
+        },
+        take: 1,
+    });
+
+    const ranked_users = await atsuocoder_db.userData.findMany({
+        orderBy: {
+            rating: "desc",
+        },
+        take: 10,
+    });
+
+    const notifications = await atsuocoder_db.notification.findMany({
+        where: {
+            isPublic: true,
+        },
+        orderBy: {
+            created_at: "desc",
+        },
+        take: 1,
+    });
+
     return (
         <div className={styles.page}>
             <div className={styles.title}>
@@ -32,19 +78,46 @@ export default function MainPage() {
 
                     <h3>Latest Contests</h3>
 
-                    <div>
-                        <span
-                            className={styles.type}
-                        >
-                            予定
-                        </span>
-                        <span
-                            className={styles.schedule}
-                        >
-                            2025/07/28 開始
-                        </span>
-                        <h4>AtsuoCoder World Tour Finals</h4>
-                    </div>
+                    {
+                        next_contests.map((contest, i) =>
+                            <div key={i}>
+                                <span
+                                    className={styles.type}
+                                >
+                                    予定
+                                </span>
+                                <span
+                                    className={styles.schedule}
+                                >
+                                    {contest.start_time.toLocaleString("ja-jp")} 開始
+                                </span>
+                                <Link href={`/contests/${contest.url_id}`}>
+                                    <h4>{contest.title}</h4>
+                                </Link>
+                            </div>
+                        )
+                    }
+
+                    {
+                        last_contests.map((contest, i) =>
+                            <div key={i}>
+                                <span
+                                    className={styles.type}
+                                    style={{ background: "gray" }}
+                                >
+                                    終了
+                                </span>
+                                <span
+                                    className={styles.schedule}
+                                >
+                                    {contest.start_time.toLocaleString("ja-jp")} 開始
+                                </span>
+                                <Link href={`/contests/${contest.url_id}`}>
+                                    <h4>{contest.title}</h4>
+                                </Link>
+                            </div>
+                        )
+                    }
 
                     <div
                         className={styles.see_more}
@@ -58,20 +131,26 @@ export default function MainPage() {
                     </div>
 
                 </div>
-                <div>
+                <div
+                    className={styles.rankings}
+                >
 
                     <h3>Rankings</h3>
 
                     <div>
-                        <p>
-                            1. yama_can <br /> <br />
-                            2. abn48 <br /> <br />
-                            3. tomo8 <br /> <br />
-                            4. houjitya <br /> <br />
-                            5. iseetell <br /> <br />
-                            6. nikkuni <br /> <br />
-                            NaN. okkuu <br /> <br />
-                        </p>
+                        <table>
+                            <tbody>
+                                {
+                                    ranked_users.map((user, i) =>
+                                        <tr key={i}>
+                                            <td>{i + 1}</td>
+                                            <td><User unique_id={user.unique_id} /></td>
+                                            <td>{user.rating}</td>
+                                        </tr>
+                                    )
+                                }
+                            </tbody>
+                        </table>
                     </div>
 
                     <div
@@ -92,18 +171,16 @@ export default function MainPage() {
 
                     <h3>Posts</h3>
 
-                    <div>
-                        <h4>AtsuoCoder World Tour Finals 2025 告知</h4>
-                        <p>
-                            AtsuoCoder World Tour Finals 2025 が開催されます。
-                            <br />
-                            AtsuoCoder World Tour Finals 2025 は、早稲田中高PCプログラミング部員を越後に招いて開催される国内オンサイトコンテストです。
-                            <br />
-                            当日は和風いん越路のホワイトボードでコンテストの様子を配信いたします。
-                            <br />
-                            詳しくは合宿のしおりをご覧ください．
-                        </p>
-                    </div>
+                    {
+                        notifications.map((notification, i) =>
+                            <div key={i}>
+                                <h4>{notification.title}</h4>
+                                <p>
+                                    {notification.description}
+                                </p>
+                            </div>
+                        )
+                    }
 
                     <div
                         className={styles.see_more}

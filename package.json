@@ -9,7 +9,10 @@
     "lint": "next lint",
     "generate:w_auth": "prisma generate --schema=prisma.w_auth/schema.prisma",
     "generate:atsuocoder": "prisma generate --schema=prisma.atsuocoder/schema.prisma",
-    "generate": "npm run generate:w_auth && npm run generate:atsuocoder"
+    "generate": "npm run generate:w_auth && npm run generate:atsuocoder",
+    "dbpush:w_auth": "prisma db push --schema=prisma.w_auth/schema.prisma",
+    "dbpush:atsuocoder": "prisma db push --schema=prisma.atsuocoder/schema.prisma",
+    "dbpush": "npm run db push:w_auth && npm run db push:atsuocoder"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -83,6 +83,7 @@ model TestCaseUse {
 model Notification {
   unique_id   String   @id @default(uuid())
   created_at  DateTime @default(now())
+  title       String
   description String
   isPublic    Boolean
 }

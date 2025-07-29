@@ -80,6 +80,10 @@ div.page {
                     padding: .1rem 1.4rem;
                     border-top: 1px solid #ccc;
                 }
+
+                a {
+                    color: black;
+                }
             }
 
             >div:first-of-type {
@@ -114,6 +118,21 @@ div.page {
                     >h4 {
                         font-weight: 400;
                         margin: 1.5rem 0 1rem 0;
+                    }
+                }
+            }
+
+            &.rankings {
+                table {
+                    tbody {
+                        tr {
+                            border: solid #777;
+                            border-width: 1px 0;
+
+                            td {
+                                border: none;
+                            }
+                        }
                     }
                 }
             }
