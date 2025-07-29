@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:w_auth": "prisma generate --schema=prisma.w_auth/schema.prisma",
+    "generate:atsuocoder": "prisma generate --schema=prisma.atsuocoder/schema.prisma",
+    "generate": "npm run generate:w_auth && npm run generate:atsuocoder"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

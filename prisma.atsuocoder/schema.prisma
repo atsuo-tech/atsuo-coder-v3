@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/atsuocoder"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("ATSUOCODER_DATABASE_URL")
+}
+
+model UserData {
+  unique_id String @id
+  rating    Int
+}
+
+model Contest {
+  unique_id    String    @id @default(uuid())
+  url_id       String    @unique
+  title        String
+  description  String
+  start_time   DateTime
+  end_time     DateTime
+  is_permanent Boolean
+  rated_range  Int[]
+  TaskUse      TaskUse[]
+  isPublic     Boolean   @default(false)
+}
+
+model Task {
+  unique_id String @id @default(uuid())
+  title     String
+  problem   String
+
+  TaskUse TaskUse[]
+  TestSet TestSet[]
+}
+
+model TaskUse {
+  contest          Contest @relation(fields: [contestUnique_id], references: [unique_id])
+  task             Task    @relation(fields: [taskUnique_id], references: [unique_id])
+  assignment       String
+  contestUnique_id String
+  taskUnique_id    String
+
+  @@id([contestUnique_id, taskUnique_id])
+  @@unique([contestUnique_id, assignment])
+}
+
+model TestSet {
+  unique_id     String        @id @default(uuid())
+  set_index     Int
+  set_name      String
+  task          Task          @relation(fields: [taskUnique_id], references: [unique_id])
+  taskUnique_id String
+  TestCaseUse   TestCaseUse[]
+
+  @@unique([taskUnique_id, set_index])
+}
+
+enum CaseType {
+  Batch
+  Communication
+  OutputOnly
+}
+
+model TestCase {
+  unique_id   String        @id @default(uuid())
+  case_name   String
+  case_type   CaseType
+  data        Json
+  TestCaseUse TestCaseUse[]
+}
+
+model TestCaseUse {
+  testset           TestSet  @relation(fields: [testSetUnique_id], references: [unique_id])
+  testSetUnique_id  String
+  testcase          TestCase @relation(fields: [testCaseUnique_id], references: [unique_id])
+  testCaseUnique_id String
+
+  @@unique([testSetUnique_id, testCaseUnique_id])
+}
+
+model Notification {
+  unique_id   String   @id @default(uuid())
+  created_at  DateTime @default(now())
+  description String
+  isPublic    Boolean
+}

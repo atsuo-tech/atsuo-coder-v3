@@ -5,8 +5,9 @@ import { Lato, Noto_Sans_JP } from 'next/font/google';
 import Logo from '@/img/logo-titled.svg';
 import LogoMono from '@/img/logo-titled-mono.svg';
 import Link from 'next/link';
-import db from '@/lib/db';
+import w_auth_db from '@/lib/w_auth_db';
 import { cookies } from 'next/headers';
+import User from '@/components/user';
 
 export const metadata = {
   title: 'hello world',
@@ -31,7 +32,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session_token = (await cookies()).get("SESSION_TOKEN")?.value;
-  const user = session_token && await db.user.findFirst({
+  const user = session_token && await w_auth_db.user.findFirst({
     where: {
       login_token: {
         has: session_token,
@@ -56,7 +57,7 @@ export default async function RootLayout({
             {
               user ?
                 <>
-                  <div>{user.username}</div>
+                  <User id={user.username} />
                 </> :
                 <>
                   <Link href={process.env.LOGIN_URL as string}>
@@ -106,10 +107,6 @@ export default async function RootLayout({
           </div>
 
           <LogoMono fill="#333" />
-          {/*           
-          <div>
-            Credits: <Link href="/credits"> Click Here </Link>
-          </div> */}
 
           <hr />
 
