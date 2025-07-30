@@ -1,0 +1,16 @@
+span.important {
+    font-weight: bolder;
+}
+
+.problem {
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.submit {
+    padding: 2rem;
+}
+
+.main {
+    margin: 2rem;
+}

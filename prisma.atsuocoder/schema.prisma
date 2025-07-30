@@ -9,41 +9,91 @@ datasource db {
 }
 
 model UserData {
-  unique_id String @id
-  rating    Int
+  unique_id         String              @id
+  rating            Int
+  TaskManagement    TaskManagement[]
+  ContestManagement ContestManagement[]
+  Clar              Clar[]
+  ClarAnswer        ClarAnswer[]
 }
 
 model Contest {
-  unique_id    String    @id @default(uuid())
-  url_id       String    @unique
-  title        String
-  description  String
-  start_time   DateTime
-  end_time     DateTime
-  is_permanent Boolean
-  rated_range  Int[]
-  TaskUse      TaskUse[]
-  isPublic     Boolean   @default(false)
+  unique_id         String              @id @default(uuid())
+  url_id            String              @unique
+  title             String
+  description       String
+  start_time        DateTime
+  end_time          DateTime
+  is_permanent      Boolean
+  rated_range       Int[]
+  TaskUse           TaskUse[]
+  is_public         Boolean             @default(false)
+  ContestManagement ContestManagement[]
+}
+
+enum ContestManagementRole {
+  Editor
+  Tester
+}
+
+model ContestManagement {
+  unique_id         String                @id @default(uuid())
+  user              UserData              @relation(fields: [userDataUnique_id], references: [unique_id])
+  contest           Contest               @relation(fields: [contestUnique_id], references: [unique_id])
+  role              ContestManagementRole
+  userDataUnique_id String
+  contestUnique_id  String
+
+  @@unique([userDataUnique_id, contestUnique_id])
 }
 
 model Task {
-  unique_id String @id @default(uuid())
-  title     String
-  problem   String
+  unique_id    String @id @default(uuid())
+  title        String
+  problem      String
+  url_id       String
+  time_limit   Int
+  memory_limit Int
+  score        Int
 
-  TaskUse TaskUse[]
-  TestSet TestSet[]
+  TaskUse        TaskUse[]
+  TestSet        TestSet[]
+  TaskManagement TaskManagement[]
+  Clar           Clar[]
 }
 
 model TaskUse {
   contest          Contest @relation(fields: [contestUnique_id], references: [unique_id])
   task             Task    @relation(fields: [taskUnique_id], references: [unique_id])
+  index            Int     @default(0)
   assignment       String
   contestUnique_id String
   taskUnique_id    String
 
   @@id([contestUnique_id, taskUnique_id])
   @@unique([contestUnique_id, assignment])
+  @@index([index, assignment])
+}
+
+model Clar {
+  unique_id           String      @id @default(uuid())
+  question            String
+  is_publishable      Boolean
+  task                Task        @relation(fields: [taskUnique_id], references: [unique_id])
+  taskUnique_id       String
+  questioner          UserData    @relation(fields: [questionerUnique_id], references: [unique_id])
+  questionerUnique_id String
+  ClarAnswer          ClarAnswer? @relation(fields: [answer_id], references: [unique_id])
+  answer_id           String      @unique
+}
+
+model ClarAnswer {
+  unique_id         String   @id @default(uuid())
+  clar              Clar?
+  answer            String
+  is_public         Boolean
+  answerer          UserData @relation(fields: [userDataUnique_id], references: [unique_id])
+  userDataUnique_id String
 }
 
 model TestSet {
@@ -78,6 +128,22 @@ model TestCaseUse {
   testCaseUnique_id String
 
   @@unique([testSetUnique_id, testCaseUnique_id])
+}
+
+enum TaskManagementRole {
+  Tester
+  Editor
+}
+
+model TaskManagement {
+  unique_id         String             @id @default(uuid())
+  task              Task               @relation(fields: [taskUnique_id], references: [unique_id])
+  user              UserData           @relation(fields: [userDataUnique_id], references: [unique_id])
+  taskUnique_id     String
+  userDataUnique_id String
+  role              TaskManagementRole
+
+  @@unique([taskUnique_id, userDataUnique_id])
 }
 
 model Notification {

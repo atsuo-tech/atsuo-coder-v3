@@ -45,7 +45,7 @@
 
 .main {
 	main {
-		padding: 3rem 3rem;
+		padding: 1rem 3rem 3rem 3rem;
 		font-size: 1.2em;
 		background: #fcfcfc;
 	}
@@ -53,11 +53,11 @@
 
 .footer {
 	background-color: rgb(255, 255, 255);
-	padding: 1em 3em;
+	padding: 3em;
 	color: rgb(87, 87, 87);
 	font-size: 1.2em;
 	font-weight: 400;
-	margin: 2rem;
+	border-top: 1px solid #ccc;
 
 	div.table {
 		display: grid;

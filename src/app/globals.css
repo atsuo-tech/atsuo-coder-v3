@@ -43,6 +43,10 @@ body {
 			padding: .5rem;
 		}
 	}
+
+	hr {
+		border: 1px solid #ccc;
+	}
 }
 
 .material-symbols-outlined {

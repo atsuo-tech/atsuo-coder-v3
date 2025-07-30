@@ -1,0 +1,10 @@
+main.top {
+    margin: 0;
+    padding: 4em;
+    background: linear-gradient(to right, hsl(210, 100%, 10%), hsl(210, 100%, 17%));
+    color: white;
+}
+
+main.description {
+    padding: 1.5em 2em;
+}

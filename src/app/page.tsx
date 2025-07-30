@@ -10,10 +10,11 @@ export default async function MainPage() {
     // Next-4 Contests + Last-1 Contest
     const next_contests = await atsuocoder_db.contest.findMany({
         where: {
-            start_time: {
+            end_time: {
                 gt: new Date(),
             },
-            isPublic: true,
+            is_public: true,
+            is_permanent: false,
         },
         orderBy: {
             start_time: "asc",
@@ -22,10 +23,11 @@ export default async function MainPage() {
     });
     const last_contests = await atsuocoder_db.contest.findMany({
         where: {
-            start_time: {
+            end_time: {
                 lte: new Date(),
             },
-            isPublic: true,
+            is_public: true,
+            is_permanent: false,
         },
         orderBy: {
             start_time: "desc",
@@ -84,7 +86,11 @@ export default async function MainPage() {
                                 <span
                                     className={styles.type}
                                 >
-                                    予定
+                                    {
+                                        contest.start_time.getTime() >= Date.now() ?
+                                            "予定" :
+                                            "開催中"
+                                    }
                                 </span>
                                 <span
                                     className={styles.schedule}
