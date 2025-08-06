@@ -6,14 +6,14 @@ export default async function User({ unique_id }: { unique_id: string }) {
 
   const user = await w_auth_db.user.findFirst({
     where: {
-      username: unique_id,
+      unique_id,
     },
   });
 
   if (!user) {
 
     return (
-      <Link href={`/users/${unique_id}`} className={styles.user}>
+      <Link href="#" className={styles.user}>
         <div>
           {unique_id}
         </div>
@@ -23,9 +23,9 @@ export default async function User({ unique_id }: { unique_id: string }) {
   }
 
   return (
-    <Link href={`/users/${unique_id}`} className={styles.user}>
+    <Link href={`/users/${user.username}`} className={styles.user}>
       <div>
-        {unique_id}
+        {user.username}
       </div>
     </Link>
   );

@@ -2,7 +2,7 @@ import Markdown from '@/components/markdown';
 import { getContest } from '@/lib/atsuocoder_db';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
-import { RangeMsToString } from '@/lib/utils';
+import { RangeMsToString, RatedRangeToString } from '@/lib/utils';
 
 export default async function ContestPage(
 	{ params }:
@@ -50,20 +50,7 @@ export default async function ContestPage(
 							</li>
 					}
 					<li>
-						Rated対象：
-						{
-							rated_range[0] == -1 ?
-								"なし" :
-								rated_range[1] == -1 ?
-									"All" :
-									(
-										rated_range[0] + " ~ " + (
-											rated_range[1] == -1 ?
-												"" :
-												rated_range[1]
-										)
-									)
-						}
+						Rated対象：{RatedRangeToString(rated_range)}
 					</li>
 				</ul>
 			</main>

@@ -10,20 +10,7 @@ export default async function NotFoundPage() {
 
 			<div>
 
-				<span>Sorry, we tried to find what you want, but...</span>
-
 				<h1>Not Found!!</h1>
-
-				<h2>Lost children:</h2>
-
-				<div
-					className={styles.lost_person}
-				>
-
-					<span>You</span>
-					<span>&</span>
-
-				</div>
 
 				<Logo height="100px" width="100%" />
 

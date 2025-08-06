@@ -33,9 +33,7 @@ export default async function ContestLayout(
 					<div>
 						{contestData.title}
 					</div>
-					<div className={styles.timer}>
-						<Timer start_time={contestData.start_time} end_time={contestData.end_time} />
-					</div>
+					<Timer start_time={contestData.start_time} end_time={contestData.end_time} />
 				</div>
 				<div className={styles.navOthers}>
 					<div>

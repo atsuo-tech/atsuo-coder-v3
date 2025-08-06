@@ -30,21 +30,23 @@ export default function Timer(
 
 		setInterval(() => {
 
+			if (!ref.current) return;
+
 			if (Date.now() <= start_time.getTime()) {
 
-				ref.current!.innerText = "開始まで：" + RangeMsToString(start_time.getTime() - Date.now(), false);
+				ref.current.innerText = "開始まで：" + RangeMsToString(start_time.getTime() - Date.now(), false);
 				return;
 
 			}
 
 			if (end_time.getTime() <= Date.now()) {
 
-				ref.current!.innerText = "終了";
+				ref.current.innerText = "終了";
 				return;
 
 			}
 
-			ref.current!.innerText = "残り時間：" + RangeMsToString(end_time.getTime() - Date.now(), false);
+			ref.current.innerText = "残り時間：" + RangeMsToString(end_time.getTime() - Date.now(), false);
 
 		}, 50);
 

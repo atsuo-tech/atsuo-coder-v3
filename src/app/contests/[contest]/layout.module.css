@@ -1,6 +1,6 @@
 nav.nav {
 	position: sticky;
-	top: calc(37.5pt + 2rem);
+	top: calc(37.5pt + 2rem + 1px);
 	left: 0;
 	border-bottom: 1px solid #ccc;
 
@@ -11,6 +11,11 @@ nav.nav {
 		font-size: 1.2em;
 		padding: 0.5em 1.2em;
 		grid-template-columns: auto 300px;
+		height: 2rem;
+
+		>div {
+			align-self: center;
+		}
 	}
 
 	div.navOthers {
@@ -20,11 +25,15 @@ nav.nav {
 		background-color: white;
 		color: black;
 		font-size: 1.2em;
+		top: calc(37.5pt + 2rem + 2rem + 1.0rem + 1px);
+		height: 3rem;
+		padding: 0;
+
 
 		>div {
 			display: block;
 			text-align: center;
-			margin: 0.5em auto;
+			align-self: center;
 
 			a {
 				color: black;

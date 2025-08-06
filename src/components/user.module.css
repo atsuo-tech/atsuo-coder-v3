@@ -1,4 +1,5 @@
 .user {
     color: black; /* temporary black */
 	text-decoration: none;
+    display: inline-block;
 }

@@ -8,6 +8,8 @@ import Link from 'next/link';
 import w_auth_db from '@/lib/w_auth_db';
 import { cookies } from 'next/headers';
 import User from '@/components/user';
+import { createTheme, ThemeProvider } from '@mui/material';
+import Theme from './theme';
 
 export const metadata = {
   title: 'hello world',
@@ -78,7 +80,9 @@ export default async function RootLayout({
         <div
           className={styles.main}
         >
-          {children}
+          <Theme>
+            {children}
+          </Theme>
         </div>
 
         <footer className={styles.footer}>

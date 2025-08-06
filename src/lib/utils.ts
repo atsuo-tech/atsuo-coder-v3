@@ -20,3 +20,30 @@ export function RangeMsToString(
 	if (useMilliseconds && ms > 0) res += ` ${ms}ミリ秒`;
 	return res.substring(1) || "0エクサ秒";
 }
+
+export function DateToForm(date: Date) {
+	return date.toLocaleString("ja-JP", {
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+	}).replace(" ", "T").replaceAll("/", "-");
+}
+
+export function RatedRangeToString(rated_range: number[]) {
+
+	return rated_range[0] == -1 ?
+		"なし" :
+		rated_range[1] == -1 ?
+			"All" :
+			(
+				rated_range[0] + " ~ " + (
+					rated_range[1] == -1 ?
+						"" :
+						rated_range[1]
+				)
+			)
+
+}

@@ -19,6 +19,7 @@ export async function getContest(contest: string) {
 		include: {
 			ContestManagement: {
 				select: {
+					role: true,
 					user: {
 						select: {
 							unique_id: true,
@@ -51,3 +52,5 @@ export async function getContest(contest: string) {
 	return contestData;
 
 }
+
+export type GetContestType = Awaited<ReturnType<typeof getContest>>;

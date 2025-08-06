@@ -8,9 +8,16 @@ datasource db {
   url      = env("ATSUOCODER_DATABASE_URL")
 }
 
+enum UserRole {
+  SuperAdmin
+  Admin
+  Member
+}
+
 model UserData {
   unique_id         String              @id
   rating            Int
+  role              UserRole            @default(Member)
   TaskManagement    TaskManagement[]
   ContestManagement ContestManagement[]
   Clar              Clar[]
