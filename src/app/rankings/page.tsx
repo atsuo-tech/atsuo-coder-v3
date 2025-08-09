@@ -1,6 +1,7 @@
 import User from '@/components/user';
 import atsuocoder_db from '@/lib/atsuocoder_db';
 import w_auth_db from '@/lib/w_auth_db';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import Link from 'next/link';
 
 export default async function RankingsPage() {
@@ -26,16 +27,16 @@ export default async function RankingsPage() {
 
 			<h2>レーティング（アルゴリズム）</h2>
 
-			<table>
-				<thead>
-					<tr>
-						<th>順位</th>
-						<th>ユーザ名</th>
-						<th>卒業回</th>
-						<th>レーティング</th>
-					</tr>
-				</thead>
-				<tbody>
+			<Table>
+				<TableHead>
+					<TableRow>
+						<TableCell>順位</TableCell>
+						<TableCell>ユーザ名</TableCell>
+						<TableCell>卒業回</TableCell>
+						<TableCell>レーティング</TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
 					{
 						users.map((user, i) => {
 							const userInfo = authUsers.find((authUser) => authUser.unique_id == user.unique_id);
@@ -43,25 +44,25 @@ export default async function RankingsPage() {
 							if(!userInfo) {
 
 								return (
-									<tr key={i}>
-										<td colSpan={4}>Unknown User</td>
-									</tr>
+									<TableRow key={i}>
+										<TableCell colSpan={4}>Unknown User</TableCell>
+									</TableRow>
 								);
 
 							}
 
 							return (
-								<tr key={i}>
-									<td>{i + 1}</td>
-									<td><User unique_id={user.unique_id} /></td>
-									<td>{userInfo.grade}</td>
-									<td>{user.rating}</td>
-								</tr>
+								<TableRow key={i}>
+									<TableCell>{i + 1}</TableCell>
+									<TableCell><User unique_id={user.unique_id} /></TableCell>
+									<TableCell>{userInfo.grade}</TableCell>
+									<TableCell>{user.rating}</TableCell>
+								</TableRow>
 							)
 						})
 					}
-				</tbody>
-			</table>
+				</TableBody>
+			</Table>
 
 		</main>
 	);

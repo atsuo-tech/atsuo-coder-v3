@@ -7,7 +7,7 @@
 	padding: 1rem;
 	height: max-content;
 	border-bottom: 1px solid #ccc;
-	z-index: 100;
+	z-index: 200;
 
 	h2 {
 		line-height: 1;

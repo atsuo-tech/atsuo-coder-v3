@@ -1,9 +1,11 @@
 'use server';
 
-import atsuocoder_db from "@/lib/atsuocoder_db";
+import atsuocoder_db, { restrictUser } from "@/lib/atsuocoder_db";
 import { redirect } from "next/navigation";
 
 export default async function ContestCreateAction({ message }: { message: string }, formData: FormData) {
+
+	restrictUser('SuperAdmin');
 
 	const url_id = formData.get('url_id');
 

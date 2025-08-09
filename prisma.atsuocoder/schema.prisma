@@ -22,6 +22,7 @@ model UserData {
   ContestManagement ContestManagement[]
   Clar              Clar[]
   ClarAnswer        ClarAnswer[]
+  Submission        Submission[]
 }
 
 model Contest {
@@ -36,6 +37,7 @@ model Contest {
   TaskUse           TaskUse[]
   is_public         Boolean             @default(false)
   ContestManagement ContestManagement[]
+  Submission        Submission[]
 }
 
 enum ContestManagementRole {
@@ -54,19 +56,27 @@ model ContestManagement {
   @@unique([userDataUnique_id, contestUnique_id])
 }
 
+enum TaskType {
+  Batch
+  Communication
+  OutputOnly
+}
+
 model Task {
-  unique_id    String @id @default(uuid())
+  unique_id    String   @id @default(uuid())
   title        String
   problem      String
   url_id       String
   time_limit   Int
   memory_limit Int
   score        Int
+  type         TaskType @default(Batch)
 
   TaskUse        TaskUse[]
   TestSet        TestSet[]
   TaskManagement TaskManagement[]
   Clar           Clar[]
+  Submission     Submission[]
 }
 
 model TaskUse {
@@ -109,22 +119,15 @@ model TestSet {
   set_name      String
   task          Task          @relation(fields: [taskUnique_id], references: [unique_id])
   taskUnique_id String
+  score         Int           @default(0)
   TestCaseUse   TestCaseUse[]
 
   @@unique([taskUnique_id, set_index])
 }
 
-enum CaseType {
-  Batch
-  Communication
-  OutputOnly
-}
-
 model TestCase {
   unique_id   String        @id @default(uuid())
   case_name   String
-  case_type   CaseType
-  data        Json
   TestCaseUse TestCaseUse[]
 }
 
@@ -159,4 +162,30 @@ model Notification {
   title       String
   description String
   isPublic    Boolean
+}
+
+model Submission {
+  unique_id               String       @id @default(uuid())
+  language                LanguageData @relation(fields: [languageDataLanguage_id], references: [language_id])
+  user                    UserData     @relation(fields: [userDataUnique_id], references: [unique_id])
+  userDataUnique_id       String
+  contest                 Contest      @relation(fields: [contestUnique_id], references: [unique_id])
+  task                    Task         @relation(fields: [taskUnique_id], references: [unique_id])
+  taskUnique_id           String
+  created_at              DateTime     @default(now())
+  contestUnique_id        String
+  code                    String
+  queued                  Boolean      @default(false)
+  result                  Json         @default("{}")
+  judge_server_id         String?
+  languageDataLanguage_id Int
+}
+
+model LanguageData {
+  language_id  Int          @id
+  name         String
+  extention    String
+  buildCommand String
+  runCommand   String
+  Submission   Submission[]
 }

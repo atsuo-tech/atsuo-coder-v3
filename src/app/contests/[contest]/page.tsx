@@ -1,8 +1,9 @@
 import Markdown from '@/components/markdown';
-import { getContest } from '@/lib/atsuocoder_db';
+import { getContest, hasRole } from '@/lib/atsuocoder_db';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 import { RangeMsToString, RatedRangeToString } from '@/lib/utils';
+import { getCurrentUser } from '@/lib/w_auth_db';
 
 export default async function ContestPage(
 	{ params }:
@@ -15,7 +16,16 @@ export default async function ContestPage(
 
 	const contestData = await getContest(contest);
 
-	if (!contestData || !contestData.is_public) {
+	const user = await getCurrentUser();
+
+	if (
+		!contestData ||
+		(
+			!contestData.ContestManagement.find((management) => management.user.unique_id == user?.unique_id) &&
+			!(await hasRole('SuperAdmin')) &&
+			!contestData.is_public
+		)
+	) {
 
 		notFound();
 

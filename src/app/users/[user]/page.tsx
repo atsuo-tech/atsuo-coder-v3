@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 import Link from 'next/link';
 import User from '@/components/user';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 
 export default async function UserPage(
     {
@@ -47,40 +48,40 @@ export default async function UserPage(
                 <div className={styles.graph}>
                 </div>
                 <div className={styles.userInfo}>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>ユーザー名</th>
-                                <td><User unique_id={atsuoCoderData.unique_id} /></td>
-                            </tr>
-                            <tr>
-                                <th>レーティング</th>
-                                <td>{atsuoCoderData.rating}</td>
-                            </tr>
-                            <tr>
-                                <th>最高レーティング</th>
-                                <td>{/*atsuoCoderData.highest*/}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <Table>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>ユーザー名</TableCell>
+                                <TableCell><User unique_id={atsuoCoderData.unique_id} /></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>レーティング</TableCell>
+                                <TableCell>{atsuoCoderData.rating}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>最高レーティング</TableCell>
+                                <TableCell>{/*atsuoCoderData.highest*/}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
                 </div>
             </div>
             <div className={styles.history}>
                 <h2>コンテスト履歴</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>コンテスト名</th>
-                            <th>順位</th>
-                            <th>パフォーマンス</th>
-                            <th>レーティング変動</th>
-                            <th>新レーティング</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>コンテスト名</TableCell>
+                            <TableCell>順位</TableCell>
+                            <TableCell>パフォーマンス</TableCell>
+                            <TableCell>レーティング変動</TableCell>
+                            <TableCell>新レーティング</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
                         {/* ToDo: CREATE THIS WITH ATSUOCODER DETAILED DB */}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </Table>
             </div>
         </main>
     );

@@ -1,3 +1,4 @@
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import Link from "next/link";
 
 export default function AdminTaskPage() {
@@ -9,29 +10,29 @@ export default function AdminTaskPage() {
 
 			<h2>問題一覧</h2>
 
-			<table>
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>タイトル</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td colSpan={2}>
+			<Table>
+				<TableHead>
+					<TableRow>
+						<TableCell>ID</TableCell>
+						<TableCell>タイトル</TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					<TableRow>
+						<TableCell colSpan={2}>
 							<Link href="/admin/task/new">作成</Link>
-						</td>
-					</tr>
-					<tr>
-						<td>awtf2025_a</td>
-						<td>
+						</TableCell>
+					</TableRow>
+					<TableRow>
+						<TableCell>awtf2025_a</TableCell>
+						<TableCell>
 							<Link href="/admin/task/edit/awtf2025_a">
 								Console.log
 							</Link>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+						</TableCell>
+					</TableRow>
+				</TableBody>
+			</Table>
 
 		</main>
 	);

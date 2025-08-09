@@ -2,6 +2,11 @@ import Markdown from '@/components/markdown';
 import atsuocoder_db, { getContest } from '@/lib/atsuocoder_db';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
+import { Button, MenuItem, Select, TextField } from '@mui/material';
+import TaskSubmit from './action';
+import { ContestViewable } from '@/lib/contest';
+import assert from 'assert';
+import TaskSubmitForm from './form';
 
 export default async function TaskPage(
 	{
@@ -15,18 +20,13 @@ export default async function TaskPage(
 
 	const contestData = await getContest(contest);
 
-	if (
-		!contestData ||
-		!contestData.is_public ||
-		(
-			!contestData.is_permanent &&
-			contestData.start_time.getTime() > Date.now()
-		)
-	) {
+	if (!(await ContestViewable(contestData))) {
 
 		notFound();
 
 	}
+
+	assert(contestData);
 
 	const {
 		TaskUse,
@@ -50,6 +50,7 @@ export default async function TaskPage(
 			time_limit: true,
 			memory_limit: true,
 			score: true,
+			type: true,
 			TaskManagement: {
 				select: {
 					user: {
@@ -77,6 +78,7 @@ export default async function TaskPage(
 				<li>実行時間制限：<span className={styles.important}>{taskData.time_limit}</span> ms</li>
 				<li>メモリ制限：<span className={styles.important}>{taskData.memory_limit}</span> Bytes</li>
 				<li>配点：<span className={styles.important}>{taskData.score}</span> 点</li>
+				<li>ジャッジ：<span className={styles.important}>{taskData.type}</span></li>
 			</ul>
 			<hr />
 			<div className={styles.problem}>
@@ -84,7 +86,13 @@ export default async function TaskPage(
 			</div>
 			<hr />
 			<div className={styles.submit}>
-				<textarea rows={25} cols={100} />
+				<form action={TaskSubmit}>
+					<TaskSubmitForm
+						contest={contest}
+						task={task}
+						languageData={await atsuocoder_db.languageData.findMany()}
+					/>
+				</form>
 			</div>
 		</main>
 	);

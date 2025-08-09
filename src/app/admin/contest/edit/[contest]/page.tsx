@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import ContestControlComponent from './control';
-import { getContest } from '@/lib/atsuocoder_db';
+import { getContest, restrictUser } from '@/lib/atsuocoder_db';
+import ContestEditAction from './action';
+import { ContestManagable } from '@/lib/contest';
+import { notFound } from 'next/navigation';
 
 export default async function ContestEditPage(
 	{
@@ -14,6 +17,12 @@ export default async function ContestEditPage(
 
 	const contestData = await getContest(contest);
 
+	if (!(await ContestManagable(contestData))) {
+
+		notFound();
+
+	}
+
 	return (
 		<main>
 
@@ -23,8 +32,15 @@ export default async function ContestEditPage(
 				コンテストを監視（コンテスト中に使用）
 			</Link>
 
-			<form>
-				<br />
+			<br />
+
+			<Link href={`/admin/contest/edit/${contest}/management`}>
+				コンテスト関係者の変更
+			</Link>
+
+			<form
+				action={ContestEditAction}
+			>
 				<ContestControlComponent
 					contestData={contestData}
 				/>

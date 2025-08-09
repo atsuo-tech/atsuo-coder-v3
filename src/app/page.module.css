@@ -122,21 +122,6 @@ div.page {
                 }
             }
 
-            &.rankings {
-                table {
-                    tbody {
-                        tr {
-                            border: solid #777;
-                            border-width: 1px 0;
-
-                            td {
-                                border: none;
-                            }
-                        }
-                    }
-                }
-            }
-
             &.posts {
                 h4 {
                     background: black;

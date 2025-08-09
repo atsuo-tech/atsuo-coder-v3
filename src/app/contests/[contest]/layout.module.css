@@ -3,6 +3,7 @@ nav.nav {
 	top: calc(37.5pt + 2rem + 1px);
 	left: 0;
 	border-bottom: 1px solid #ccc;
+	z-index: 100;
 
 	div.navContestName {
 		display: grid;
@@ -36,7 +37,10 @@ nav.nav {
 			align-self: center;
 
 			a {
+				display: block;
 				color: black;
+				height: 100%;
+				width: 100%;
 			}
 		}
 	}

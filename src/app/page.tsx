@@ -4,6 +4,7 @@ import LogoMono from '@/img/logo-mono.svg';
 import { OutlinedIcon } from '@/components/material-symbols';
 import atsuocoder_db from '@/lib/atsuocoder_db';
 import User from '@/components/user';
+import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 
 export default async function MainPage() {
 
@@ -144,19 +145,19 @@ export default async function MainPage() {
                     <h3>Rankings</h3>
 
                     <div>
-                        <table>
-                            <tbody>
+                        <Table>
+                            <TableBody>
                                 {
                                     ranked_users.map((user, i) =>
-                                        <tr key={i}>
-                                            <td>{i + 1}</td>
-                                            <td><User unique_id={user.unique_id} /></td>
-                                            <td>{user.rating}</td>
-                                        </tr>
+                                        <TableRow key={i}>
+                                            <TableCell>{i + 1}</TableCell>
+                                            <TableCell><User unique_id={user.unique_id} /></TableCell>
+                                            <TableCell>{user.rating}</TableCell>
+                                        </TableRow>
                                     )
                                 }
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
                     </div>
 
                     <div

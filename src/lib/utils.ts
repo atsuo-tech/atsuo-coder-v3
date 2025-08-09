@@ -35,15 +35,28 @@ export function DateToForm(date: Date) {
 export function RatedRangeToString(rated_range: number[]) {
 
 	return rated_range[0] == -1 ?
-		"なし" :
 		rated_range[1] == -1 ?
 			"All" :
-			(
-				rated_range[0] + " ~ " + (
-					rated_range[1] == -1 ?
-						"" :
-						rated_range[1]
-				)
-			)
+			"なし" :
+		rated_range[0] + " ~ " + (
+			rated_range[1] == -1 ?
+				"" :
+				rated_range[1]
+		)
 
 }
+
+export enum JudgeStatus {
+	WJ,
+	WR,
+	Judging,
+	AC,
+	WA,
+	RE,
+	CE,
+	TLE,
+	MLE,
+	QLE,
+	PE,
+	IE,
+};

@@ -1,5 +1,6 @@
 import atsuocoder_db from '@/lib/atsuocoder_db';
 import { RangeMsToString, RatedRangeToString } from '@/lib/utils';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import Link from 'next/link';
 
 export default async function ContestsPage() {
@@ -29,144 +30,146 @@ export default async function ContestsPage() {
 
 					<h2>実行中のコンテスト</h2>
 
-					<table>
+					<Table>
 
-						<thead>
-							<tr>
-								<th>開始時刻</th>
-								<th>コンテスト名</th>
-								<th>時間</th>
-								<th>Rated 対象</th>
-							</tr>
-						</thead>
+						<TableHead>
+							<TableRow>
+								<TableCell>開始時刻</TableCell>
+								<TableCell>コンテスト名</TableCell>
+								<TableCell>時間</TableCell>
+								<TableCell>Rated 対象</TableCell>
+							</TableRow>
+						</TableHead>
 
-						<tbody>
+						<TableBody>
 							{
 								running.map((contest, i) =>
-									<tr key={i}>
-										<td>{contest.start_time.toLocaleString("ja-jp")}</td>
-										<td>
+									<TableRow key={i}>
+										<TableCell>{contest.start_time.toLocaleString("ja-jp")}</TableCell>
+										<TableCell>
 											<Link href={`/contests/${contest.url_id}`}>
 												{contest.title}
 											</Link>
-										</td>
-										<td>{RangeMsToString(contest.end_time.getTime() - contest.start_time.getTime())}</td>
-										<td>{RatedRangeToString(contest.rated_range)}</td>
-									</tr>
+										</TableCell>
+										<TableCell>{RangeMsToString(contest.end_time.getTime() - contest.start_time.getTime())}</TableCell>
+										<TableCell>{RatedRangeToString(contest.rated_range)}</TableCell>
+									</TableRow>
 								)
 							}
-						</tbody>
+						</TableBody>
 
-					</table>
+					</Table>
 
 				</div>
 			}
 
 			<h2>常設されたコンテスト</h2>
 
-			<table>
+			<Table>
 
-				<thead>
-					<tr>
-						<th>コンテスト名</th>
-					</tr>
-				</thead>
+				<TableHead>
+					<TableRow>
+						<TableCell>コンテスト名</TableCell>
+					</TableRow>
+				</TableHead>
 
-				<tbody>
+				<TableBody>
 					{
 						permanent.length == 0 &&
-						<tr>
-							<td>常設されたコンテストはありません</td>
-						</tr>
+						<TableRow>
+							<TableCell>常設されたコンテストはありません</TableCell>
+						</TableRow>
 					}
 					{
 						permanent.map((contest, i) =>
-							<tr key={i}>
-								<td>
+							<TableRow key={i}>
+								<TableCell>
 									<Link href={`/contests/${contest.url_id}`}>
 										{contest.title}
 									</Link>
-								</td>
-							</tr>
+								</TableCell>
+							</TableRow>
 						)
 					}
-				</tbody>
+				</TableBody>
 
-			</table>
+			</Table>
 
 			<h2>予定されたコンテスト</h2>
 
-			<table>
+			<Table>
 
-				<thead>
-					<tr>
-						<th>開始時刻</th>
-						<th>コンテスト名</th>
-						<th>時間</th>
-						<th>Rated 対象</th>
-					</tr>
-				</thead>
+				<TableHead>
+					<TableRow>
+						<TableCell>開始時刻</TableCell>
+						<TableCell>コンテスト名</TableCell>
+						<TableCell>時間</TableCell>
+						<TableCell>Rated 対象</TableCell>
+					</TableRow>
+				</TableHead>
 
-				<tbody>
+				<TableBody>
 					{
 						upcoming.length == 0 &&
-						<tr>
-							<td colSpan={4}>予定されたコンテストはありません</td>
-						</tr>
+						<TableRow>
+							<TableCell colSpan={4}>予定されたコンテストはありません</TableCell>
+						</TableRow>
 					}
 					{
 						upcoming.map((contest, i) =>
-							<tr key={i}>
-								<td>{contest.start_time.toLocaleString("ja-jp")}</td>
-								<td>
+							<TableRow key={i}>
+								<TableCell>{contest.start_time.toLocaleString("ja-jp")}</TableCell>
+								<TableCell>
 									<Link href={`/contests/${contest.url_id}`}>
 										{contest.title}
 									</Link>
-								</td>
-								<td>{RangeMsToString(contest.end_time.getTime() - contest.start_time.getTime())}</td>
-							</tr>
+								</TableCell>
+								<TableCell>{RangeMsToString(contest.end_time.getTime() - contest.start_time.getTime())}</TableCell>
+								<TableCell>{RatedRangeToString(contest.rated_range)}</TableCell>
+							</TableRow>
 						)
 					}
-				</tbody>
+				</TableBody>
 
-			</table>
+			</Table>
 
 			<h2>終了後のコンテスト</h2>
 
-			<table>
+			<Table>
 
-				<thead>
-					<tr>
-						<th>開始時刻</th>
-						<th>コンテスト名</th>
-						<th>時間</th>
-						<th>Rated 対象</th>
-					</tr>
-				</thead>
+				<TableHead>
+					<TableRow>
+						<TableCell>開始時刻</TableCell>
+						<TableCell>コンテスト名</TableCell>
+						<TableCell>時間</TableCell>
+						<TableCell>Rated 対象</TableCell>
+					</TableRow>
+				</TableHead>
 
-				<tbody>
+				<TableBody>
 					{
 						recent.length == 0 &&
-						<tr>
-							<td colSpan={4}>予定されたコンテストはありません</td>
-						</tr>
+						<TableRow>
+							<TableCell colSpan={4}>予定されたコンテストはありません</TableCell>
+						</TableRow>
 					}
 					{
 						recent.map((contest, i) =>
-							<tr key={i}>
-								<td>{contest.start_time.toLocaleString("ja-jp")}</td>
-								<td>
+							<TableRow key={i}>
+								<TableCell>{contest.start_time.toLocaleString("ja-jp")}</TableCell>
+								<TableCell>
 									<Link href={`/contests/${contest.url_id}`}>
 										{contest.title}
 									</Link>
-								</td>
-								<td>{RangeMsToString(contest.end_time.getTime() - contest.start_time.getTime())}</td>
-							</tr>
+								</TableCell>
+								<TableCell>{RangeMsToString(contest.end_time.getTime() - contest.start_time.getTime())}</TableCell>
+								<TableCell>{RatedRangeToString(contest.rated_range)}</TableCell>
+							</TableRow>
 						)
 					}
-				</tbody>
+				</TableBody>
 
-			</table>
+			</Table>
 
 		</main>
 	);

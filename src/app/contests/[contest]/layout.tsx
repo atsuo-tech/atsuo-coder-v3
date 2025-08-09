@@ -1,9 +1,11 @@
-import { getContest } from '@/lib/atsuocoder_db';
+import { getContest, hasRole } from '@/lib/atsuocoder_db';
 import { notFound } from 'next/navigation';
 import React from 'react';
 import styles from './layout.module.css';
 import Link from 'next/link';
 import Timer from './contest-timer';
+import { ContestViewable } from '@/lib/contest';
+import assert from 'assert';
 
 export default async function ContestLayout(
 	{
@@ -20,7 +22,7 @@ export default async function ContestLayout(
 
 	const contestData = await getContest(contest);
 
-	if (!contestData || !contestData.is_public) {
+	if (!contestData) {
 
 		notFound();
 

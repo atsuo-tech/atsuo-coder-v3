@@ -1,4 +1,6 @@
-import { PrismaClient } from '@prisma/atsuocoder/client';
+import { PrismaClient, UserRole } from '@prisma/atsuocoder/client';
+import { getCurrentUser } from './w_auth_db';
+import { notFound } from 'next/navigation';
 
 const globalForPrisma = globalThis as unknown as {
 	atsuocoder_db: PrismaClient | undefined;
@@ -34,6 +36,10 @@ export async function getContest(contest: string) {
 						select: {
 							title: true,
 							url_id: true,
+							time_limit: true,
+							memory_limit: true,
+							score: true,
+							type: true,
 						},
 					},
 				},
@@ -54,3 +60,39 @@ export async function getContest(contest: string) {
 }
 
 export type GetContestType = Awaited<ReturnType<typeof getContest>>;
+
+export async function getCurrentUserData() {
+
+	const user = await getCurrentUser();
+
+	return user && atsuocoder_db.userData.findFirst({
+		where: {
+			unique_id: user.unique_id,
+		},
+	});
+
+}
+
+export async function hasRole(role: UserRole) {
+
+	const userData = await getCurrentUserData();
+
+	const roleIndex = [
+		UserRole.Member,
+		UserRole.Admin,
+		UserRole.SuperAdmin,
+	];
+
+	return !!userData && roleIndex.indexOf(userData.role) >= roleIndex.indexOf(role);
+
+}
+
+export async function restrictUser(role: UserRole) {
+
+	if (!(await hasRole(role))) {
+
+		notFound();
+
+	}
+
+}

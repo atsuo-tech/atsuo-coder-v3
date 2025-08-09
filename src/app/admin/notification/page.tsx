@@ -6,7 +6,7 @@ export default function AdminNotificationPage() {
 			<h1>Notification Management</h1>
 
 			<p>
-				この画面を使用できるのは、SuperAdmin / Admin のみです。
+				この画面を使用できるのは、SuperAdmin のみです。
 			</p>
 
 		</main>

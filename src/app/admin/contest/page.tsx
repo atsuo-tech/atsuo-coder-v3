@@ -1,6 +1,26 @@
-import Link from "next/link";
+import atsuocoder_db, { hasRole, restrictUser } from '@/lib/atsuocoder_db';
+import { getCurrentUser } from '@/lib/w_auth_db';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import Link from 'next/link';
 
-export default function AdminContestPage() {
+export default async function AdminContestPage() {
+
+	await restrictUser('Admin');
+
+	const user = (await getCurrentUser())!!;
+
+	const contests = await atsuocoder_db.contest.findMany({
+		where: (
+			!(await hasRole('SuperAdmin')) ?
+				{
+					ContestManagement: {
+						some: {
+							userDataUnique_id: user.unique_id,
+						},
+					},
+				} : undefined
+		),
+	});
 
 	return (
 		<main>
@@ -9,35 +29,39 @@ export default function AdminContestPage() {
 
 			<h2>コンテスト一覧</h2>
 
-			<table>
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>タイトル</th>
-						<th>開始時刻</th>
-						<th>終了時刻</th>
-						<th>公開</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td colSpan={5}>
+			<Table>
+				<TableHead>
+					<TableRow>
+						<TableCell>ID</TableCell>
+						<TableCell>タイトル</TableCell>
+						<TableCell>開始時刻</TableCell>
+						<TableCell>終了時刻</TableCell>
+						<TableCell>公開</TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					<TableRow>
+						<TableCell colSpan={5}>
 							<Link href="/admin/contest/create">作成</Link>
-						</td>
-					</tr>
-					<tr>
-						<td>awtf2025</td>
-						<td>
-							<Link href="/admin/contest/edit/awtf2025">
-								AtsuoCoder Waseda Tour Finals 2025
-							</Link>
-						</td>
-						<td>2025/07/31 18:13</td>
-						<td>2025/08/31 18:13</td>
-						<td>公開済</td>
-					</tr>
-				</tbody>
-			</table>
+						</TableCell>
+					</TableRow>
+					{
+						contests.map((contest, i) =>
+							<TableRow key={i}>
+								<TableCell>
+									<Link href={`/admin/contest/edit/` + contest.url_id}>
+										{contest.url_id}
+									</Link>
+								</TableCell>
+								<TableCell>{contest.title}</TableCell>
+								<TableCell>{contest.start_time.toLocaleString("ja-jp")}</TableCell>
+								<TableCell>{contest.end_time.toLocaleString("ja-jp")}</TableCell>
+								<TableCell>{contest.is_public ? "公開済" : "未公開"}</TableCell>
+							</TableRow>
+						)
+					}
+				</TableBody>
+			</Table>
 
 		</main>
 	)
