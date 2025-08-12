@@ -4,9 +4,13 @@ import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/m
 import React from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { remark } from 'remark';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useNotifications } from '@toolpad/core/useNotifications';
+import 'katex/dist/katex.min.css';
 
 const components: Components = {
   code({ node, className, children, ...props }) {
@@ -52,7 +56,16 @@ const components: Components = {
 export default function Markdown({ md }: { md: string }) {
 
   return (
-    <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>{md}</ReactMarkdown>
+    <ReactMarkdown
+      remarkPlugins={[
+        remarkGfm,
+        [remarkMath, { singleDollarTextMath: true }],
+      ]}
+      rehypePlugins={[rehypeKatex]}
+      components={components}
+    >
+      {md}
+    </ReactMarkdown>
   );
 
 }
