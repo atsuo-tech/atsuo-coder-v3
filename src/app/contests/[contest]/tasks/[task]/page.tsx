@@ -2,21 +2,14 @@ import Markdown from '@/components/markdown';
 import atsuocoder_db, { getContest } from '@/lib/atsuocoder_db';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
-import { Button, MenuItem, Select, TextField } from '@mui/material';
 import TaskSubmit from './action';
 import { ContestViewable } from '@/lib/contest';
 import assert from 'assert';
 import TaskSubmitForm from './form';
+import { Metadata } from 'next';
 
-export default async function TaskPage(
-	{
-		params,
-	}: {
-		params: Promise<{ contest: string, task: string }>,
-	}
-) {
+async function getTask(contest: string, task: string) {
 
-	const { contest, task } = await params;
 
 	const contestData = await getContest(contest);
 
@@ -69,6 +62,43 @@ export default async function TaskPage(
 		notFound();
 
 	}
+
+	return { use, taskData };
+
+}
+
+export async function generateMetadata(
+	{
+		params
+	}: {
+		params: Promise<{
+			contest: string,
+			task: string,
+		}>,
+	}
+): Promise<Metadata> {
+
+	const { contest, task } = await params;
+
+	const { use, taskData } = await getTask(contest, task);
+
+	return {
+		title: `${use.assignment} - ${taskData.title} / AtsuoCoder`,
+	};
+
+}
+
+export default async function TaskPage(
+	{
+		params,
+	}: {
+		params: Promise<{ contest: string, task: string }>,
+	}
+) {
+
+	const { contest, task } = await params;
+
+	const { use, taskData } = await getTask(contest, task);
 
 	return (
 		<main className={styles.main}>

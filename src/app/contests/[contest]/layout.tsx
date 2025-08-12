@@ -1,11 +1,36 @@
-import { getContest, hasRole } from '@/lib/atsuocoder_db';
+import { getContest } from '@/lib/atsuocoder_db';
 import { notFound } from 'next/navigation';
 import React from 'react';
 import styles from './layout.module.css';
 import Link from 'next/link';
 import Timer from './contest-timer';
-import { ContestViewable } from '@/lib/contest';
-import assert from 'assert';
+import { Metadata } from 'next';
+
+export async function generateMetadata(
+	{
+		params
+	}: {
+		params: Promise<{
+			contest: string,
+		}>,
+	}
+): Promise<Metadata> {
+
+	const { contest } = await params;
+
+	const contestData = await getContest(contest);
+
+	if (!contestData) {
+
+		notFound();
+
+	}
+
+	return {
+		title: `${contestData.title} / AtsuoCoder`,
+	};
+
+}
 
 export default async function ContestLayout(
 	{

@@ -2,7 +2,11 @@ import User from '@/components/user';
 import atsuocoder_db from '@/lib/atsuocoder_db';
 import w_auth_db from '@/lib/w_auth_db';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: "Rankings / AtsuoCoder",
+}
 
 export default async function RankingsPage() {
 
@@ -41,7 +45,7 @@ export default async function RankingsPage() {
 						users.map((user, i) => {
 							const userInfo = authUsers.find((authUser) => authUser.unique_id == user.unique_id);
 
-							if(!userInfo) {
+							if (!userInfo) {
 
 								return (
 									<TableRow key={i}>

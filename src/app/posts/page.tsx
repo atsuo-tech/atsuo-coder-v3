@@ -1,6 +1,11 @@
 import Markdown from "@/components/markdown";
 import atsuocoder_db from "@/lib/atsuocoder_db";
 import { Box, Paper, Typography } from "@mui/material";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Posts / AtsuoCoder",
+}
 
 export default async function PostsPage() {
 

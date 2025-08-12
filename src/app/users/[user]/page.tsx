@@ -2,9 +2,39 @@ import w_auth_db from '@/lib/w_auth_db';
 import atsuocoder_db from '@/lib/atsuocoder_db';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
-import Link from 'next/link';
 import User from '@/components/user';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Metadata } from 'next';
+
+export async function generateMetadata(
+    {
+        params
+    }: {
+        params: Promise<{
+            user: string,
+        }>,
+    }
+): Promise<Metadata> {
+
+    const { user } = await params;
+
+    const wAuthData = await w_auth_db.user.findUnique({
+        where: {
+            username: user,
+        },
+    });
+
+    if (!wAuthData) {
+
+        notFound();
+
+    }
+
+    return {
+        title: `@${wAuthData.username} / AtsuoCoder`,
+    };
+
+}
 
 export default async function UserPage(
     {

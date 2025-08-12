@@ -1,7 +1,12 @@
 import atsuocoder_db from '@/lib/atsuocoder_db';
 import { RangeMsToString, RatedRangeToString } from '@/lib/utils';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+	title: "Contests / AtsuoCoder",
+};
 
 export default async function ContestsPage() {
 
