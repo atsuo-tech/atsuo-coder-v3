@@ -9,10 +9,17 @@ const muiTheme = createTheme({
 			styleOverrides: {
 				root: {
 					margin: "1rem 0",
-				}
-			}
-		}
-	}
+				},
+			},
+		},
+		MuiSelect: {
+			styleOverrides: {
+				root: {
+					margin: "1rem 0",
+				},
+			},
+		},
+	},
 });
 
 

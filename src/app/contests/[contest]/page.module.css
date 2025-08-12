@@ -3,7 +3,9 @@ main.top {
     padding: 4em;
     background: linear-gradient(to right, hsl(210, 100%, 10%), hsl(210, 100%, 17%));
     color: white;
+    position: relative;
 }
+
 
 main.description {
     padding: 1.5em 2em;

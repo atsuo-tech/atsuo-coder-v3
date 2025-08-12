@@ -1,15 +1,47 @@
-import { GetContestType, hasRole } from './atsuocoder_db';
+import atsuocoder_db, { GetContestType, hasRole } from './atsuocoder_db';
 import { getCurrentUser } from './w_auth_db';
 
 export async function ContestViewable(contestData: GetContestType) {
 
+	const user = await getCurrentUser();
+
 	return (
+		!!user &&
 		!!contestData &&
 		(
 			await ContestManagable(contestData) ||
-			(contestData.start_time.getTime() >= Date.now() && contestData.is_public)
+			(
+				contestData.start_time.getTime() >= Date.now() &&
+				!!(await getContestRegistration(contestData))
+			) ||
+			contestData.end_time.getTime() >= Date.now()
 		)
 	);
+
+}
+
+export async function getContestRegistration(contestData: GetContestType) {
+
+	if (!contestData) {
+
+		return null;
+
+	}
+
+	const user = await getCurrentUser();
+
+	if (!user) {
+
+		return null;
+
+	}
+
+	return await atsuocoder_db.contestRegistration.findFirst({
+		where: {
+			contestUnique_id: contestData?.unique_id,
+			userDataUnique_id: user?.unique_id,
+		},
+	});
 
 }
 

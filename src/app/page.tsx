@@ -5,6 +5,7 @@ import { OutlinedIcon } from '@/components/material-symbols';
 import atsuocoder_db from '@/lib/atsuocoder_db';
 import User from '@/components/user';
 import { Table, TableBody, TableCell, TableRow } from '@mui/material';
+import Markdown from '@/components/markdown';
 
 export default async function MainPage() {
 
@@ -182,9 +183,7 @@ export default async function MainPage() {
                         notifications.map((notification, i) =>
                             <div key={i}>
                                 <h4>{notification.title}</h4>
-                                <p>
-                                    {notification.description}
-                                </p>
+                                <Markdown md={notification.description} />
                             </div>
                         )
                     }

@@ -15,29 +15,46 @@ enum UserRole {
 }
 
 model UserData {
-  unique_id         String              @id
-  rating            Int
-  role              UserRole            @default(Member)
-  TaskManagement    TaskManagement[]
-  ContestManagement ContestManagement[]
-  Clar              Clar[]
-  ClarAnswer        ClarAnswer[]
-  Submission        Submission[]
+  unique_id           String                @id
+  rating              Int
+  role                UserRole              @default(Member)
+  TaskManagement      TaskManagement[]
+  ContestManagement   ContestManagement[]
+  Clar                Clar[]
+  ClarAnswer          ClarAnswer[]
+  Submission          Submission[]
+  ContestRegistration ContestRegistration[]
 }
 
 model Contest {
-  unique_id         String              @id @default(uuid())
-  url_id            String              @unique
-  title             String
-  description       String
-  start_time        DateTime
-  end_time          DateTime
-  is_permanent      Boolean
-  rated_range       Int[]
-  TaskUse           TaskUse[]
-  is_public         Boolean             @default(false)
-  ContestManagement ContestManagement[]
-  Submission        Submission[]
+  unique_id           String                @id @default(uuid())
+  url_id              String                @unique
+  title               String
+  description         String
+  start_time          DateTime
+  end_time            DateTime
+  is_permanent        Boolean
+  rated_range         Int[]
+  TaskUse             TaskUse[]
+  is_public           Boolean               @default(false)
+  ContestManagement   ContestManagement[]
+  Submission          Submission[]
+  Clar                Clar[]
+  ContestRegistration ContestRegistration[]
+}
+
+enum RegistrationType {
+  Rated
+  Unrated
+}
+
+model ContestRegistration {
+  unique_id         String           @id @default(uuid())
+  type              RegistrationType
+  contest           Contest          @relation(fields: [contestUnique_id], references: [unique_id])
+  contestUnique_id  String
+  user              UserData         @relation(fields: [userDataUnique_id], references: [unique_id])
+  userDataUnique_id String
 }
 
 enum ContestManagementRole {
@@ -96,21 +113,24 @@ model Clar {
   unique_id           String      @id @default(uuid())
   question            String
   is_publishable      Boolean
-  task                Task        @relation(fields: [taskUnique_id], references: [unique_id])
-  taskUnique_id       String
+  contest             Contest     @relation(fields: [contestUnique_id], references: [unique_id])
+  task                Task?       @relation(fields: [taskUnique_id], references: [unique_id])
+  taskUnique_id       String?
   questioner          UserData    @relation(fields: [questionerUnique_id], references: [unique_id])
   questionerUnique_id String
-  ClarAnswer          ClarAnswer? @relation(fields: [answer_id], references: [unique_id])
-  answer_id           String      @unique
+  ClarAnswer          ClarAnswer?
+  answer_id           String?
+  contestUnique_id    String
 }
 
 model ClarAnswer {
   unique_id         String   @id @default(uuid())
-  clar              Clar?
+  clar              Clar     @relation(fields: [clarUnique_id], references: [unique_id])
   answer            String
   is_public         Boolean
   answerer          UserData @relation(fields: [userDataUnique_id], references: [unique_id])
   userDataUnique_id String
+  clarUnique_id     String   @unique @default(uuid())
 }
 
 model TestSet {

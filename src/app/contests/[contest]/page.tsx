@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 import { RangeMsToString, RatedRangeToString } from '@/lib/utils';
 import { getCurrentUser } from '@/lib/w_auth_db';
+import { Box, Button, ButtonGroup } from '@mui/material';
 
 export default async function ContestPage(
 	{ params }:
@@ -63,6 +64,12 @@ export default async function ContestPage(
 						Rated対象：{RatedRangeToString(rated_range)}
 					</li>
 				</ul>
+
+				<ButtonGroup fullWidth>
+					<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }}>Rated 登録</Button>
+					<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }}>Unrated 登録</Button>
+				</ButtonGroup>
+
 			</main>
 
 			<main className={styles.description}>

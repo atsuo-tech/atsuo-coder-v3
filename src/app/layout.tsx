@@ -9,6 +9,8 @@ import w_auth_db from '@/lib/w_auth_db';
 import { cookies } from 'next/headers';
 import User from '@/components/user';
 import Theme from './theme';
+import { NotificationsProvider } from '@toolpad/core/useNotifications';
+import atsuocoder_db from '@/lib/atsuocoder_db';
 
 export const metadata = {
   title: 'hello world',
@@ -33,6 +35,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session_token = (await cookies()).get("SESSION_TOKEN")?.value;
+
   const user = session_token && await w_auth_db.user.findFirst({
     where: {
       login_token: {
@@ -40,6 +43,28 @@ export default async function RootLayout({
       },
     },
   });
+
+  if (user) {
+
+    const data = await atsuocoder_db.userData.findUnique({
+      where: {
+        unique_id: user.unique_id,
+      },
+    });
+
+    if (!data) {
+
+      await atsuocoder_db.userData.create({
+        data: {
+          unique_id: user.unique_id,
+          rating: 0,
+          role: "Member",
+        },
+      });
+
+    }
+
+  }
 
   return (
     <html lang="ja">
@@ -80,7 +105,9 @@ export default async function RootLayout({
           className={styles.main}
         >
           <Theme>
-            {children}
+            <NotificationsProvider>
+              {children}
+            </NotificationsProvider>
           </Theme>
         </div>
 
