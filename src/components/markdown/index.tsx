@@ -4,7 +4,6 @@ import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/m
 import React from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { remark } from 'remark';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
