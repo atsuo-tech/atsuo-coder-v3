@@ -2,16 +2,7 @@ import atsuocoder_db, { restrictUser } from "@/lib/atsuocoder_db";
 import AdminNotificationEditAction from "./action";
 import AdminNotificationEditForm from "./form";
 import { notFound } from "next/navigation";
-
-export async function getNotification(unique_id: string) {
-
-	return atsuocoder_db.notification.findUnique({
-		where: {
-			unique_id,
-		},
-	});
-
-}
+import { getNotification } from "@/app/admin/contest/lib";
 
 export default async function AdminNotificationEditPage(
 	{

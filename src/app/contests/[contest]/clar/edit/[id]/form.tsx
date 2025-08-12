@@ -4,7 +4,7 @@ import { GetContestType } from "@/lib/atsuocoder_db";
 import { Button, Divider, FormGroup, MenuItem, Select, TextField } from "@mui/material";
 import assert from "assert";
 import { useState } from "react";
-import { ClarType } from "./page";
+import type { ClarType } from "../../lib";
 
 export default function EditClarForm(
 	{

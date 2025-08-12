@@ -1,8 +1,8 @@
 "use client";
 
+import { getNotification } from "@/app/admin/contest/lib";
 import { Button, FormControl, MenuItem, Select, TextField } from "@mui/material";
 import { useState } from "react";
-import type { getNotification } from "./page";
 
 export default function AdminNotificationEditForm(
 	{

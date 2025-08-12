@@ -1,8 +1,8 @@
 import atsuocoder_db, { restrictUser } from "@/lib/atsuocoder_db";
 import { notFound, redirect } from "next/navigation";
-import { getNotification } from "../../edit/[id]/page";
 import { Button } from "@mui/material";
 import Markdown from "@/components/markdown";
+import { getNotification } from "@/app/admin/contest/lib";
 
 export default async function AdminNotificationEditPage(
 	{

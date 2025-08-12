@@ -5,7 +5,7 @@ import { ContestViewable } from "@/lib/contest";
 import { getCurrentUser } from "@/lib/w_auth_db";
 import assert from "assert";
 import { notFound, redirect } from "next/navigation";
-import { getClar } from "./page";
+import { getClar } from "../../lib";
 
 export default async function EditClarAction(formData: FormData) {
 
