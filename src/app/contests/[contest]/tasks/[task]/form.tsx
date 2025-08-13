@@ -2,7 +2,7 @@
 
 import { Button, Divider, MenuItem, Select, TextField } from "@mui/material"
 import type { LanguageData } from "@prisma/atsuocoder";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function TaskSubmitForm(
 	{
@@ -18,6 +18,12 @@ export default function TaskSubmitForm(
 
 	const [language, setLanguage] = useState('');
 
+	useEffect(() => {
+
+		setLanguage(localStorage.getItem("last-language") || "");
+
+	}, [language]);
+
 	return (
 		<div>
 
@@ -27,10 +33,13 @@ export default function TaskSubmitForm(
 				name='language_id'
 				fullWidth
 				value={language}
-				onChange={(e) => setLanguage(e.target.value)}
+				onChange={(e) => {
+					setLanguage(e.target.value);
+					localStorage.setItem("last-language", e.target.value);
+				}}
 				required
 			>
-				<MenuItem value="">
+				<MenuItem>
 					言語を選択してください
 				</MenuItem>
 				<Divider />
