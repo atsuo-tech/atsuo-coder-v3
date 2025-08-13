@@ -85,7 +85,7 @@ model Task {
   unique_id    String   @id @default(uuid())
   title        String
   problem      String
-  url_id       String
+  url_id       String   @unique
   time_limit   Int
   memory_limit Int
   score        Int
