@@ -3,6 +3,7 @@ import './globals.css';
 import styles from './layout.module.css';
 import { Lato, Noto_Sans_JP } from 'next/font/google';
 import Logo from '@/img/logo-titled.svg';
+import LogoUntitled from '@/img/logo.svg';
 import LogoMono from '@/img/logo-titled-mono.svg';
 import Link from 'next/link';
 import w_auth_db from '@/lib/w_auth_db';
@@ -78,7 +79,8 @@ export default async function RootLayout({
         >
           <h2>
             <Link href="/">
-              <Logo height="1.5em" />
+              <Logo height="1.5em" className={styles.pc} />
+              <LogoUntitled height="1.5em" className={styles.sp} />
             </Link>
           </h2>
           <div className={styles.menu}>

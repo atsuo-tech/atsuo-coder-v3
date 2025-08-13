@@ -2,6 +2,7 @@
 
 import { RangeMsToString } from "@/lib/utils";
 import { useEffect, useRef } from "react";
+import styles from "./layout.module.css";
 
 export default function Timer(
 	{
@@ -53,7 +54,7 @@ export default function Timer(
 	});
 
 	return (
-		<div ref={ref}>
+		<div ref={ref} className={styles.timer}>
 			読込中…
 		</div>
 	)

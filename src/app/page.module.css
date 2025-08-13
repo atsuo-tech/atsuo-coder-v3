@@ -164,3 +164,23 @@ div.page {
     }
 
 }
+
+@media (max-width: 600px) {
+    div.page {
+        div.title {
+            >div.description {
+                >div {
+
+                    h1,
+                    span,
+                    p {
+                        display: none;
+                    }
+                }
+            }
+        }
+        div.menu {
+            grid-template-columns: 1fr;
+        }
+    }
+}

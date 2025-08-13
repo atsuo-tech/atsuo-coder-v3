@@ -97,3 +97,33 @@
 		margin: 0;
 	}
 }
+
+.sp {
+	display: none;
+}
+
+@media (max-width: 600px) {
+	.pc {
+		display: none;
+	}
+
+	.sp {
+		display: initial;
+	}
+
+	.footer {
+		div.table {
+			grid-template-columns: 1fr;
+
+			>div {
+				>h2 {
+					font-size: .9em;
+				}
+
+				>ul >li {
+					font-size: .8em;
+				}
+			}
+		}
+	}
+}
