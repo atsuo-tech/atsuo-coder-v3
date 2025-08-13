@@ -88,8 +88,6 @@ export default async function SubmissionsTable(
 
 									const info = await evalSubmission(submission);
 
-									const status = JudgeStatus[info.status];
-
 									if ([JudgeStatus.CE, JudgeStatus.IE, JudgeStatus.WJ, JudgeStatus.WR].includes(info.status)) {
 
 										return (
@@ -100,7 +98,7 @@ export default async function SubmissionsTable(
 												<TableCell>{submission.language.name}</TableCell>
 												<TableCell>0</TableCell>
 												<TableCell>{submission.code.length} Byte</TableCell>
-												<TableCell colSpan={3}><ResultTag info={info} /></TableCell>
+												<ResultTag defaultInfo={info} id={submission.unique_id} />
 												<TableCell><Link href={`/contests/${contestData.url_id}/submissions/${submission.unique_id}`}>詳細</Link></TableCell>
 											</TableRow>
 										)
@@ -115,9 +113,7 @@ export default async function SubmissionsTable(
 											<TableCell>{submission.language.name}</TableCell>
 											<TableCell>{info.score}</TableCell>
 											<TableCell>{submission.code.length} Byte</TableCell>
-											<TableCell><ResultTag info={info} /></TableCell>
-											<TableCell>{Math.round(info.run_time * 1000)} ms</TableCell>
-											<TableCell>{info.memory} KiB</TableCell>
+											<ResultTag defaultInfo={info} id={submission.unique_id} />
 											<TableCell><Link href={`/contests/${contestData.url_id}/submissions/${submission.unique_id}`}>詳細</Link></TableCell>
 										</TableRow>
 									);

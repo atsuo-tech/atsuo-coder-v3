@@ -7,7 +7,7 @@ import { Button, Table, TableBody, TableCell, TableHead, TableRow, TextField } f
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import styles from "../submissions.module.css";
-import ResultTag from "../result";
+import ResultTag, { SimpleResult } from "../result";
 
 export default async function SubmissionPage(
 	{
@@ -145,15 +145,7 @@ export default async function SubmissionPage(
 						<TableCell><Link href={`/contests/${submission.contest.url_id}/tasks/${submission.task.url_id}`}>{submission.contest.TaskUse[0].assignment} - {submission.task.title}</Link></TableCell>
 						<TableCell>{info.score}</TableCell>
 						<TableCell>{submission.language.name}</TableCell>
-						{
-							[JudgeStatus.CE, JudgeStatus.IE, JudgeStatus.WJ, JudgeStatus.WR].includes(info.status) ?
-								<TableCell colSpan={3}><span className={`${styles.result} ${styles[JudgeStatus[info.status]]}`}>{JudgeStatus[info.status]}</span></TableCell> :
-								<>
-									<TableCell><ResultTag info={info} /></TableCell>
-									<TableCell>{Math.round(info.run_time * 1000)} ms</TableCell>
-									<TableCell>{info.memory} KiB</TableCell>
-								</>
-						}
+						<ResultTag defaultInfo={info} id={submission.unique_id} submissionPage />
 					</TableRow>
 				</TableBody>
 			</Table>
