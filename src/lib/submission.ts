@@ -107,13 +107,16 @@ export async function evalSubmission(submission: Submission) {
 				status = Math.max(status, testcases[case_name].status);
 				if (testcases[case_name].score) {
 					set_score += testcases[case_name].score;
+					score += testcases[case_name].score;
 					interactive = true;
 				}
 			}
-			if (status == JudgeStatus.AC && !interactive) {
-				set_score += testset.score;
+			if (status == JudgeStatus.AC) {
+				if (!interactive) {
+					set_score += testset.score;
+					score += testset.score;
+				}
 			}
-			score += testset.score;
 			set_results.push({ set_name: testset.set_name, run_time, memory, status, score: set_score });
 		}
 
