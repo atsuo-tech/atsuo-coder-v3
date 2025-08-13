@@ -36,6 +36,7 @@ export async function getContest(contest: string) {
 						select: {
 							title: true,
 							url_id: true,
+							unique_id: true,
 							time_limit: true,
 							memory_limit: true,
 							score: true,

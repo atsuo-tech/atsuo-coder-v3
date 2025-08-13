@@ -29,7 +29,7 @@ nav.nav {
 		top: calc(37.5pt + 2rem + 2rem + 1.0rem + 1px);
 		height: 3rem;
 		padding: 0;
-		overflow-x: scroll;
+		overflow-x: auto;
 
 		>div {
 			display: block;

@@ -55,6 +55,8 @@ model ContestRegistration {
   contestUnique_id  String
   user              UserData         @relation(fields: [userDataUnique_id], references: [unique_id])
   userDataUnique_id String
+
+  @@unique([contestUnique_id, userDataUnique_id])
 }
 
 enum ContestManagementRole {

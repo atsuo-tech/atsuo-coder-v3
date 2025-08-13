@@ -1,10 +1,12 @@
 import Markdown from '@/components/markdown';
-import { getContest, hasRole } from '@/lib/atsuocoder_db';
-import { notFound } from 'next/navigation';
+import atsuocoder_db, { getContest, hasRole } from '@/lib/atsuocoder_db';
+import { notFound, redirect } from 'next/navigation';
 import styles from './page.module.css';
 import { RangeMsToString, RatedRangeToString } from '@/lib/utils';
 import { getCurrentUser } from '@/lib/w_auth_db';
-import { Box, Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup } from '@mui/material';
+import { RegisterContest } from './register';
+import { ContestViewable } from '@/lib/contest';
 
 export default async function ContestPage(
 	{ params }:
@@ -41,6 +43,15 @@ export default async function ContestPage(
 		rated_range
 	} = contestData;
 
+	const registration = user && await atsuocoder_db.contestRegistration.findUnique({
+		where: {
+			contestUnique_id_userDataUnique_id: {
+				contestUnique_id: contestData.unique_id,
+				userDataUnique_id: user.unique_id,
+			},
+		},
+	});
+
 	return (
 		<div>
 			<main className={styles.top}>
@@ -65,10 +76,20 @@ export default async function ContestPage(
 					</li>
 				</ul>
 
-				<ButtonGroup fullWidth>
-					<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }}>Rated 登録</Button>
-					<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }}>Unrated 登録</Button>
-				</ButtonGroup>
+				{
+					registration &&
+					<p>
+						現在 {registration.type.toString()} として登録しています。
+					</p>
+				}
+
+				{
+					await ContestViewable(contestData) &&
+					<ButtonGroup fullWidth>
+						<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }} onClick={async () => { "use server"; RegisterContest(contest, true); redirect(`/contests/${contest}`); }}>Rated 登録</Button>
+						<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }} onClick={async () => { "use server"; RegisterContest(contest, false); redirect(`/contests/${contest}`); }}>Unrated 登録</Button>
+					</ButtonGroup>
+				}
 
 			</main>
 
@@ -77,7 +98,7 @@ export default async function ContestPage(
 				<Markdown md={description} />
 
 			</main>
-		</div>
+		</div >
 	)
 
 }

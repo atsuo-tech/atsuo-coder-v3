@@ -12,6 +12,7 @@ export interface JudgeResult {
 			time: number;
 			memory: number;
 			error_type?: number;
+			score?: number;
 		};
 	};
 }
@@ -73,7 +74,7 @@ export async function evalSubmission(submission: Submission) {
 		},
 	});
 
-	const set_results: { status: JudgeStatus, run_time: number, memory: number, set_name: string }[] = [];
+	const set_results: { status: JudgeStatus, run_time: number, memory: number, set_name: string, score: number }[] = [];
 	const case_results: { status: JudgeStatus, run_time: number, memory: number, case_name: string }[] = [];
 
 	let score = 0, testCaseCnt = 0;
@@ -92,6 +93,7 @@ export async function evalSubmission(submission: Submission) {
 			let status = JudgeStatus.WJ;
 			let run_time = -1;
 			let memory = -1;
+			let set_score = 0, interactive = false;
 			for (const testcase of testset.TestCaseUse) {
 				const case_name = testcase.testcase.case_name;
 				if (!testcases[case_name]) {
@@ -103,11 +105,16 @@ export async function evalSubmission(submission: Submission) {
 				run_time = Math.max(run_time, testcases[case_name].time);
 				memory = Math.max(memory, testcases[case_name].memory);
 				status = Math.max(status, testcases[case_name].status);
+				if (testcases[case_name].score) {
+					set_score += testcases[case_name].score;
+					interactive = true;
+				}
 			}
-			if (status == JudgeStatus.AC) {
-				score += testset.score;
+			if (status == JudgeStatus.AC && !interactive) {
+				set_score += testset.score;
 			}
-			set_results.push({ set_name: testset.set_name, run_time, memory, status });
+			score += testset.score;
+			set_results.push({ set_name: testset.set_name, run_time, memory, status, score: set_score });
 		}
 
 	}
