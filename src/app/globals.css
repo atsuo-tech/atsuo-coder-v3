@@ -51,6 +51,11 @@ body {
 			margin-bottom: 0.5em;
 		}
 	}
+
+	img {
+		max-width: 100%;
+		max-height: 100vh;
+	}
 }
 
 .material-symbols-outlined {
