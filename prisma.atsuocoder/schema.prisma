@@ -96,6 +96,7 @@ model Task {
   TaskManagement TaskManagement[]
   Clar           Clar[]
   Submission     Submission[]
+  TestCase       TestCase[]
 }
 
 model TaskUse {
@@ -145,12 +146,17 @@ model TestSet {
   TestCaseUse   TestCaseUse[]
 
   @@unique([taskUnique_id, set_index])
+  @@unique([taskUnique_id, set_name])
 }
 
 model TestCase {
-  unique_id   String        @id @default(uuid())
-  case_name   String
-  TestCaseUse TestCaseUse[]
+  unique_id     String        @id @default(uuid())
+  case_name     String
+  TestCaseUse   TestCaseUse[]
+  task          Task          @relation(fields: [taskUnique_id], references: [unique_id])
+  taskUnique_id String
+
+  @@unique([taskUnique_id, case_name])
 }
 
 model TestCaseUse {
