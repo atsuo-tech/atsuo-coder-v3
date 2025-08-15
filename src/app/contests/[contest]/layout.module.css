@@ -1,6 +1,6 @@
 nav.nav {
 	position: sticky;
-	top: calc(37.5pt + 2rem + 1px);
+	top: calc(37.5pt + 2rem);
 	left: 0;
 	border-bottom: 1px solid #ccc;
 	z-index: 100;
@@ -26,7 +26,7 @@ nav.nav {
 		background-color: white;
 		color: black;
 		font-size: 1.2em;
-		top: calc(37.5pt + 2rem + 2rem + 1.0rem + 1px);
+		top: calc(37.5pt + 2rem + 2rem + 1.0rem);
 		height: 3rem;
 		padding: 0;
 		overflow-x: auto;
