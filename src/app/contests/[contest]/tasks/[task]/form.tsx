@@ -16,13 +16,13 @@ export default function TaskSubmitForm(
 	}
 ) {
 
-	const [language, setLanguage] = useState('');
+	const [language, setLanguage] = useState((languageData[0] || { language_id: "" }).language_id.toString());
 
 	useEffect(() => {
 
-		setLanguage(localStorage.getItem("last-language") || "");
+		setLanguage(localStorage.getItem("last-language") || (languageData[0] || { language_id: "" }).language_id.toString());
 
-	}, [language]);
+	}, []);
 
 	return (
 		<div>
@@ -39,7 +39,7 @@ export default function TaskSubmitForm(
 				}}
 				required
 			>
-				<MenuItem>
+				<MenuItem value="">
 					言語を選択してください
 				</MenuItem>
 				<Divider />

@@ -5,6 +5,8 @@ import styles from './layout.module.css';
 import Link from 'next/link';
 import Timer from './contest-timer';
 import { Metadata } from 'next';
+import { PushPin, PinDrop } from '@mui/icons-material';
+import Nav from './nav';
 
 export async function generateMetadata(
 	{
@@ -55,31 +57,7 @@ export default async function ContestLayout(
 
 	return (
 		<div>
-			<nav className={styles.nav}>
-				<div className={styles.navContestName}>
-					<div>
-						{contestData.title}
-					</div>
-					<Timer start_time={contestData.start_time} end_time={contestData.end_time} />
-				</div>
-				<div className={styles.navOthers}>
-					<div>
-						<Link href={`/contests/${contest}`}>Home</Link>
-					</div>
-					<div>
-						<Link href={`/contests/${contest}/tasks`}>Tasks</Link>
-					</div>
-					<div>
-						<Link href={`/contests/${contest}/clar`}>Clar</Link>
-					</div>
-					<div>
-						<Link href={`/contests/${contest}/submissions`}>Submissions</Link>
-					</div>
-					<div>
-						<Link href={`/contests/${contest}/standings`}>Standings</Link>
-					</div>
-				</div>
-			</nav>
+			<Nav contestData={contestData} />
 
 			{children}
 		</div>
