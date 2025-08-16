@@ -38,7 +38,11 @@ span.result {
 	}
 
 	&.IE {
-		background: /*darkslategray*/red;
+		background: red;
+	}
+
+	&.NG {
+		background: midnightblue;
 	}
 
 	&.WJ,
