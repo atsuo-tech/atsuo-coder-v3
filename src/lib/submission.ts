@@ -37,6 +37,8 @@ export async function evalSubmission(submission: Submission) {
 
 	const testcases = result.testcases;
 
+	console.log(testcases);
+
 	let run_time = -1;
 	let memory = -1;
 	let status = JudgeStatus.WJ;
@@ -85,7 +87,7 @@ export async function evalSubmission(submission: Submission) {
 			run_time = Math.max(run_time, testcases[testcase].time);
 			memory = Math.max(memory, testcases[testcase].memory);
 			status = Math.max(status, testcases[testcase].status);
-			case_results.push({ case_name: testcase, run_time, memory, status });
+			case_results.push({ case_name: testcase, run_time: testcases[testcase].time, memory: testcases[testcase].memory, status: testcases[testcase].status });
 			testCaseCnt++;
 		}
 

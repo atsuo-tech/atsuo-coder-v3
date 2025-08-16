@@ -176,7 +176,7 @@ export default async function SubmissionPage(
 								<TableRow key={i}>
 									<TableCell>{testset.set_name}</TableCell>
 									<TableCell><span className={`${styles.result} ${styles[JudgeStatus[testset.status]]}`}>{JudgeStatus[testset.status]}</span></TableCell>
-									<TableCell>{Math.round(info.run_time * 1000)} ms</TableCell>
+									<TableCell>{Math.round(testset.run_time * 1000)} ms</TableCell>
 									<TableCell>{testset.memory} KiB</TableCell>
 								</TableRow>
 						)
@@ -202,7 +202,7 @@ export default async function SubmissionPage(
 								<TableRow key={i}>
 									<TableCell>{testcase.case_name}</TableCell>
 									<TableCell><span className={`${styles.result} ${styles[JudgeStatus[testcase.status]]}`}>{JudgeStatus[testcase.status]}</span></TableCell>
-									<TableCell>{Math.round(info.run_time * 1000)} ms</TableCell>
+									<TableCell>{Math.round(testcase.run_time * 1000)} ms</TableCell>
 									<TableCell>{testcase.memory} KiB</TableCell>
 								</TableRow>
 						)

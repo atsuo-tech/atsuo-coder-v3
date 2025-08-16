@@ -66,7 +66,7 @@ export default function ResultTag({ defaultInfo, id, submissionPage }: { default
 			{
 				!largeResult &&
 				<>
-					<TableCell>{info.run_time} ms</TableCell>
+					<TableCell>{Math.round(info.run_time * 1000)} ms</TableCell>
 					<TableCell>{info.memory} KB</TableCell>
 				</>
 			}

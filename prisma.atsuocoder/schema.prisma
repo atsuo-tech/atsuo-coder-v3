@@ -97,6 +97,7 @@ model Task {
   Clar           Clar[]
   Submission     Submission[]
   TestCase       TestCase[]
+  Img            Img[]
 }
 
 model TaskUse {
@@ -216,4 +217,11 @@ model LanguageData {
   buildCommand String
   runCommand   String
   Submission   Submission[]
+}
+
+model Img {
+  unique_id     String @id @default(uuid())
+  task          Task   @relation(fields: [taskUnique_id], references: [unique_id])
+  taskUnique_id String
+  url_id        String
 }

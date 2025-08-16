@@ -2,10 +2,9 @@ import Link from 'next/link';
 import TaskControlComponent from './control';
 import atsuocoder_db, { getContest, getCurrentUserData, restrictUser } from '@/lib/atsuocoder_db';
 import TaskEditAction from './action';
-import { ContestManagable } from '@/lib/contest';
 import { notFound } from 'next/navigation';
 
-export default async function ContestEditPage(
+export default async function TaskEditPage(
 	{
 		params,
 	}: {
@@ -48,6 +47,12 @@ export default async function ContestEditPage(
 
 			<Link href={`/admin/task/edit/${task}/management`}>
 				問題関係者の変更
+			</Link>
+
+			<br />
+
+			<Link href={`/admin/task/edit/${task}/img`}>
+				静的ファイルのアップロード
 			</Link>
 
 			<form

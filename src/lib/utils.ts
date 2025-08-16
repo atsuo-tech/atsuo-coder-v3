@@ -59,4 +59,5 @@ export enum JudgeStatus {
 	QLE,
 	PE,
 	IE,
+	NG,
 };
