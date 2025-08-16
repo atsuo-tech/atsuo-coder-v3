@@ -67,3 +67,17 @@ nav.pinned {
 		}
 	}
 }
+
+@media print {
+	nav.nav {
+		div.navContestName {
+			>div {
+				display: none;
+			}
+		}
+
+		div.navOthers {
+			display: none;
+		}
+	}
+}

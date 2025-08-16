@@ -14,3 +14,9 @@ span.important {
 .main {
     margin: 2rem;
 }
+
+@media print {
+    .submit {
+        display: none;
+    }
+}

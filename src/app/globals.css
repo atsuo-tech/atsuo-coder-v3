@@ -53,7 +53,7 @@ body {
 	}
 
 	img {
-		max-width: 100%;
+		max-width: min(100%, 600px);
 		max-height: 100vh;
 	}
 }
@@ -62,4 +62,24 @@ body {
 	vertical-align: -3px;
 	font-size: 1em;
 	line-height: 1;
+}
+
+@media print {
+	h2 {
+		break-before: avoid-region;
+		break-after: avoid;
+	}
+
+	h2~*:not(h2) {
+		break-before: avoid;
+	}
+
+	@page {
+		margin: 20mm 0;
+		zoom: 0.8;
+	}
+
+	@page :first {
+		margin-top: 0;
+	}
 }
