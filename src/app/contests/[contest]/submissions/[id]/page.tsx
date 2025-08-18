@@ -201,7 +201,7 @@ export default async function SubmissionPage(
 							(testcase, i) =>
 								<TableRow key={i}>
 									<TableCell>{testcase.case_name}</TableCell>
-									<TableCell><span className={`${styles.result} ${styles[JudgeStatus[testcase.status]]}`}>{JudgeStatus[testcase.status]}</span></TableCell>
+									<TableCell><span className={`${styles.result} ${styles[JudgeStatus[testcase.status]]}`}>{JudgeStatus[testcase.status]} {testcase.error_type != undefined && `[${testcase.error_type}]`}</span></TableCell>
 									<TableCell>{Math.round(testcase.run_time * 1000)} ms</TableCell>
 									<TableCell>{testcase.memory} KiB</TableCell>
 								</TableRow>

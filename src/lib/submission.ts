@@ -77,7 +77,7 @@ export async function evalSubmission(submission: Submission) {
 	});
 
 	const set_results: { status: JudgeStatus, run_time: number, memory: number, set_name: string, score: number }[] = [];
-	const case_results: { status: JudgeStatus, run_time: number, memory: number, case_name: string }[] = [];
+	const case_results: { status: JudgeStatus, run_time: number, memory: number, case_name: string, error_type?: number }[] = [];
 
 	let score = 0, testCaseCnt = 0;
 
@@ -87,7 +87,7 @@ export async function evalSubmission(submission: Submission) {
 			run_time = Math.max(run_time, testcases[testcase].time);
 			memory = Math.max(memory, testcases[testcase].memory);
 			status = Math.max(status, testcases[testcase].status);
-			case_results.push({ case_name: testcase, run_time: testcases[testcase].time, memory: testcases[testcase].memory, status: testcases[testcase].status });
+			case_results.push({ case_name: testcase, run_time: testcases[testcase].time, memory: testcases[testcase].memory, status: testcases[testcase].status, error_type: testcases[testcase].error_type });
 			testCaseCnt++;
 		}
 
