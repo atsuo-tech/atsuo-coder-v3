@@ -34,6 +34,11 @@ body {
 		border: 1px solid #ccc;
 	}
 
+	table {
+		width: 100%;
+		min-width: max-content;
+	}
+
 	details {
 		border: 1px solid #aaa;
 		border-radius: 4px;
