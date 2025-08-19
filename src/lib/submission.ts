@@ -76,7 +76,7 @@ export async function evalSubmission(submission: Submission) {
 		},
 	});
 
-	const set_results: { status: JudgeStatus, run_time: number, memory: number, set_name: string, score: number }[] = [];
+	const set_results: { status: JudgeStatus, run_time: number, memory: number, set_name: string, score: number, testcase: string[] }[] = [];
 	const case_results: { status: JudgeStatus, run_time: number, memory: number, case_name: string, error_type?: number }[] = [];
 
 	let score = 0, testCaseCnt = 0;
@@ -96,7 +96,9 @@ export async function evalSubmission(submission: Submission) {
 			let run_time = -1;
 			let memory = -1;
 			let set_score = 0, interactive = false;
+			const set_testcase: string[] = [];
 			for (const testcase of testset.TestCaseUse) {
+				set_testcase.push(testcase.testcase.case_name);
 				const case_name = testcase.testcase.case_name;
 				if (!testcases[case_name]) {
 					run_time = -1;
@@ -119,7 +121,7 @@ export async function evalSubmission(submission: Submission) {
 					score += testset.score;
 				}
 			}
-			set_results.push({ set_name: testset.set_name, run_time, memory, status, score: set_score });
+			set_results.push({ set_name: testset.set_name, run_time, memory, status, score: set_score, testcase: set_testcase });
 		}
 
 	}

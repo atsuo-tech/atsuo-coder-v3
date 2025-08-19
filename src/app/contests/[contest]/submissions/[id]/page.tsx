@@ -164,9 +164,11 @@ export default async function SubmissionPage(
 				<TableHead>
 					<TableRow>
 						<TableCell>セット名</TableCell>
+						<TableCell>点数</TableCell>
 						<TableCell>結果</TableCell>
 						<TableCell>実行時間</TableCell>
 						<TableCell>メモリ</TableCell>
+						<TableCell>ケース</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -175,9 +177,11 @@ export default async function SubmissionPage(
 							(testset, i) =>
 								<TableRow key={i}>
 									<TableCell>{testset.set_name}</TableCell>
+									<TableCell>{testset.score}</TableCell>
 									<TableCell><span className={`${styles.result} ${styles[JudgeStatus[testset.status]]}`}>{JudgeStatus[testset.status]}</span></TableCell>
 									<TableCell>{Math.round(testset.run_time * 1000)} ms</TableCell>
 									<TableCell>{testset.memory} KiB</TableCell>
+									<TableCell>{testset.testcase.join(", ")}</TableCell>
 								</TableRow>
 						)
 					}
