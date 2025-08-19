@@ -1,5 +1,5 @@
 import { restrictUser } from "@/lib/atsuocoder_db";
-import { TextField } from "@mui/material";
+import { Button, FormControl, TextField } from "@mui/material";
 import NewTaskForm from "./form";
 
 export default async function NewTaskPage() {
@@ -13,7 +13,12 @@ export default async function NewTaskPage() {
 
 			<form action={NewTaskForm}>
 
-				<TextField label="Task ID" name="url_id" />
+				<FormControl fullWidth>
+
+					<TextField label="Task ID" name="url_id" />
+					<Button type="submit">送信</Button>
+
+				</FormControl>
 
 			</form>
 
