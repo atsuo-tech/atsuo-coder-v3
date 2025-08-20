@@ -7,6 +7,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import remarkBreaks from "remark-breaks";
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useNotifications } from '@toolpad/core/useNotifications';
 import 'katex/dist/katex.min.css';
@@ -59,6 +60,7 @@ export default function Markdown({ md }: { md: string }) {
       remarkPlugins={[
         remarkGfm,
         [remarkMath, { singleDollarTextMath: true }],
+        remarkBreaks,
       ]}
       rehypePlugins={[rehypeKatex]}
       components={components}
