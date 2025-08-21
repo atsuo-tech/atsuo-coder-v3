@@ -36,6 +36,7 @@ export default function Editor(
 			onLoad={onLoad}
 			value={value}
 			readOnly={readonly}
+			name="code"
 		/>
 	)
 
