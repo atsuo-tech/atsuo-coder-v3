@@ -61,6 +61,10 @@ body {
 		max-width: min(100%, 600px);
 		max-height: 100vh;
 	}
+	
+	code {
+		background-color: #ddd;
+	}
 }
 
 .material-symbols-outlined {
