@@ -6,7 +6,7 @@ import { RangeMsToString, RatedRangeToString } from '@/lib/utils';
 import { getCurrentUser } from '@/lib/w_auth_db';
 import { Button, ButtonGroup } from '@mui/material';
 import { RegisterContest } from './register';
-import { ContestViewable } from '@/lib/contest';
+import { ContestRegistable, ContestViewable } from '@/lib/contest';
 
 export default async function ContestPage(
 	{ params }:
@@ -84,7 +84,7 @@ export default async function ContestPage(
 				}
 
 				{
-					await ContestViewable(contestData) &&
+					await ContestRegistable(contestData) &&
 					<ButtonGroup fullWidth>
 						<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }} onClick={async () => { "use server"; RegisterContest(contest, true); redirect(`/contests/${contest}`); }}>Rated 登録</Button>
 						<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }} onClick={async () => { "use server"; RegisterContest(contest, false); redirect(`/contests/${contest}`); }}>Unrated 登録</Button>

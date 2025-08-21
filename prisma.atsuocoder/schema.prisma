@@ -24,6 +24,7 @@ model UserData {
   ClarAnswer          ClarAnswer[]
   Submission          Submission[]
   ContestRegistration ContestRegistration[]
+  Editorial           Editorial[]
 }
 
 model Contest {
@@ -98,6 +99,7 @@ model Task {
   Submission     Submission[]
   TestCase       TestCase[]
   Img            Img[]
+  Editorial      Editorial[]
 }
 
 model TaskUse {
@@ -224,4 +226,14 @@ model Img {
   task          Task   @relation(fields: [taskUnique_id], references: [unique_id])
   taskUnique_id String
   url_id        String
+}
+
+model Editorial {
+  unique_id         String   @id @default(uuid())
+  title             String
+  description       String
+  editor            UserData @relation(fields: [userDataUnique_id], references: [unique_id])
+  task              Task     @relation(fields: [taskUnique_id], references: [unique_id])
+  taskUnique_id     String
+  userDataUnique_id String
 }

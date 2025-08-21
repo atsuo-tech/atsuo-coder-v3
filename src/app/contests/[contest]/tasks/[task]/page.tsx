@@ -1,71 +1,12 @@
 import Markdown from '@/components/markdown';
 import atsuocoder_db, { getContest } from '@/lib/atsuocoder_db';
-import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 import TaskSubmit from './action';
-import { ContestViewable } from '@/lib/contest';
-import assert from 'assert';
 import TaskSubmitForm from './form';
 import { Metadata } from 'next';
-
-async function getTask(contest: string, task: string) {
-
-
-	const contestData = await getContest(contest);
-
-	if (!(await ContestViewable(contestData))) {
-
-		notFound();
-
-	}
-
-	assert(contestData);
-
-	const {
-		TaskUse,
-	} = contestData;
-
-	const use = TaskUse.find((use) => use.task.url_id == task);
-
-	if (!use) {
-
-		notFound();
-
-	}
-
-	const taskData = await atsuocoder_db.task.findFirst({
-		where: {
-			url_id: task
-		},
-		select: {
-			title: true,
-			problem: true,
-			time_limit: true,
-			memory_limit: true,
-			score: true,
-			type: true,
-			TaskManagement: {
-				select: {
-					user: {
-						select: {
-							unique_id: true,
-						},
-					},
-					role: true,
-				},
-			},
-		},
-	});
-
-	if (!taskData) {
-
-		notFound();
-
-	}
-
-	return { use, taskData };
-
-}
+import getTask from '@/lib/task';
+import { ContestEnded, ContestManagable, ContestViewable } from '@/lib/contest';
+import Link from 'next/link';
 
 export async function generateMetadata(
 	{
@@ -98,11 +39,16 @@ export default async function TaskPage(
 
 	const { contest, task } = await params;
 
+	const contestData = await getContest(contest);
 	const { use, taskData } = await getTask(contest, task);
 
 	return (
 		<main className={styles.main}>
 			<h1>{use.assignment} - {taskData.title}</h1>
+			{
+				await ContestViewable(contestData) && (await ContestEnded(contestData) || await ContestManagable(contestData)) &&
+				<Link href={`/contests/${contest}/tasks/${task}/editorials`}>解説を見る</Link>
+			}
 			<hr />
 			<ul>
 				<li>実行時間制限：<span className={styles.important}>{taskData.time_limit}</span> ms</li>
