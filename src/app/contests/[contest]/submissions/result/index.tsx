@@ -27,37 +27,6 @@ export default function ResultTag({ defaultInfo, id, submissionPage }: { default
 
 	const largeResult = [...runningTypes, JudgeStatus.CE, JudgeStatus.IE].includes(info.status);
 
-	useEffect(() => {
-
-		if (!runningTypes.includes(info.status)) {
-
-			return;
-
-		}
-
-		const interval = setInterval(async () => {
-
-			const newInfo = await getResult(id);
-
-			setInfo(newInfo);
-
-			if (!runningTypes.includes(newInfo.status)) {
-
-				clearInterval(interval);
-
-				if (submissionPage) {
-
-					location.reload();
-
-				}
-
-			}
-
-		}, 500);
-
-
-	}, [id, info.status]);
-
 	return (
 		<>
 			<TableCell colSpan={largeResult ? 3 : 1}>
