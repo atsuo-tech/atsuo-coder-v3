@@ -126,7 +126,7 @@ export default async function SubmissionPage(
 
 			<h2>コード</h2>
 
-			<Editor language={submission.languageDataLanguage_id} readonly />
+			<Editor language={submission.languageDataLanguage_id} value={submission.code} readonly />
 
 			<h2>結果</h2>
 
