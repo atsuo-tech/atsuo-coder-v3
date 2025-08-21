@@ -16,6 +16,13 @@ const components: Components = {
   code({ node, className, children, ...props }) {
     const match = /language-(\w+)/.exec(className || '');
     const notifications = useNotifications();
+    if (match && match[1] == "tex") {
+      return (
+        <div style={{ background: "#f3f3f3", display: "block", padding: ".5rem" }}>
+          <Markdown md={"$" + (children as string).split("\n").map((line) => line.replaceAll(" ", "~")).join('$\n$') + "$"} />
+        </div>
+      )
+    }
     return match ? (
       <div style={{ position: 'relative' }}>
         <SyntaxHighlighter
