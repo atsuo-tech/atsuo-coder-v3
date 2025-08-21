@@ -8,6 +8,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import styles from "../submissions.module.css";
 import ResultTag, { SimpleResult } from "../result";
+import Editor from "@/components/ace-editor";
 
 export default async function SubmissionPage(
 	{
@@ -125,7 +126,7 @@ export default async function SubmissionPage(
 
 			<h2>コード</h2>
 
-			<TextField rows={12} multiline value={submission.code} fullWidth />
+			<Editor language={submission.languageDataLanguage_id} readonly />
 
 			<h2>結果</h2>
 

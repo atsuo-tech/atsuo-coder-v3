@@ -1,5 +1,6 @@
 'use client'
 
+import Editor from "@/components/ace-editor";
 import { Button, Divider, MenuItem, Select, TextField } from "@mui/material"
 import type { LanguageData } from "@prisma/atsuocoder";
 import { useEffect, useState } from "react";
@@ -52,7 +53,7 @@ export default function TaskSubmitForm(
 					)
 				}
 			</Select>
-			<TextField name="code" rows={12} style={{ width: "100%" }} multiline />
+			<Editor language={language} />
 			<Button fullWidth type='submit' variant='contained'>提出</Button>
 
 		</div>
