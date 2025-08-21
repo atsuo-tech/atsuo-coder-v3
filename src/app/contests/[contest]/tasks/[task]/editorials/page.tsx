@@ -55,7 +55,7 @@ export default async function EditorialPage(
 					<ul>
 						{
 							editorials.map((editorial) =>
-								<li><Link href={`/contests/${contest}/tasks/${task}/editorials/${editorial.unique_id}`}></Link></li>
+								<li><Link href={`/contests/${contest}/tasks/${task}/editorials/${editorial.unique_id}`}>{editorial.title}</Link></li>
 							)
 						}
 					</ul>
