@@ -1,7 +1,7 @@
 "use server";
 
 import atsuocoder_db, { getContest, getCurrentUserData } from "@/lib/atsuocoder_db";
-import { ContestViewable } from "@/lib/contest";
+import { ContestRegistable, ContestViewable } from "@/lib/contest";
 import assert from "assert";
 import { notFound, redirect } from "next/navigation";
 
@@ -9,7 +9,7 @@ export async function RegisterContest(contest: string, is_rated: boolean) {
 
 	const contestData = await getContest(contest);
 
-	if (!(await ContestViewable(contestData))) {
+	if (!(await ContestRegistable(contestData))) {
 
 		notFound();
 
