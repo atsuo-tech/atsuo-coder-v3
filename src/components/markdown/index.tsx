@@ -18,7 +18,7 @@ const components: Components = {
     const notifications = useNotifications();
     if (match && match[1] == "tex") {
       return (
-        <div style={{ background: "#f3f3f3", display: "block", padding: ".5rem" }}>
+        <div style={{ background: "#f3f3f3", display: "block", padding: ".5rem", fontSize: "0.8em" }}>
           <Markdown md={"$" + (children as string).split("\n").map((line) => line.replaceAll(" ", "~")).join('$\n$') + "$"} />
         </div>
       )
