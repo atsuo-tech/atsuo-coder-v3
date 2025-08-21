@@ -11,7 +11,7 @@ export async function ContestViewable(contestData: GetContestType) {
 		(
 			await ContestManagable(contestData) ||
 			(
-				contestData.start_time.getTime() >= Date.now() &&
+				Date.now() >= contestData.start_time.getTime() &&
 				!!(await getContestRegistration(contestData))
 			) ||
 			contestData.end_time.getTime() >= Date.now()
