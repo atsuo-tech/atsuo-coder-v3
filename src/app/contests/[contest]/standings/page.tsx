@@ -56,7 +56,7 @@ export default async function SubmissionsPage(
 
 	for (const submission of submissions) {
 		if (!standings[submission.userDataUnique_id]) {
-			return;
+			continue;
 		}
 		const evalData = await evalSubmission(submission);
 		standings[submission.userDataUnique_id][submission.taskUnique_id] ??= { sets: {}, last_submission: submission.created_at, penalty: 0 };
