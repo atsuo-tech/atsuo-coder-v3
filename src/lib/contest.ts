@@ -22,7 +22,7 @@ export async function ContestViewable(contestData: GetContestType) {
 
 export async function ContestRegistable(contestData: GetContestType) {
 
-	return contestData && (await ContestViewable(contestData)) && Date.now() <= contestData.start_time.getTime();
+	return contestData && Date.now() <= contestData.start_time.getTime();
 
 }
 
