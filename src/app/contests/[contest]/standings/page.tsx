@@ -36,6 +36,9 @@ export default async function SubmissionsPage(
 	const submissions = await atsuocoder_db.submission.findMany({
 		where: {
 			contestUnique_id: contestData.unique_id,
+			created_at: {
+				lte: contestData.end_time,
+			},
 		},
 		orderBy: {
 			created_at: "asc",
