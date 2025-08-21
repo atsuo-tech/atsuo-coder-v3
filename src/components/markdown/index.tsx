@@ -19,7 +19,7 @@ const components: Components = {
     if (match && match[1] == "tex") {
       return (
         <div style={{ background: "#f3f3f3", display: "block", padding: ".5rem", fontSize: "0.9em", lineHeight: "0.5" }}>
-          <Markdown md={"$" + (children as string).split("\n").map((line) => line.replaceAll(" ", "~")).join('$\n$') + "$"} />
+          <Markdown md={"$" + (children as string).split("\n").slice(0, -1).map((line) => line.replaceAll(" ", "~")).join('$\n$') + "$"} />
         </div>
       )
     }
