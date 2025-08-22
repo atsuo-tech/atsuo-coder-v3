@@ -153,6 +153,17 @@ export default async function SubmissionsPage(
 								</TableCell>
 								{
 									contestData.TaskUse.map((task, i) => {
+
+										if (!standings[value.unique_id][task.task.unique_id]) {
+
+											return (
+												<TableCell key={i}>
+													{value.data[task.task.unique_id] || "-"}
+												</TableCell>
+											)
+
+										}
+
 										const last_submission = standings[value.unique_id][task.task.unique_id].last_submission.getTime();
 										const dur = last_submission - contestData.start_time.getTime();
 
