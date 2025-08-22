@@ -90,13 +90,22 @@ export default async function SubmissionsPage(
 
 			if (!data[task.task.unique_id]) return;
 
-			penalty += data[task.task.unique_id].penalty;
-			last_submission = new Date(Math.max(data[task.task.unique_id].last_submission.getTime(), last_submission.getTime()));
+			let scored = false;
 
 			for (const set in data[task.task.unique_id].sets) {
+				if (data[task.task.unique_id].sets[set] != 0) {
+					scored = true;
+				}
 				score += data[task.task.unique_id].sets[set];
 				taskData[task.task.unique_id] ??= 0;
 				taskData[task.task.unique_id] += data[task.task.unique_id].sets[set];
+			}
+
+			if (scored) {
+
+				penalty += data[task.task.unique_id].penalty;
+				last_submission = new Date(Math.max(data[task.task.unique_id].last_submission.getTime(), last_submission.getTime()));
+
 			}
 
 		});
