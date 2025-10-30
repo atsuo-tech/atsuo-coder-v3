@@ -20,7 +20,7 @@ export default function LanguageSelector(
 	}
 ) {
 
-	const [language, setLanguage] = useState((languageData[0] || { language_id: "" }).language_id.toString());
+	const [language, setLanguage] = useState(search ? "all" : (languageData[0] || { language_id: "" }).language_id.toString());
 
 	if (!search) {
 
