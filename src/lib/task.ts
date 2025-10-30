@@ -2,62 +2,67 @@ import { notFound } from "next/navigation";
 import atsuocoder_db, { getContest } from "./atsuocoder_db";
 import { ContestViewable } from "./contest";
 import assert from "assert";
+import { cache } from "react";
 
-export default async function getTask(contest: string, task: string) {
+const getTask = cache(
+	async (contest: string, task: string) => {
 
-	const contestData = await getContest(contest);
+		const contestData = await getContest(contest);
 
-	if (!(await ContestViewable(contestData))) {
+		if (!(await ContestViewable(contestData))) {
 
-		notFound();
+			notFound();
 
-	}
+		}
 
-	assert(contestData);
+		assert(contestData);
 
-	const {
-		TaskUse,
-	} = contestData;
+		const {
+			TaskUse,
+		} = contestData;
 
-	const use = TaskUse.find((use) => use.task.url_id == task);
+		const use = TaskUse.find((use) => use.task.url_id == task);
 
-	if (!use) {
+		if (!use) {
 
-		notFound();
+			notFound();
 
-	}
+		}
 
-	const taskData = await atsuocoder_db.task.findFirst({
-		where: {
-			url_id: task
-		},
-		select: {
-			unique_id: true,
-			title: true,
-			problem: true,
-			time_limit: true,
-			memory_limit: true,
-			score: true,
-			type: true,
-			TaskManagement: {
-				select: {
-					user: {
-						select: {
-							unique_id: true,
+		const taskData = await atsuocoder_db.task.findFirst({
+			where: {
+				url_id: task
+			},
+			select: {
+				unique_id: true,
+				title: true,
+				problem: true,
+				time_limit: true,
+				memory_limit: true,
+				score: true,
+				type: true,
+				TaskManagement: {
+					select: {
+						user: {
+							select: {
+								unique_id: true,
+							},
 						},
+						role: true,
 					},
-					role: true,
 				},
 			},
-		},
-	});
+		});
 
-	if (!taskData) {
+		if (!taskData) {
 
-		notFound();
+			notFound();
+
+		}
+
+		return { use, taskData };
 
 	}
+);
 
-	return { use, taskData };
-
-}
+export default getTask;

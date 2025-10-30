@@ -9,6 +9,7 @@ const muiTheme = createTheme({
 			styleOverrides: {
 				root: {
 					margin: "1rem 0",
+					minWidth: 200,
 				},
 			},
 		},
@@ -16,6 +17,7 @@ const muiTheme = createTheme({
 			styleOverrides: {
 				root: {
 					margin: "1rem 0",
+					minWidth: 200,
 				},
 			},
 		},

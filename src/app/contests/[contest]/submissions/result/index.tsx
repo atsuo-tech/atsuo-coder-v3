@@ -3,9 +3,8 @@
 import { type EvalSubmissionReturnType } from '@/lib/submission';
 import { JudgeStatus } from '@/lib/utils';
 import styles from '../submissions.module.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { TableCell } from '@mui/material';
-import getResult from './server';
 
 const runningTypes = [JudgeStatus.Judging, JudgeStatus.WJ, JudgeStatus.WR];
 

@@ -2,6 +2,7 @@ import type { Submission } from "@prisma/atsuocoder";
 import atsuocoder_db from "./atsuocoder_db";
 import { JudgeStatus } from "./utils";
 export { JudgeStatus } from "./utils";
+import type { Prisma } from "@prisma/atsuocoder";
 
 export interface JudgeResult {
 	status?: JudgeStatus;
@@ -36,8 +37,6 @@ export async function evalSubmission(submission: Submission) {
 	}
 
 	const testcases = result.testcases;
-
-	console.log(testcases);
 
 	let run_time = -1;
 	let memory = -1;
@@ -137,3 +136,41 @@ export async function evalSubmission(submission: Submission) {
 }
 
 export type EvalSubmissionReturnType = Awaited<ReturnType<typeof evalSubmission>>
+
+export async function getSubmissions(pageInt: number, where?: Prisma.SubmissionWhereInput, orderBy?: Prisma.SubmissionOrderByWithRelationInput){
+
+	return await atsuocoder_db.submission.findMany({
+		where,
+		include: {
+			language: {
+				select: {
+					name: true,
+				},
+			},
+			contest: {
+				select: {
+					url_id: true,
+					TaskUse: {
+						select: {
+							assignment: true,
+							taskUnique_id: true,
+						},
+					},
+				},
+			},
+			task: {
+				select: {
+					url_id: true,
+					title: true,
+				},
+			},
+		},
+		orderBy: {
+			created_at: 'desc',
+			...orderBy,
+		},
+		skip: pageInt * 20,
+		take: 21,
+	});
+
+}

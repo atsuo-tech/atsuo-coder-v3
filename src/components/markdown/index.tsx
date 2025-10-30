@@ -14,6 +14,17 @@ import 'katex/dist/katex.min.css';
 
 const components: Components = {
   code({ node, className, children, ...props }) {
+    if(className == "details") {
+      const lines = (children as string).split("\n");
+      return (
+        <details>
+          <summary>{lines[0]}</summary>
+          <div style={{ marginTop: "0.5em" }}>
+            <Markdown md={lines.slice(1).join("\n")} />
+          </div>
+        </details>
+      );
+    }
     const match = /language-(\w+)/.exec(className || '');
     const notifications = useNotifications();
     if (match && match[1] == "tex") {

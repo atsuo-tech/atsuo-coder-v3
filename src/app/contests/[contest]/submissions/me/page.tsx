@@ -1,57 +1,38 @@
-'use server';
-
-import { getContest } from "@/lib/atsuocoder_db";
-import { ContestViewable } from "@/lib/contest";
-import { notFound } from "next/navigation";
-import assert from "assert";
+import { Searcher } from "@/components/submissions-table";
+import SubmissionsPageUI from "../basic-ui";
 import { getCurrentUser } from "@/lib/w_auth_db";
-import Link from "next/link";
-import SubmissionsTable from "../submissions";
+import { redirect } from "next/navigation";
 
 export default async function SubmissionsPage(
 	{
 		params,
-		searchParams,
+		searchParams
 	}: {
 		params: Promise<{
 			contest: string,
 		}>,
 		searchParams: Promise<{
 			page: string
-		}>,
+		} & Searcher>,
 	}
 ) {
 
-	const { contest } = await params;
-	const { page } = await searchParams;
+	const user = await getCurrentUser();
+	
+	if (!user) {
 
-	let pageInt = parseInt(page);
-
-	if (isNaN(pageInt)) {
-
-		pageInt = 0;
-
+		redirect(`/contests/${(await params).contest}/submissions`);
+	
 	}
 
-	const userData = await getCurrentUser();
-
-	const contestData = await getContest(contest);
-
-	if (!(await ContestViewable(contestData))) {
-
-		notFound();
-
-	}
-
-	assert(contestData);
-	assert(userData);
-
-	return (
-		<main>
-			<h1>Your Submissions</h1>
-			<Link href={`/contests/${contest}/submissions`}>すべての提出</Link>
-			<SubmissionsTable contestData={contestData} pageInt={pageInt} where={{ userDataUnique_id: userData.unique_id }} />
-		</main>
-	)
+	return SubmissionsPageUI({
+		title: "Submissions",
+		params,
+		searchParams,
+		where: {
+			userDataUnique_id: user.unique_id,
+		},
+		url: `/contests/${(await params).contest}/submissions`,
+	});
 
 }
