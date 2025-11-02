@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Accordion, AccordionSummary, Box, Button, Divider, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import React from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -17,12 +17,13 @@ const components: Components = {
     if(className == "details") {
       const lines = (children as string).split("\n");
       return (
-        <details>
-          <summary>{lines[0]}</summary>
-          <div style={{ marginTop: "0.5em" }}>
+        <Accordion>
+          <AccordionSummary>{lines[0]}</AccordionSummary>
+          <Divider />
+          <Box sx={{ m: 2 }}>
             <Markdown md={lines.slice(1).join("\n")} />
-          </div>
-        </details>
+          </Box>
+        </Accordion>
       );
     }
     const match = /language-(\w+)/.exec(className || '');

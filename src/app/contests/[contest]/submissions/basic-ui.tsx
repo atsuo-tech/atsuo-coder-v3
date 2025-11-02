@@ -7,6 +7,7 @@ import Link from "next/link";
 import SubmissionsTable, { Searcher } from "@/components/submissions-table";
 import type { Prisma } from "@prisma/atsuocoder/client";
 import getTask from "@/lib/task";
+import { List, ListItem } from "@mui/material";
 
 export default async function SubmissionsPageUI(
 	{
@@ -96,8 +97,10 @@ export default async function SubmissionsPageUI(
 	return (
 		<main>
 			<h1>{title}</h1>
-			<Link href={`/contests/${contest}/submissions`}>すべての提出</Link>
-			<Link href={`/contests/${contest}/submissions/me`}>あなたの提出</Link>
+			<List>
+				<ListItem><Link href={`/contests/${contest}/submissions`}>すべての提出</Link></ListItem>
+				<ListItem><Link href={`/contests/${contest}/submissions/me`}>あなたの提出</Link></ListItem>
+			</List>
 			<SubmissionsTable
 				contestData={contestData}
 				pageInt={pageInt}

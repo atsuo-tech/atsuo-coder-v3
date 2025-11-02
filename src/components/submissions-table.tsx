@@ -3,7 +3,7 @@ import PageControl from "@/app/contests/[contest]/submissions/page-control";
 import ResultTag from "@/app/contests/[contest]/submissions/result";
 import { GetContestType } from "@/lib/atsuocoder_db";
 import { getSubmissions } from "@/lib/submission";
-import { Box, Button, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
+import { Accordion, AccordionSummary, Box, Button, Divider, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import Link from "next/link";
 import User from "./user";
 import { evalSubmission, JudgeStatus } from "@/lib/submission";
@@ -44,11 +44,11 @@ export default async function SubmissionsTable(
 
 	return (
 		<div>
-			<PageControl page={pageInt} hasNext={submissions.length == 21} />
-			<details>
-				<summary>検索</summary>
+			<Accordion>
+				<AccordionSummary>検索</AccordionSummary>
+				<Divider />
 				<Box
-					sx={{ my: 2 }}
+					sx={{ m: 2 }}
 				>
 					<form
 						action={
@@ -81,7 +81,8 @@ export default async function SubmissionsTable(
 						<Button variant="contained" fullWidth type="submit">検索</Button>
 					</form>
 				</Box>
-			</details>
+			</Accordion>
+			<PageControl page={pageInt} hasNext={submissions.length == 21} />
 			<br />
 			<Table>
 				<TableHead>
