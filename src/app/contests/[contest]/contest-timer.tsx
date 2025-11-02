@@ -19,7 +19,7 @@ export default function Timer(
 
 	useEffect(() => {
 
-		if (Date.now() <= start_time.getTime()) {
+		if (Date.now() <= start_time.getTime() && start_time.getTime() - Date.now() <= 60000) {
 
 			setTimeout(() => {
 
