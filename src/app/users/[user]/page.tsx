@@ -84,14 +84,6 @@ export default async function UserPage(
                                 <TableCell>ユーザー名</TableCell>
                                 <TableCell><User unique_id={atsuoCoderData.unique_id} /></TableCell>
                             </TableRow>
-                            <TableRow>
-                                <TableCell>レーティング</TableCell>
-                                <TableCell>{atsuoCoderData.rating}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell>最高レーティング</TableCell>
-                                <TableCell>{/*atsuoCoderData.highest*/}</TableCell>
-                            </TableRow>
                         </TableBody>
                     </Table>
                 </div>
