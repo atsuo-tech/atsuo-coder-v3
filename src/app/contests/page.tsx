@@ -22,7 +22,7 @@ export default async function ContestsPage() {
 	const permanent = contests.filter((contest) => contest.is_permanent);
 	const upcoming = contests.filter((contest) => !contest.is_permanent && Date.now() <= contest.start_time.getTime());
 	const running = contests.filter((contest) => !contest.is_permanent && contest.start_time.getTime() <= Date.now() && Date.now() <= contest.end_time.getTime());
-	const recent = contests.filter((contest) => !contest.is_permanent && contest.end_time.getTime() <= Date.now());
+	const recent = contests.filter((contest) => !contest.is_permanent && contest.end_time.getTime() <= Date.now()).reverse();
 
 	return (
 		<main>
