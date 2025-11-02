@@ -11,10 +11,6 @@ span.important {
     padding: 2rem;
 }
 
-.main {
-    margin: 2rem;
-}
-
 @media print {
     .submit {
         display: none;
