@@ -84,7 +84,6 @@ export default async function RatingManagementPage() {
 									}
 									aperformances.push(ps / qs);
 								}
-								console.log(aperformances);
 								const performances = [];
 								for (let i = 0; i < data.ranking.length; i++) {
 									let rs = data.ranking[i].rank + ((rank_count[data.ranking[i].rank] - 1) / 2) - 0.5;
@@ -104,7 +103,6 @@ export default async function RatingManagementPage() {
 									ok = (ok - center) * perf_factor + center;
 									performances.push(Math.min(ok, rated_bound + 400));
 								}
-								console.log(performances);
 								for (let i = 0; i < rated_users.length; i++) {
 									const logs = rated_users[i].user.RatingChangeLog.filter((log) => log.ratingSystemUnique_id == rating_system.unique_id);
 									const rank = data.ranking.find((v) => v.unique_id == rated_users[i].user.unique_id)!!.rank!! - 1;
