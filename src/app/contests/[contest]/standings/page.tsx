@@ -1,12 +1,12 @@
-import atsuocoder_db, { getContest } from "@/lib/atsuocoder_db";
+import { getContest } from "@/lib/atsuocoder_db";
 import { ContestViewable } from "@/lib/contest";
 import { notFound } from "next/navigation";
 import assert from "assert";
 import { getCurrentUser } from "@/lib/w_auth_db";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import Link from "next/link";
-import { evalSubmission, JudgeStatus } from "@/lib/submission";
 import User from "@/components/user";
+import { getContestStandings } from "@/lib/standing";
 
 export default async function SubmissionsPage(
 	{
@@ -33,99 +33,7 @@ export default async function SubmissionsPage(
 	assert(contestData);
 	assert(userData);
 
-	const submissions = await atsuocoder_db.submission.findMany({
-		where: {
-			contestUnique_id: contestData.unique_id,
-			created_at: {
-				lte: contestData.end_time,
-			},
-		},
-		orderBy: {
-			created_at: "asc",
-		},
-	});
-
-	const registrations = await atsuocoder_db.contestRegistration.findMany({
-		where: {
-			contestUnique_id: contestData.unique_id,
-		},
-	});
-
-	const standings: { [key: string]: { [task: string]: { sets: { [set: string]: number }, last_submission: Date, penalty: number } } } = {};
-
-	registrations.forEach((user) => {
-		standings[user.userDataUnique_id] = {};
-	});
-
-	for (const submission of submissions) {
-		if (!standings[submission.userDataUnique_id]) {
-			continue;
-		}
-		const evalData = await evalSubmission(submission);
-		standings[submission.userDataUnique_id][submission.taskUnique_id] ??= { sets: {}, last_submission: submission.created_at, penalty: 0 };
-		evalData.set_results.forEach((set) => {
-			standings[submission.userDataUnique_id][submission.taskUnique_id].sets[set.set_name] ??= 0;
-			const val = standings[submission.userDataUnique_id][submission.taskUnique_id].sets[set.set_name];
-			if (val < set.score) {
-				standings[submission.userDataUnique_id][submission.taskUnique_id].sets[set.set_name] = set.score;
-				standings[submission.userDataUnique_id][submission.taskUnique_id].last_submission = submission.created_at;
-			}
-		})
-		if (![JudgeStatus.AC, JudgeStatus.CE, JudgeStatus.IE, JudgeStatus.WJ, JudgeStatus.WR, JudgeStatus.Judging].includes(evalData.status)) {
-			standings[submission.userDataUnique_id][submission.taskUnique_id].penalty++;
-		}
-	}
-
-	const standingsUsers: { unique_id: string, data: { [task: string]: number }, score: number, last_submission: Date }[] = [];
-
-	for (const standing in standings) {
-
-		const data = standings[standing];
-
-		let score = 0, penalty = 0, last_submission = new Date(0);
-
-		const taskData: { [task: string]: number } = {};
-
-		contestData.TaskUse.forEach((task) => {
-
-			if (!data[task.task.unique_id]) return;
-
-			let scored = false;
-
-			for (const set in data[task.task.unique_id].sets) {
-				if (data[task.task.unique_id].sets[set] != 0) {
-					scored = true;
-				}
-				score += data[task.task.unique_id].sets[set];
-				taskData[task.task.unique_id] ??= 0;
-				taskData[task.task.unique_id] += data[task.task.unique_id].sets[set];
-			}
-
-			if (scored) {
-
-				penalty += data[task.task.unique_id].penalty;
-				last_submission = new Date(Math.max(data[task.task.unique_id].last_submission.getTime(), last_submission.getTime()));
-
-			}
-
-		});
-
-		standingsUsers.push({
-			unique_id: standing,
-			data: taskData,
-			score,
-			last_submission,
-		});
-
-	}
-
-	standingsUsers.sort((a, b) => {
-		if (a.score > b.score) return -1;
-		if (a.score < b.score) return 1;
-		if (a.last_submission < b.last_submission) return -1;
-		if (a.last_submission > b.last_submission) return 1;
-		return 0;
-	});
+	const { ranking, standings } = (await getContestStandings(contest))!!;
 
 	return (
 		<main>
@@ -147,11 +55,11 @@ export default async function SubmissionsPage(
 				</TableHead>
 				<TableBody>
 					{
-						standingsUsers.map((value, i) => {
+						ranking.map((value, i) => {
 							const dur = value.last_submission.getTime() - contestData.start_time.getTime();
 
 							return (<TableRow key={i}>
-								<TableCell>{i + 1}</TableCell>
+								<TableCell>{value.rank}</TableCell>
 								<TableCell><User unique_id={value.unique_id} /></TableCell>
 								<TableCell>
 									{value.score}&nbsp;

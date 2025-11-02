@@ -16,7 +16,6 @@ enum UserRole {
 
 model UserData {
   unique_id           String                @id
-  rating              Int
   role                UserRole              @default(Member)
   TaskManagement      TaskManagement[]
   ContestManagement   ContestManagement[]
@@ -25,6 +24,41 @@ model UserData {
   Submission          Submission[]
   ContestRegistration ContestRegistration[]
   Editorial           Editorial[]
+  Rating              Rating[]
+  RatingChangeLog     RatingChangeLog[]
+}
+
+model RatingSystem {
+  unique_id       String            @id @default(uuid())
+  rating_name     String            @unique
+  Rating          Rating[]
+  RatingChangeLog RatingChangeLog[]
+}
+
+model Rating {
+  unique_id             String       @id @default(uuid())
+  user                  UserData     @relation(fields: [userDataUnique_id], references: [unique_id])
+  userDataUnique_id     String
+  rating_system         RatingSystem @relation(fields: [ratingSystemUnique_id], references: [unique_id])
+  ratingSystemUnique_id String
+  inner_rating          Float
+  rating                Float
+
+  @@unique([userDataUnique_id, ratingSystemUnique_id])
+}
+
+model RatingChangeLog {
+  unique_id             String       @id @default(uuid())
+  user                  UserData     @relation(fields: [userDataUnique_id], references: [unique_id])
+  userDataUnique_id     String
+  contest               Contest      @relation(fields: [contestUnique_id], references: [unique_id])
+  changed_at            DateTime     @default(now())
+  rating_system         RatingSystem @relation(fields: [ratingSystemUnique_id], references: [unique_id])
+  ratingSystemUnique_id String
+  old_rating            Float
+  new_rating            Float
+  performance           Float
+  contestUnique_id      String
 }
 
 model Contest {
@@ -42,6 +76,7 @@ model Contest {
   Submission          Submission[]
   Clar                Clar[]
   ContestRegistration ContestRegistration[]
+  RatingChangeLog     RatingChangeLog[]
 }
 
 enum RegistrationType {

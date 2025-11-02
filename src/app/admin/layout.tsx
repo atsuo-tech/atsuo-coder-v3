@@ -28,6 +28,12 @@ export default async function AdminLayout(
 				<div className={styles.block}>
 					<Link href="/admin/notification">投稿</Link>
 				</div>
+				<div className={styles.block}>
+					<Link href="/admin/cache">キャッシュ管理</Link>
+				</div>
+				<div className={styles.block}>
+					<Link href="/admin/rating">レート設定</Link>
+				</div>
 			</nav>
 			{children}
 		</div>

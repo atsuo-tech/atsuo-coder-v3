@@ -3,9 +3,8 @@ import styles from './page.module.css';
 import LogoMono from '@/img/logo-mono.svg';
 import { OutlinedIcon } from '@/components/material-symbols';
 import atsuocoder_db from '@/lib/atsuocoder_db';
-import User from '@/components/user';
-import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 import Markdown from '@/components/markdown';
+import RankingsComponent from '../components/rankings';
 
 export default async function MainPage() {
 
@@ -35,13 +34,6 @@ export default async function MainPage() {
             start_time: "desc",
         },
         take: 1,
-    });
-
-    const ranked_users = await atsuocoder_db.userData.findMany({
-        orderBy: {
-            rating: "desc",
-        },
-        take: 10,
     });
 
     const notifications = await atsuocoder_db.notification.findMany({
@@ -142,24 +134,7 @@ export default async function MainPage() {
                 <div
                     className={styles.rankings}
                 >
-
-                    <h3>Rankings</h3>
-
-                    <div>
-                        <Table>
-                            <TableBody>
-                                {
-                                    ranked_users.map((user, i) =>
-                                        <TableRow key={i}>
-                                            <TableCell>{i + 1}</TableCell>
-                                            <TableCell><User unique_id={user.unique_id} /></TableCell>
-                                            <TableCell>{user.rating}</TableCell>
-                                        </TableRow>
-                                    )
-                                }
-                            </TableBody>
-                        </Table>
-                    </div>
+                    <RankingsComponent />
 
                     <div
                         className={styles.see_more}
@@ -171,7 +146,6 @@ export default async function MainPage() {
                             </Link>
                         </p>
                     </div>
-
                 </div>
                 <div
                     className={styles.posts}

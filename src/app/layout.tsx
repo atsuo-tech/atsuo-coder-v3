@@ -60,7 +60,6 @@ export default async function RootLayout({
       await atsuocoder_db.userData.create({
         data: {
           unique_id: user.unique_id,
-          rating: 0,
           role: "Member",
         },
       });
