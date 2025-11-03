@@ -61,6 +61,7 @@ const getAtsuoCoderData = unstable_cache(
                         select: {
                             title: true,
                             end_time: true,
+                            url_id: true,
                         },
                     },
                     changed_at: true,
@@ -152,7 +153,11 @@ export default async function UserPage(
                                 return (
                                     <TableRow key={i}>
                                         <TableCell>{rating.changed_at.toLocaleString("ja-jp")}</TableCell>
-                                        <TableCell>{rating.contest.title}</TableCell>
+                                        <TableCell>
+                                            <Link href={`/contests/${rating.contest.url_id}`}>
+                                                {rating.contest.title}
+                                            </Link>
+                                        </TableCell>
                                         <TableCell>{rating.rank}</TableCell>
                                         <TableCell style={{ color: getColorByRating(rating.performance), fontWeight: "bold" }}>{rating.performance}</TableCell>
                                         <TableCell>
