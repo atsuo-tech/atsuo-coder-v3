@@ -93,6 +93,9 @@ export default async function UserPage(
                         },
                     },
                 },
+                orderBy: {
+                    changed_at: 'desc',
+                },
             },
         },
     });
