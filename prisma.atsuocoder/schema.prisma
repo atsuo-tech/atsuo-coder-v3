@@ -59,6 +59,7 @@ model RatingChangeLog {
   new_rating            Float
   performance           Float
   contestUnique_id      String
+  rank                  Int          @default(-1)
 }
 
 model Contest {

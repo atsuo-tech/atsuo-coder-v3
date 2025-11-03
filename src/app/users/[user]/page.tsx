@@ -6,6 +6,7 @@ import User from '@/components/user';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { Metadata } from 'next';
 import { getColorByRating } from '@/components/user/client';
+import { unstable_cache } from 'next/cache';
 
 export async function generateMetadata(
     {
@@ -37,6 +38,54 @@ export async function generateMetadata(
 
 }
 
+const getAtsuoCoderData = unstable_cache(
+    async (unique_id: string) => atsuocoder_db.userData.findUnique({
+        where: {
+            unique_id,
+        },
+        include: {
+            Rating: {
+                select: {
+                    rating: true,
+                    rating_system: {
+                        select: {
+                            rating_name: true,
+                        },
+                    },
+                },
+            },
+            RatingChangeLog: {
+                select: {
+                    rank: true,
+                    contest: {
+                        select: {
+                            title: true,
+                            end_time: true,
+                        },
+                    },
+                    changed_at: true,
+                    performance: true,
+                    old_rating: true,
+                    new_rating: true,
+                    rating_system: {
+                        select: {
+                            rating_name: true,
+                        },
+                    },
+                },
+                orderBy: {
+                    changed_at: 'desc',
+                },
+            },
+        },
+    }),
+    [],
+    {
+        revalidate: 3600 * 24,
+        tags: ["rating"],
+    },
+);
+
 export default async function UserPage(
     {
         params
@@ -60,45 +109,7 @@ export default async function UserPage(
 
     }
 
-    const atsuoCoderData = await atsuocoder_db.userData.findUnique({
-        where: {
-            unique_id: wAuthData.unique_id,
-        },
-        include: {
-            Rating: {
-                select: {
-                    rating: true,
-                    rating_system: {
-                        select: {
-                            rating_name: true,
-                        },
-                    },
-                },
-            },
-            RatingChangeLog: {
-                select: {
-                    contest: {
-                        select: {
-                            title: true,
-                            end_time: true,
-                        },
-                    },
-                    changed_at: true,
-                    performance: true,
-                    old_rating: true,
-                    new_rating: true,
-                    rating_system: {
-                        select: {
-                            rating_name: true,
-                        },
-                    },
-                },
-                orderBy: {
-                    changed_at: 'desc',
-                },
-            },
-        },
-    });
+    const atsuoCoderData = await getAtsuoCoderData(wAuthData.unique_id);
 
     if (!atsuoCoderData) {
 
@@ -130,6 +141,7 @@ export default async function UserPage(
                         <TableRow>
                             <TableCell>変更日時</TableCell>
                             <TableCell>コンテスト名</TableCell>
+                            <TableCell>順位</TableCell>
                             <TableCell>パフォーマンス</TableCell>
                             <TableCell>レーティング変動</TableCell>
                         </TableRow>
@@ -142,6 +154,7 @@ export default async function UserPage(
                                         <TableCell>{rating.changed_at.toLocaleString("ja-jp")}</TableCell>
                                         <TableCell>{rating.contest.title}</TableCell>
                                         <TableCell style={{ color: getColorByRating(rating.performance), fontWeight: "bold" }}>{rating.performance}</TableCell>
+                                        <TableCell>{rating.rank}</TableCell>
                                         <TableCell>
                                             <span style={{ color: getColorByRating(rating.old_rating), fontWeight: "bold" }}>{rating.old_rating}</span>
                                             →
