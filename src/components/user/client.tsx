@@ -21,18 +21,23 @@ function getColorByRating(rating: number): string {
 
 }
 
-export function ColoredUser({ rating, username, isAdmin }: { rating: number, username: string, isAdmin: boolean }) {
+export function ColoredUser({ rating, username, permission }: { rating: number, username: string, permission: string }) {
 
   return (
     <Link href={`/users/${username}`} className={styles.user}>
       <div style={{ color: getColorByRating(rating), fontWeight: 'bold' }}>
         {
-          isAdmin ?
+          permission == "Admin" ?
             <>
               <span style={{ color: "purple" }}>{username.substring(0, 1)}</span>
               <span>{username.substring(1)}</span>
             </> :
-            username
+            permission == "SuperAdmin" ?
+              <>
+                <span style={{ color: "gold" }}>{username.substring(0, 1)}</span>
+                <span>{username.substring(1)}</span>
+              </> :
+              username
         }
       </div>
     </Link>

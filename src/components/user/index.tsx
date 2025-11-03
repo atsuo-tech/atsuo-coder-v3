@@ -39,9 +39,9 @@ export default async function User({ unique_id, ratingSystem }: { unique_id: str
 
   return (
     <ColoredUser
-      rating={userData?.Rating[0].rating || 0}
+      rating={userData?.Rating?.at(0)?.rating || 0}
       username={user.username}
-      isAdmin={user.permission === "Admin" || user.permission === "SuperAdmin"}
+      permission={user.permission}
     />
   );
 

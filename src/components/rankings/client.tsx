@@ -45,9 +45,15 @@ export default function RankingsComponentClient(
 							ranked_users[selectedSystem].map((user, i) =>
 								user.user ?
 									(
-										< TableRow key={i} >
+										<TableRow key={i} >
 											<TableCell>{i + 1}</TableCell>
-											<TableCell><ColoredUser username={user.user?.username} rating={user.rating} isAdmin={user.user?.permission === "Admin" || user.user?.permission === "SuperAdmin"} /></TableCell>
+											<TableCell>
+												<ColoredUser
+													username={user.user?.username}
+													rating={user.rating}
+													permission={user.user?.permission}
+												/>
+											</TableCell>
 											<TableCell>{user.rating}</TableCell>
 										</TableRow>
 									) : null
