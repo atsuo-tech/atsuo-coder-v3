@@ -114,7 +114,6 @@ export default async function RatingManagementPage() {
 									}
 									const rated_count = logs.length + 1;
 									const new_rating = Math.log2(ps / qs) * 800;
-									let fix = 0;
 									function largeF(n: number) {
 										let ps = 0, qs = 0;
 										for (let i = 1; i <= n; i++) {
@@ -131,7 +130,7 @@ export default async function RatingManagementPage() {
 											userDataUnique_id: rated_users[i].user.unique_id,
 											contestUnique_id: contestData.unique_id,
 											ratingSystemUnique_id: rating_system.unique_id,
-											old_rating: rated_users[i].user.Rating[0]?.rating || center,
+											old_rating: rated_users[i].user.Rating[0]?.rating || 0,
 											new_rating: true_rating,
 											performance: performance,
 										},
