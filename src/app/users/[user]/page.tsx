@@ -5,6 +5,7 @@ import styles from './page.module.css';
 import User from '@/components/user';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { Metadata } from 'next';
+import { getColorByRating } from '@/components/user/client';
 
 export async function generateMetadata(
     {
@@ -137,8 +138,12 @@ export default async function UserPage(
                                     <TableRow key={i}>
                                         <TableCell>{rating.changed_at.toLocaleString("ja-jp")}</TableCell>
                                         <TableCell>{rating.contest.title}</TableCell>
-                                        <TableCell>{rating.performance}</TableCell>
-                                        <TableCell>{rating.old_rating} → {rating.new_rating}</TableCell>
+                                        <TableCell style={{ color: getColorByRating(rating.performance), fontWeight: "bold" }}>{rating.performance}</TableCell>
+                                        <TableCell>
+                                            <span style={{ color: getColorByRating(rating.old_rating), fontWeight: "bold" }}>{rating.old_rating}</span>
+                                            →
+                                            <span style={{ color: getColorByRating(rating.new_rating), fontWeight: "bold" }}>{rating.new_rating}</span>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })

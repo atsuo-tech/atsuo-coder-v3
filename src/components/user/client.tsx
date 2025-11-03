@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styles from './user.module.css';
 
-function getColorByRating(rating: number): string {
+export function getColorByRating(rating: number): string {
 
   if (rating >= 2400) {
     return "red";
