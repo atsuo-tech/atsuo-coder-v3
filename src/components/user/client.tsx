@@ -29,12 +29,12 @@ export function ColoredUser({ rating, username, permission }: { rating: number, 
         {
           permission == "Admin" ?
             <>
-              <span style={{ color: "purple" }}>{username.substring(0, 1)}</span>
+              <span style={{ color: "#295ebe" }}>{username.substring(0, 1)}</span>
               <span>{username.substring(1)}</span>
             </> :
             permission == "SuperAdmin" ?
               <>
-                <span style={{ color: "gold" }}>{username.substring(0, 1)}</span>
+                <span style={{ color: "#e83f94" }}>{username.substring(0, 1)}</span>
                 <span>{username.substring(1)}</span>
               </> :
               username
