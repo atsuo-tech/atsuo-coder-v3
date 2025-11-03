@@ -153,8 +153,8 @@ export default async function UserPage(
                                     <TableRow key={i}>
                                         <TableCell>{rating.changed_at.toLocaleString("ja-jp")}</TableCell>
                                         <TableCell>{rating.contest.title}</TableCell>
-                                        <TableCell style={{ color: getColorByRating(rating.performance), fontWeight: "bold" }}>{rating.performance}</TableCell>
                                         <TableCell>{rating.rank}</TableCell>
+                                        <TableCell style={{ color: getColorByRating(rating.performance), fontWeight: "bold" }}>{rating.performance}</TableCell>
                                         <TableCell>
                                             <span style={{ color: getColorByRating(rating.old_rating), fontWeight: "bold" }}>{rating.old_rating}</span>
                                             →

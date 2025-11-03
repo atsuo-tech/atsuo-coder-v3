@@ -133,6 +133,7 @@ export default async function RatingManagementPage() {
 											old_rating: rated_users[i].user.Rating[0]?.rating || 0,
 											new_rating: true_rating,
 											performance: performance,
+											rank: rank + 1,
 										},
 									});
 									await atsuocoder_db.rating.upsert({
