@@ -22,6 +22,10 @@ export const getRankedUsers = unstable_cache(
 							where: {
 								unique_id: rating.userDataUnique_id,
 							},
+							select: {
+								username: true,
+								permission: true,
+							},
 						}),
 					})
 				)

@@ -1,0 +1,41 @@
+import Link from 'next/link';
+import styles from './user.module.css';
+
+function getColorByRating(rating: number): string {
+
+  if (rating >= 2400) {
+    return "red";
+  } else if (rating >= 2000) {
+    return "orange";
+  } else if (rating >= 1600) {
+    return "purple";
+  } else if (rating >= 1200) {
+    return "blue";
+  } else if (rating >= 800) {
+    return "green";
+  } else if (rating >= 400) {
+    return "gray";
+  } else {
+    return "black";
+  }
+
+}
+
+export function ColoredUser({ rating, username, isAdmin }: { rating: number, username: string, isAdmin: boolean }) {
+
+  return (
+    <Link href={`/users/${username}`} className={styles.user}>
+      <div style={{ color: getColorByRating(rating), fontWeight: 'bold' }}>
+        {
+          isAdmin ?
+            <>
+              <span style={{ color: "purple" }}>{username.substring(0, 1)}</span>
+              <span>{username.substring(1)}</span>
+            </> :
+            username
+        }
+      </div>
+    </Link>
+  )
+
+}

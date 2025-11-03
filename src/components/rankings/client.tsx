@@ -3,6 +3,7 @@
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import { RankedUsers, RatingSystems } from "@/lib/ratings";
 import { useState } from "react";
+import { ColoredUser } from "../user/client";
 
 export default function RankingsComponentClient(
 	{
@@ -42,16 +43,19 @@ export default function RankingsComponentClient(
 					<TableBody>
 						{
 							ranked_users[selectedSystem].map((user, i) =>
-								<TableRow key={i}>
-									<TableCell>{i + 1}</TableCell>
-									<TableCell>{user.user?.username}</TableCell>
-									<TableCell>{user.rating}</TableCell>
-								</TableRow>
+								user.user ?
+									(
+										< TableRow key={i} >
+											<TableCell>{i + 1}</TableCell>
+											<TableCell><ColoredUser username={user.user?.username} rating={user.rating} isAdmin={user.user?.permission === "Admin" || user.user?.permission === "SuperAdmin"} /></TableCell>
+											<TableCell>{user.rating}</TableCell>
+										</TableRow>
+									) : null
 							)
 						}
 					</TableBody>
 				</Table>
-			</div>
+			</div >
 		</>
 	)
 
