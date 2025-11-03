@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { Metadata } from 'next';
 import { getColorByRating } from '@/components/user/client';
 import { unstable_cache } from 'next/cache';
+import Link from 'next/link';
 
 export async function generateMetadata(
     {
