@@ -63,6 +63,37 @@ export default async function UserPage(
         where: {
             unique_id: wAuthData.unique_id,
         },
+        include: {
+            Rating: {
+                select: {
+                    rating: true,
+                    rating_system: {
+                        select: {
+                            rating_name: true,
+                        },
+                    },
+                },
+            },
+            RatingChangeLog: {
+                select: {
+                    contest: {
+                        select: {
+                            title: true,
+                            end_time: true,
+                        },
+                    },
+                    changed_at: true,
+                    performance: true,
+                    old_rating: true,
+                    new_rating: true,
+                    rating_system: {
+                        select: {
+                            rating_name: true,
+                        },
+                    },
+                },
+            },
+        },
     });
 
     if (!atsuoCoderData) {
@@ -93,15 +124,25 @@ export default async function UserPage(
                 <Table>
                     <TableHead>
                         <TableRow>
+                            <TableCell>変更日時</TableCell>
                             <TableCell>コンテスト名</TableCell>
-                            <TableCell>順位</TableCell>
                             <TableCell>パフォーマンス</TableCell>
                             <TableCell>レーティング変動</TableCell>
-                            <TableCell>新レーティング</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {/* ToDo: CREATE THIS WITH ATSUOCODER DETAILED DB */}
+                        {
+                            atsuoCoderData.RatingChangeLog.map((rating, i) => {
+                                return (
+                                    <TableRow key={i}>
+                                        <TableCell>{rating.changed_at.toLocaleString("ja-jp")}</TableCell>
+                                        <TableCell>{rating.contest.title}</TableCell>
+                                        <TableCell>{rating.performance}</TableCell>
+                                        <TableCell>{rating.old_rating} → {rating.new_rating}</TableCell>
+                                    </TableRow>
+                                );
+                            })
+                        }
                     </TableBody>
                 </Table>
             </div>
