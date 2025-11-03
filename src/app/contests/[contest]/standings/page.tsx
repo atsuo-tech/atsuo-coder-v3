@@ -56,7 +56,7 @@ export default async function SubmissionsPage(
 				<TableBody>
 					{
 						ranking.map((value, i) => {
-							const dur = value.last_submission.getTime() - contestData.start_time.getTime();
+							const dur = new Date(value.last_submission).getTime() - new Date(contestData.start_time).getTime();
 
 							return (<TableRow key={i}>
 								<TableCell>{value.rank}</TableCell>
@@ -64,7 +64,7 @@ export default async function SubmissionsPage(
 								<TableCell>
 									{value.score}&nbsp;
 									{
-										value.last_submission.getTime() != 0 &&
+										new Date(value.last_submission).getTime() != 0 &&
 										<>({Math.floor(dur / 60000)}:{Math.floor(dur / 1000) % 60})</>
 									}
 								</TableCell>
@@ -81,8 +81,8 @@ export default async function SubmissionsPage(
 
 										}
 
-										const last_submission = standings[value.unique_id][task.task.unique_id].last_submission.getTime();
-										const dur = last_submission - contestData.start_time.getTime();
+										const last_submission = new Date(standings[value.unique_id][task.task.unique_id].last_submission).getTime();
+										const dur = last_submission - new Date(contestData.start_time).getTime();
 
 										return (
 											<TableCell key={i}>
