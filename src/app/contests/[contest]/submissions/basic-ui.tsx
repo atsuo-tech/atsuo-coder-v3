@@ -44,18 +44,6 @@ export default async function SubmissionsPageUI(
 
 	const contestData = await getContest(contest);
 
-	if (!(await ContestViewable(contestData) && await ContestEnded(contestData)) && !(await ContestManagable(contestData))) {
-
-		if (await ContestViewable(contestData)) {
-
-			redirect(`/contests/${contest}/submissions/me`);
-
-		}
-
-		notFound();
-
-	}
-
 	assert(contestData);
 	assert(userData);
 
