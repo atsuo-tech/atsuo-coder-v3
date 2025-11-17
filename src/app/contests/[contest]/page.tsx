@@ -83,13 +83,13 @@ export default async function ContestPage(
 					</p>
 				}
 
-				{
-					await ContestRegistable(contestData) &&
-					<ButtonGroup fullWidth>
+				<ButtonGroup fullWidth>
+					{
+						await ContestRegistable(contestData) &&
 						<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }} onClick={async () => { "use server"; RegisterContest(contest, true); redirect(`/contests/${contest}`); }}>Rated 登録</Button>
-						<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }} onClick={async () => { "use server"; RegisterContest(contest, false); redirect(`/contests/${contest}`); }}>Unrated 登録</Button>
-					</ButtonGroup>
-				}
+					}
+					<Button fullWidth variant='outlined' sx={{ color: 'white', borderColor: 'white' }} onClick={async () => { "use server"; RegisterContest(contest, false); redirect(`/contests/${contest}`); }}>Unrated 登録</Button>
+				</ButtonGroup>
 
 			</main>
 
