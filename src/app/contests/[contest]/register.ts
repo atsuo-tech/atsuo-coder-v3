@@ -9,7 +9,7 @@ export async function RegisterContest(contest: string, is_rated: boolean) {
 
 	const contestData = await getContest(contest);
 
-	if (!(await ContestRegistable(contestData))) {
+	if (is_rated && !(await ContestRegistable(contestData))) {
 
 		notFound();
 
