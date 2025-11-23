@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import User from '@/components/user';
-import { ContestManagable, ContestViewable } from '@/lib/contest';
+import { ContestManagable, ContestSubmitable, ContestViewable } from '@/lib/contest';
 import { notFound } from 'next/navigation';
 import atsuocoder_db, { getContest } from '@/lib/atsuocoder_db';
 import assert from 'assert';
@@ -84,7 +84,10 @@ export default async function ClarPage(
     return (
         <main>
             <h1>質問</h1>
-            <Link href={`/contests/${contest}/clar/create`}>質問を作成</Link>
+            {
+                await ContestSubmitable(contestData) &&
+                <Link href={`/contests/${contest}/clar/create`}>質問を作成</Link>
+            }
             <Table>
                 <TableHead>
                     <TableRow>

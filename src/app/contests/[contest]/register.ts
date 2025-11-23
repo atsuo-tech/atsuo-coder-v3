@@ -1,9 +1,9 @@
 "use server";
 
 import atsuocoder_db, { getContest, getCurrentUserData } from "@/lib/atsuocoder_db";
-import { ContestRegistable, ContestViewable } from "@/lib/contest";
+import { ContestRegistable } from "@/lib/contest";
 import assert from "assert";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 export async function RegisterContest(contest: string, is_rated: boolean) {
 

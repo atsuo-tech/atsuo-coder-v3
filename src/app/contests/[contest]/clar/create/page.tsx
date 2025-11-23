@@ -19,7 +19,7 @@ export default async function CreateClarPage(
 
 	const contestData = await getContest(contest);
 
-	if (!(await ContestViewable(contestData))) {
+	if (!(await ContestSubmitable(contestData))) {
 
 		notFound();
 

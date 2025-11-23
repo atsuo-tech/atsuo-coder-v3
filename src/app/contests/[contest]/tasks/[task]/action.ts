@@ -1,7 +1,7 @@
 'use server';
 
 import atsuocoder_db, { getContest } from "@/lib/atsuocoder_db";
-import { ContestViewable } from "@/lib/contest";
+import { ContestSubmitable, ContestViewable } from "@/lib/contest";
 import { getCurrentUser } from "@/lib/w_auth_db";
 import { notFound, redirect } from "next/navigation";
 
@@ -21,7 +21,7 @@ export default async function TaskSubmit(formData: FormData) {
 	const contestData = await getContest(contest);
 	const userData = await getCurrentUser();
 
-	if (!contestData || !(await ContestViewable(contestData)) || !userData) {
+	if (!contestData || !(await ContestSubmitable(contestData)) || !userData) {
 
 		notFound();
 

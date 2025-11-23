@@ -5,7 +5,7 @@ import TaskSubmit from './action';
 import TaskSubmitForm from './form';
 import { Metadata } from 'next';
 import getTask from '@/lib/task';
-import { ContestEnded, ContestManagable, ContestViewable } from '@/lib/contest';
+import { ContestEnded, ContestManagable, ContestSubmitable, ContestViewable } from '@/lib/contest';
 import Link from 'next/link';
 
 export async function generateMetadata(
@@ -60,16 +60,21 @@ export default async function TaskPage(
 			<div className={styles.problem}>
 				<Markdown md={taskData.problem} />
 			</div>
-			<hr />
-			<div className={styles.submit}>
-				<form action={TaskSubmit}>
-					<TaskSubmitForm
-						contest={contest}
-						task={task}
-						languageData={await atsuocoder_db.languageData.findMany()}
-					/>
-				</form>
-			</div>
+			{
+				await ContestSubmitable(contestData) &&
+				<>
+					<hr />
+					<div className={styles.submit}>
+						<form action={TaskSubmit}>
+							<TaskSubmitForm
+								contest={contest}
+								task={task}
+								languageData={await atsuocoder_db.languageData.findMany()}
+							/>
+						</form>
+					</div>
+				</>
+			}
 		</main>
 	);
 

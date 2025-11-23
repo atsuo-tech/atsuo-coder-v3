@@ -6,6 +6,29 @@ export async function ContestViewable(contestData: GetContestType) {
 	const user = await getCurrentUser();
 
 	return (
+		!!contestData &&
+		(
+			Date.now() >= contestData.end_time.getTime() ||
+			(
+				!!user &&
+				(
+					await ContestManagable(contestData) ||
+					(
+						Date.now() >= contestData.start_time.getTime() &&
+						!!(await getContestRegistration(contestData))
+					)
+				)
+			)
+		)
+	);
+
+}
+
+export async function ContestSubmitable(contestData: GetContestType) {
+
+	const user = await getCurrentUser();
+
+	return (
 		!!user &&
 		!!contestData &&
 		(
