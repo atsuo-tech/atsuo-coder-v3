@@ -29,7 +29,6 @@ export default async function ClarPage(
     }
 
     assert(contestData);
-    assert(user);
 
     const contestManagable = await ContestManagable(contestData);
 
@@ -43,11 +42,16 @@ export default async function ClarPage(
                         is_public: true,
                     },
                 },
-                {
-                    questioner: {
-                        unique_id: user.unique_id,
-                    },
-                },
+                ...(
+                    user ?
+                        [
+                            {
+                                questioner: {
+                                    unique_id: user.unique_id,
+                                },
+                            },
+                        ] : []
+                )
             ],
         },
         include: {
