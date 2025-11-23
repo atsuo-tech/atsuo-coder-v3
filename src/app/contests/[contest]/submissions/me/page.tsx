@@ -3,7 +3,7 @@ import SubmissionsPageUI from "../basic-ui";
 import { getCurrentUser } from "@/lib/w_auth_db";
 import { notFound, redirect } from "next/navigation";
 import { getContest } from "@/lib/atsuocoder_db";
-import { ContestEnded, ContestManagable, ContestViewable } from "@/lib/contest";
+import { ContestEnded, ContestManagable, ContestSubmitable, ContestViewable } from "@/lib/contest";
 
 export default async function SubmissionsPage(
 	{
@@ -31,7 +31,7 @@ export default async function SubmissionsPage(
 
 	const contestData = await getContest(contest);
 
-	if (!await ContestViewable(contestData) && !(await ContestManagable(contestData))) {
+	if (!await ContestSubmitable(contestData) && !(await ContestManagable(contestData))) {
 
 		notFound();
 

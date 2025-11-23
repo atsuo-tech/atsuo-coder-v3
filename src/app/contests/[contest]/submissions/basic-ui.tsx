@@ -1,5 +1,5 @@
 import { getContest } from "@/lib/atsuocoder_db";
-import { ContestEnded, ContestManagable, ContestViewable } from "@/lib/contest";
+import { ContestEnded, ContestManagable, ContestSubmitable, ContestViewable } from "@/lib/contest";
 import { notFound, redirect } from "next/navigation";
 import assert from "assert";
 import w_auth_db, { getCurrentUser } from "@/lib/w_auth_db";
@@ -40,35 +40,24 @@ export default async function SubmissionsPageUI(
 
 	}
 
-	const userData = await getCurrentUser();
-
 	const contestData = await getContest(contest);
 
 	assert(contestData);
-	assert(userData);
 
 	if (user) {
 
-		if (user === "me") {
+		where.userDataUnique_id = (await w_auth_db.user.findFirst({
+			where: {
+				username: user,
+			},
+			select: {
+				unique_id: true,
+			},
+		}))?.unique_id;
 
-			where.userDataUnique_id = userData.unique_id;
+		if (!where.userDataUnique_id) {
 
-		} else {
-
-			where.userDataUnique_id = (await w_auth_db.user.findFirst({
-				where: {
-					username: user,
-				},
-				select: {
-					unique_id: true,
-				},
-			}))?.unique_id;
-
-			if (!where.userDataUnique_id) {
-
-				notFound();
-
-			}
+			notFound();
 
 		}
 
@@ -87,7 +76,7 @@ export default async function SubmissionsPageUI(
 			<h1>{title}</h1>
 			<List>
 				<ListItem><Link href={`/contests/${contest}/submissions`}>すべての提出</Link></ListItem>
-				<ListItem><Link href={`/contests/${contest}/submissions/me`}>あなたの提出</Link></ListItem>
+				{await ContestSubmitable(contestData) && <ListItem><Link href={`/contests/${contest}/submissions/me`}>あなたの提出</Link></ListItem>}
 			</List>
 			<SubmissionsTable
 				contestData={contestData}
