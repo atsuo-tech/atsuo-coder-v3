@@ -1,5 +1,5 @@
 import { getContest } from "@/lib/atsuocoder_db";
-import { ContestViewable } from "@/lib/contest";
+import { ContestSubmitable, ContestViewable } from "@/lib/contest";
 import assert from "assert";
 import { notFound } from "next/navigation";
 import CreateClarForm from "./form";
