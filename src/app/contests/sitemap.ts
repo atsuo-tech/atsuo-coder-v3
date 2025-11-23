@@ -24,7 +24,6 @@ export default async function ContestSitemap(): Promise<MetadataRoute.Sitemap> {
 	return contests.map((contest) => (
 		{
 			url: `https://judge.w-pcp.dev/contests/${contest.url_id}`,
-			lastModified: (contest.end_time.getTime() >= Date.now() ? contest.end_time : undefined),
 			changeFrequency: 'weekly',
 			priority: 0.7,
 		} as MetadataRoute.Sitemap[number]
