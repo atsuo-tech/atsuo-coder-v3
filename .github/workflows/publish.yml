@@ -22,6 +22,8 @@ jobs:
           scope: '@atsuo-tech'
 
       - run: npm install
+      - run: npm run generate
+      - run: npm run clean
       - run: npm run build
       - run: npm publish
         env:
