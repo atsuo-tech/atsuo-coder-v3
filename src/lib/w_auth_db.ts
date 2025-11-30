@@ -1,12 +1,18 @@
-import { PrismaClient } from '@prisma/w-auth/client';
+import { PrismaClient } from '@atsuo-tech/w-auth-prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { cookies } from 'next/headers';
+import { connection } from 'next/server';
 import { cache } from 'react';
 
 const globalForPrisma = globalThis as unknown as {
 	w_auth_db: PrismaClient | undefined;
 };
 
-const w_auth_db = globalForPrisma.w_auth_db ?? new PrismaClient();
+const w_auth_db = globalForPrisma.w_auth_db ?? new PrismaClient({
+	adapter: new PrismaPg({
+		connectionString: process.env.W_AUTH_DATABASE_URL || "",
+	}),
+});
 
 if (process.env.NODE_ENV != 'production') globalForPrisma.w_auth_db = w_auth_db;
 

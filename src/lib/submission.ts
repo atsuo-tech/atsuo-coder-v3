@@ -1,8 +1,8 @@
-import type { Submission } from "@prisma/atsuocoder";
+import type { Submission } from "@atsuo-tech/atsuo-coder-v3-prisma";
 import atsuocoder_db from "./atsuocoder_db";
 import { JudgeStatus } from "./utils";
 export { JudgeStatus } from "./utils";
-import type { Prisma } from "@prisma/atsuocoder";
+import type { Prisma } from "@atsuo-tech/atsuo-coder-v3-prisma";
 
 export interface JudgeResult {
 	status?: JudgeStatus;

@@ -1,4 +1,5 @@
-import { PrismaClient, UserRole } from '@prisma/atsuocoder/client';
+import { PrismaClient, UserRole } from '@atsuo-tech/atsuo-coder-v3-prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { getCurrentUser } from './w_auth_db';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
@@ -7,7 +8,11 @@ const globalForPrisma = globalThis as unknown as {
 	atsuocoder_db: PrismaClient | undefined;
 };
 
-const atsuocoder_db = globalForPrisma.atsuocoder_db ?? new PrismaClient();
+const atsuocoder_db = globalForPrisma.atsuocoder_db ?? new PrismaClient({
+	adapter: new PrismaPg({
+		connectionString: process.env.ATSUOCODER_DATABASE_URL || "",
+	}),
+});
 
 if (process.env.NODE_ENV != 'production') globalForPrisma.atsuocoder_db = atsuocoder_db;
 

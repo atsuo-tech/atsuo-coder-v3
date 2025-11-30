@@ -1,5 +1,5 @@
 import atsuocoder_db, { getContest } from "@/lib/atsuocoder_db";
-import type { Prisma } from "@prisma/atsuocoder";
+import type { Prisma } from "@atsuo-tech/atsuo-coder-v3-prisma";
 import { ContestEnded, ContestManagable, ContestViewable } from "@/lib/contest";
 import { evalSubmission, JudgeResult, JudgeStatus } from "@/lib/submission";
 import { getCurrentUser } from "@/lib/w_auth_db";
