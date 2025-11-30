@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/atsuocoder";
+import type { Prisma } from "@atsuo-tech/atsuo-coder-v3-prisma";
 import PageControl from "@/app/contests/[contest]/submissions/page-control";
 import ResultTag from "@/app/contests/[contest]/submissions/result";
 import { GetContestType } from "@/lib/atsuocoder_db";

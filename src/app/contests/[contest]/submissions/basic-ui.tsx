@@ -5,7 +5,7 @@ import assert from "assert";
 import w_auth_db, { getCurrentUser } from "@/lib/w_auth_db";
 import Link from "next/link";
 import SubmissionsTable, { Searcher } from "@/components/submissions-table";
-import type { Prisma } from "@prisma/atsuocoder/client";
+import type { Prisma } from "@atsuo-tech/atsuo-coder-v3-prisma";
 import getTask from "@/lib/task";
 import { List, ListItem } from "@mui/material";
 

@@ -3,7 +3,7 @@
 import Editor from "@/components/ace-editor";
 import LanguageSelector from "@/components/selector/language";
 import { Button } from "@mui/material"
-import type { LanguageData } from "@prisma/atsuocoder";
+import type { LanguageData } from "@atsuo-tech/atsuo-coder-v3-prisma";
 import { useEffect, useState } from "react";
 
 export default function TaskSubmitForm(

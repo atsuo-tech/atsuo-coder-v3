@@ -2,8 +2,7 @@
 
 import { Button, FormControl, MenuItem, Select, TextField } from '@mui/material';
 import { useState } from 'react';
-import { DateToForm } from '@/lib/utils';
-import { Task } from '@prisma/atsuocoder';
+import { Task } from '@atsuo-tech/atsuo-coder-v3-prisma';
 
 export default function TaskControlComponent(
 	{
