@@ -45,19 +45,3 @@ export function RatedRangeToString(rated_range: number[]) {
 		)
 
 }
-
-export enum JudgeStatus {
-	WJ,
-	WR,
-	Judging,
-	AC,
-	WA,
-	RE,
-	CE,
-	TLE,
-	MLE,
-	QLE,
-	PE,
-	IE,
-	NG,
-};

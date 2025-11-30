@@ -1,8 +1,8 @@
 "use server";
 
 import atsuocoder_db from "@/lib/atsuocoder_db";
-import { evalSubmission, JudgeStatus } from "@/lib/submission";
-import { notFound, redirect } from "next/navigation";
+import { evalSubmission, evaluatableSubmissionIncluder } from "@/lib/submission";
+import { notFound } from "next/navigation";
 
 export default async function getResult(id: string) {
 
@@ -10,13 +10,7 @@ export default async function getResult(id: string) {
 		where: {
 			unique_id: id,
 		},
-		include: {
-			contest: {
-				select: {
-					url_id: true,
-				},
-			},
-		},
+		include: evaluatableSubmissionIncluder,
 	});
 
 	if (!submission) {

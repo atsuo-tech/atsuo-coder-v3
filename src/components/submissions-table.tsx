@@ -1,4 +1,4 @@
-import type { Prisma } from "@atsuo-tech/atsuo-coder-v3-prisma";
+import { JudgeStatus, type Prisma } from "@atsuo-tech/atsuo-coder-v3-prisma";
 import PageControl from "@/app/contests/[contest]/submissions/page-control";
 import ResultTag from "@/app/contests/[contest]/submissions/result";
 import { GetContestType } from "@/lib/atsuocoder_db";
@@ -6,7 +6,7 @@ import { getSubmissions } from "@/lib/submission";
 import { Accordion, AccordionSummary, Box, Button, Divider, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import Link from "next/link";
 import User from "./user";
-import { evalSubmission, JudgeStatus } from "@/lib/submission";
+import { evalSubmission } from "@/lib/submission";
 import LanguageSelector from "./selector/language";
 import getLanguageData from "@/lib/language";
 import { redirect } from "next/navigation";
@@ -110,7 +110,7 @@ export default async function SubmissionsTable(
 
 									const info = await evalSubmission(submission);
 
-									if ([JudgeStatus.CE, JudgeStatus.IE, JudgeStatus.WJ, JudgeStatus.WR].includes(info.status)) {
+									if (([JudgeStatus.CE, JudgeStatus.IE, JudgeStatus.WJ, JudgeStatus.WR] as JudgeStatus[]).includes(info.status)) {
 
 										return (
 											<TableRow key={i}>

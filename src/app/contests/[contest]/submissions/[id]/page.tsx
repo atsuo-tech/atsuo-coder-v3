@@ -1,14 +1,14 @@
 import atsuocoder_db, { getContest } from "@/lib/atsuocoder_db";
-import type { Prisma } from "@atsuo-tech/atsuo-coder-v3-prisma";
 import { ContestEnded, ContestManagable, ContestViewable } from "@/lib/contest";
-import { evalSubmission, JudgeResult, JudgeStatus } from "@/lib/submission";
+import { evalSubmission, getEvaluatableSubmission } from "@/lib/submission";
 import { getCurrentUser } from "@/lib/w_auth_db";
 import { Button, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import styles from "../submissions.module.css";
-import ResultTag, { SimpleResult } from "../result";
+import ResultTag from "../result";
 import Editor from "@/components/ace-editor";
+import { JudgeStatus } from "@atsuo-tech/atsuo-coder-v3-prisma";
 
 export default async function SubmissionPage(
 	{
@@ -25,46 +25,7 @@ export default async function SubmissionPage(
 
 	const contestData = await getContest(contest);
 
-	const submission = await atsuocoder_db.submission.findUnique({
-		where: {
-			contest: {
-				url_id: contest,
-			},
-			unique_id: id,
-		},
-		include: {
-			language: {
-				select: {
-					name: true,
-				},
-			},
-			contest: {
-				select: {
-					url_id: true,
-					TaskUse: {
-						where: {
-							task: {
-								Submission: {
-									some: {
-										unique_id: id,
-									},
-								},
-							},
-						},
-						select: {
-							assignment: true,
-						},
-					},
-				},
-			},
-			task: {
-				select: {
-					url_id: true,
-					title: true,
-				},
-			},
-		},
-	});
+	const submission = await getEvaluatableSubmission(id);
 
 	const user = await getCurrentUser();
 
@@ -92,8 +53,6 @@ export default async function SubmissionPage(
 
 	}
 
-	const result = submission.result as unknown as JudgeResult;
-
 	const info = await evalSubmission(submission);
 
 	return (
@@ -111,7 +70,10 @@ export default async function SubmissionPage(
 								unique_id: id,
 							},
 							data: {
-								result: { status: JudgeStatus.WR } as JudgeResult as unknown as Prisma.JsonObject,
+								judgeResults: {
+									deleteMany: {},
+								},
+								status: JudgeStatus.WR,
 								queued: false,
 							}
 						});
@@ -152,10 +114,10 @@ export default async function SubmissionPage(
 			</Table>
 
 			{
-				result.compile_error?.replaceAll("\n", "") &&
+				submission.compile_error?.replaceAll("\n", "") &&
 				<div>
 					<h2>コンパイルエラー</h2>
-					<TextField multiline value={result.compile_error} fullWidth />
+					<TextField multiline value={submission.compile_error} fullWidth />
 				</div>
 			}
 
@@ -181,7 +143,7 @@ export default async function SubmissionPage(
 										<TableCell>{testset.set_name}</TableCell>
 										<TableCell>{testset.score}</TableCell>
 										<TableCell><span className={`${styles.result} ${styles[JudgeStatus[testset.status]]}`}>{JudgeStatus[testset.status]}</span></TableCell>
-										<TableCell>{Math.round(testset.run_time * 1000)} ms</TableCell>
+										<TableCell>{testset.run_time} ms</TableCell>
 										<TableCell>{testset.memory} KiB</TableCell>
 										<TableCell>{testset.testcase.join(", ")}</TableCell>
 									</TableRow>
@@ -209,7 +171,7 @@ export default async function SubmissionPage(
 								<TableRow key={i}>
 									<TableCell>{testcase.case_name}</TableCell>
 									<TableCell><span className={`${styles.result} ${styles[JudgeStatus[testcase.status]]}`}>{JudgeStatus[testcase.status]} {testcase.error_type != undefined && `[${testcase.error_type}]`}</span></TableCell>
-									<TableCell>{Math.round(testcase.run_time * 1000)} ms</TableCell>
+									<TableCell>{testcase.run_time} ms</TableCell>
 									<TableCell>{testcase.memory} KiB</TableCell>
 								</TableRow>
 						)

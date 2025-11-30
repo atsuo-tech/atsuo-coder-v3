@@ -1,20 +1,19 @@
 "use client";
 
 import { type EvalSubmissionReturnType } from '@/lib/submission';
-import { JudgeStatus } from '@/lib/utils';
 import styles from '../submissions.module.css';
-import { useState } from 'react';
 import { TableCell } from '@mui/material';
+import type { JudgeStatus } from '@atsuo-tech/atsuo-coder-v3-prisma';
 
-const runningTypes = [JudgeStatus.Judging, JudgeStatus.WJ, JudgeStatus.WR];
+const runningTypes = ["Judging", "WJ", "WR"] as JudgeStatus[];
 
 export function SimpleResult({ info }: { info: EvalSubmissionReturnType }) {
 
-	return <span className={`${styles.result} ${styles[JudgeStatus[info.status]]}`}>{info.display}</span>
+	return <span className={`${styles.result} ${styles[info.status]}`}>{info.display}</span>
 
 }
 
-export default function ResultTag({ defaultInfo, id, submissionPage }: { defaultInfo: EvalSubmissionReturnType, id: string, submissionPage?: boolean }) {
+export default function ResultTag({ defaultInfo: info, id, submissionPage }: { defaultInfo: EvalSubmissionReturnType, id: string, submissionPage?: boolean }) {
 
 	if (!submissionPage) {
 
@@ -22,9 +21,7 @@ export default function ResultTag({ defaultInfo, id, submissionPage }: { default
 
 	}
 
-	const [info, setInfo] = useState(defaultInfo);
-
-	const largeResult = [...runningTypes, JudgeStatus.CE, JudgeStatus.IE].includes(info.status);
+	const largeResult = ([...runningTypes, "CE", "IE"] as (typeof info.status)[]).includes(info.status);
 
 	return (
 		<>
@@ -34,7 +31,7 @@ export default function ResultTag({ defaultInfo, id, submissionPage }: { default
 			{
 				!largeResult &&
 				<>
-					<TableCell>{Math.round(info.run_time * 1000)} ms</TableCell>
+					<TableCell>{info.run_time} ms</TableCell>
 					<TableCell>{info.memory} KB</TableCell>
 				</>
 			}

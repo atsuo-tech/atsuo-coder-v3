@@ -24,14 +24,7 @@ export default async function SubmissionsPage(
 
 	const contestData = await getContest(contest);
 
-	if (!(await ContestViewable(contestData))) {
-
-		notFound();
-
-	}
-
 	assert(contestData);
-	assert(userData);
 
 	const { ranking, standings } = (await getContestStandings(contest))!!;
 
