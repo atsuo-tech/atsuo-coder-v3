@@ -6,11 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "clean": "rm -rf .next",
-    "generate:w_auth": "prisma generate --schema=prisma.w_auth/schema.prisma",
-    "generate": "npm run generate:w_auth",
-    "dbpush:w_auth": "prisma db push --schema=prisma.w_auth/schema.prisma",
-    "dbpush": "npm run dbpush:w_auth"
+    "clean": "rm -rf .next"
   },
   "dependencies": {
     "@atsuo-tech/atsuo-coder-v3-prisma": "^2.0.0",

@@ -28,8 +28,6 @@ jobs:
           scope: "@atsuo-tech"
 
       - run: npm ci
-        env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm run generate
       - run: npm run clean
       - run: npm run build
@@ -51,5 +49,3 @@ jobs:
           scope: "@atsuo-tech"
 
       - run: npm publish
-        env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
