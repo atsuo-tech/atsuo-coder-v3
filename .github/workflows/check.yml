@@ -1,9 +1,12 @@
-name: Publish Package
+name: Check Buildability
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 env:
   W_AUTH_DATABASE_URL: ${{ secrets.W_AUTH_DATABASE_URL }}
@@ -17,6 +20,7 @@ jobs:
     permissions:
       contents: read
       packages: read
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,25 +28,9 @@ jobs:
           node-version: 20
           registry-url: https://npm.pkg.github.com
           scope: "@atsuo-tech"
+
       - run: npm ci
         env:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm run clean
       - run: npm run build
-
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com
-          scope: "@atsuo-tech"
-      - run: npm publish
-        env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
