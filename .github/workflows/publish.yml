@@ -17,6 +17,7 @@ jobs:
       ATSUOCODER_DATABASE_URL: ${{ secrets.ATSUOCODER_DATABASE_URL }}
       LOGIN_URL: ${{ secrets.LOGIN_URL }}
       SIGNUP_URL: ${{ secrets.SIGNUP_URL }}
+      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
@@ -32,5 +33,3 @@ jobs:
       - run: npm run clean
       - run: npm run build
       - run: npm publish
-        env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
