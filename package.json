@@ -1,12 +1,13 @@
 {
-  "name": "atsuo-coder-v3",
-  "version": "0.1.0",
+  "name": "@atsuo-tech/atsuo-coder-v3",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "prepublishOnly": "npm run build",
     "generate:w_auth": "prisma generate --schema=prisma.w_auth/schema.prisma",
     "generate:atsuocoder": "prisma generate --schema=prisma.atsuocoder/schema.prisma",
     "generate": "npm run generate:w_auth && npm run generate:atsuocoder",
@@ -43,5 +44,15 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "prisma": "^6.12.0",
     "typescript": "^5"
+  },
+  "files": [
+    ".next",
+    "public",
+    "package.json",
+    "next.config.ts"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
   }
 }
