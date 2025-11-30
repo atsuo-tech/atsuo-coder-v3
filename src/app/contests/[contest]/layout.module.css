@@ -1,0 +1,83 @@
+nav.nav {
+	top: calc(37.5pt + 2rem);
+	left: 0;
+	border-bottom: 1px solid #ccc;
+	z-index: 100;
+
+	div.navContestName {
+		display: grid;
+		background: linear-gradient(to right, hsl(210, 100%, 10%), hsl(210, 100%, 17%));
+		color: white;
+		font-size: 1.2em;
+		padding: 0.5em 1.2em;
+		grid-template-columns: auto 300px max-content;
+		height: 2rem;
+
+		>div {
+			align-self: baseline;
+		}
+
+		>div.pin {
+			align-self: self-end;
+		}
+	}
+
+	div.navOthers {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		background-color: white;
+		color: black;
+		font-size: 1.2em;
+		top: calc(37.5pt + 2rem + 2rem + 1.0rem);
+		height: 3rem;
+		padding: 0;
+		overflow-x: auto;
+
+		>div {
+			display: block;
+			text-align: center;
+			align-self: center;
+
+			a {
+				display: block;
+				color: black;
+				height: 100%;
+				width: 100%;
+			}
+		}
+	}
+}
+
+nav.pinned {
+	position: sticky;
+}
+
+@media (max-width: 750px) {
+	nav.nav {
+		div.navContestName {
+			grid-template-columns: 1fr;
+
+			>div.timer {
+				display: none;
+			}
+		}
+
+		div.navOthers {
+			grid-template-columns: repeat(5, 150px);
+		}
+	}
+}
+
+@media print {
+	nav.nav {
+		div.navContestName {
+			>div {
+				display: none;
+			}
+		}
+
+		div.navOthers {
+			display: none;
+		}
+	}
+}

@@ -1,0 +1,19 @@
+div.graphSpace {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+
+    div.graph {
+        width: 100%;
+        height: 100%;
+        margin: 2rem 0;
+    }
+
+    div.userInfo {
+        line-height: 1.5;
+        margin: 2rem 0;
+    }
+}
+
+div.history {
+    margin: 2rem 0;
+}

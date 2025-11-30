@@ -1,0 +1,53 @@
+span.result {
+	display: block;
+	width: 2rem;
+	text-align: center;
+	padding: .3rem .5rem;
+	padding-top: .4rem;
+	border-radius: .5rem;
+	font-weight: 500;
+	font-size: 1.1em;
+	color: white;
+
+	&.AC {
+		background: #5cb85c;
+	}
+
+	&.WA {
+		background: #f0ad4e;
+	}
+
+	&.TLE {
+		background: hotpink;
+	}
+
+	&.RE {
+		background: darkviolet;
+	}
+
+	&.CE {
+		background: dodgerblue;
+	}
+
+	&.MLE {
+		background: maroon;
+	}
+
+	&.OLE {
+		background: salmon;
+	}
+
+	&.IE {
+		background: red;
+	}
+
+	&.NG {
+		background: midnightblue;
+	}
+
+	&.WJ,
+	&.WR,
+	&.Judging {
+		background: gray;
+	}
+}

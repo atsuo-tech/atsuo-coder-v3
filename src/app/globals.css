@@ -1,42 +1,94 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
+:root,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+	margin: 0;
+	padding: 0;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-family: var(--font-lato), var(--font-noto-sans-jp);
+
+	h1 {
+		font-weight: 400;
+	}
+
+	h2 {
+		font-weight: 300;
+	}
+
+	h3 {
+		font-weight: 400;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	ol,
+	ul {
+		li {
+			padding: .2rem;
+		}
+	}
+
+	hr {
+		border: 1px solid #ccc;
+	}
+
+	table {
+		width: 100%;
+		min-width: max-content;
+	}
+
+	details {
+		border: 1px solid #aaa;
+		border-radius: 4px;
+		padding: 0.5em 0.5em 0;
+
+		summary {
+			font-weight: bold;
+			margin: -0.5em -0.5em 0;
+			padding: 0.5em;
+			user-select: none;
+		}
+
+		&[open] summary {
+			border-bottom: 1px solid #aaa;
+			margin-bottom: 0.5em;
+		}
+	}
+
+	img {
+		max-width: min(100%, 600px);
+		max-height: 100vh;
+	}
+	
+	code {
+		background-color: #ddd;
+	}
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+.material-symbols-outlined {
+	vertical-align: -3px;
+	font-size: 1em;
+	line-height: 1;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+@media print {
+	h2 {
+		break-before: avoid-region;
+		break-after: avoid;
+	}
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+	h2~*:not(h2) {
+		break-before: avoid;
+	}
+
+	@page {
+		margin: 20mm 0;
+		zoom: 0.8;
+	}
+
+	@page :first {
+		margin-top: 0;
+	}
 }
