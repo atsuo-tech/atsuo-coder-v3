@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 env:
   W_AUTH_DATABASE_URL: ${{ secrets.W_AUTH_DATABASE_URL }}
@@ -17,6 +20,8 @@ jobs:
     permissions:
       contents: read
       packages: read
+
+    if: github.event_name == 'push'
 
     env:
       NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
