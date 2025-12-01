@@ -20,8 +20,6 @@ export default async function SubmissionsPage(
 
 	const { contest } = await params;
 
-	const userData = await getCurrentUser();
-
 	const contestData = await getContest(contest);
 
 	if (!(await ContestViewable(contestData))) {
@@ -31,7 +29,6 @@ export default async function SubmissionsPage(
 	}
 
 	assert(contestData);
-	assert(userData);
 
 	const { ranking, standings } = (await getContestStandings(contest))!!;
 
