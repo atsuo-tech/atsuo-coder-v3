@@ -1,8 +1,5 @@
 import { getContest } from "@/lib/atsuocoder_db";
-import { ContestViewable } from "@/lib/contest";
-import { notFound } from "next/navigation";
 import assert from "assert";
-import { getCurrentUser } from "@/lib/w_auth_db";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import Link from "next/link";
 import User from "@/components/user";
@@ -21,12 +18,6 @@ export default async function SubmissionsPage(
 	const { contest } = await params;
 
 	const contestData = await getContest(contest);
-
-	if (!(await ContestViewable(contestData))) {
-
-		notFound();
-
-	}
 
 	assert(contestData);
 

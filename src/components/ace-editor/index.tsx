@@ -43,7 +43,7 @@ export default function Editor(
 				onChange={(e) => setValue(e)}
 				name="code"
 			/>
-			<textarea name="code" hidden required value={rvalue} />
+			<textarea name="code" readOnly={readonly} hidden required value={rvalue} />
 		</>
 	)
 

@@ -1,7 +1,5 @@
-import type { Submission } from "@atsuo-tech/atsuo-coder-v3-prisma";
+import { JudgeStatus } from "@atsuo-tech/atsuo-coder-v3-prisma";
 import atsuocoder_db from "./atsuocoder_db";
-import { JudgeStatus } from "./utils";
-export { JudgeStatus } from "./utils";
 import type { Prisma } from "@atsuo-tech/atsuo-coder-v3-prisma";
 
 export interface JudgeResult {
@@ -18,11 +16,63 @@ export interface JudgeResult {
 	};
 }
 
-export async function evalSubmission(submission: Submission) {
+export const evaluatableSubmissionIncluder = {
+	language: {
+		select: {
+			name: true,
+		},
+	},
+	contest: {
+		select: {
+			url_id: true,
+			TaskUse: {
+				select: {
+					assignment: true,
+					taskUnique_id: true,
+				},
+			},
+		},
+	},
+	task: {
+		select: {
+			url_id: true,
+			title: true,
+		},
+	},
+	judgeResults: {
+		select: {
+			status: true,
+			time: true,
+			memory: true,
+			error_type: true,
+			server_id: true,
+			score: true,
+			testCase: {
+				select: {
+					unique_id: true,
+					case_name: true,
+				},
+			},
+		},
+	},
+};
 
-	const result = submission.result as unknown as JudgeResult;
+export async function getEvaluatableSubmission(unique_id: string) {
 
-	if (result.status) {
+	return atsuocoder_db.submission.findUnique({
+		where: {
+			unique_id,
+		},
+		include: evaluatableSubmissionIncluder,
+	});
+
+}
+
+export type GetEvaluatableSubmissionType = Exclude<Awaited<ReturnType<typeof getEvaluatableSubmission>>, null>;
+
+export async function evalSubmission(submission: GetEvaluatableSubmissionType) {
+
+	if (submission.judgeResults.length == 0) {
 
 		return {
 			set_results: [],
@@ -30,17 +80,17 @@ export async function evalSubmission(submission: Submission) {
 			score: 0,
 			run_time: -1,
 			memory: -1,
-			status: result.status,
-			display: JudgeStatus[result.status],
+			status: submission.status,
+			display: JudgeStatus[submission.status],
 		};
 
 	}
 
-	const testcases = result.testcases;
+	const testcases = submission.judgeResults;
 
 	let run_time = -1;
 	let memory = -1;
-	let status = JudgeStatus.WJ;
+	let status: JudgeStatus = JudgeStatus.WJ;
 
 	const testsetData = await atsuocoder_db.testSet.findMany({
 		where: {
@@ -76,22 +126,26 @@ export async function evalSubmission(submission: Submission) {
 	});
 
 	const set_results: { status: JudgeStatus, run_time: number, memory: number, set_name: string, score: number, testcase: string[] }[] = [];
-	const case_results: { status: JudgeStatus, run_time: number, memory: number, case_name: string, error_type?: number }[] = [];
+	const case_results: { status: JudgeStatus, run_time: number, memory: number, case_name: string, error_type?: string }[] = [];
 
 	let score = 0, testCaseCnt = 0;
 
+	const judgeStatusValues = Object.values(JudgeStatus);
+
 	if (testcases) {
 
-		for (const testcase in testcases) {
-			run_time = Math.max(run_time, testcases[testcase].time);
-			memory = Math.max(memory, testcases[testcase].memory);
-			status = Math.max(status, testcases[testcase].status);
-			case_results.push({ case_name: testcase, run_time: testcases[testcase].time, memory: testcases[testcase].memory, status: testcases[testcase].status, error_type: testcases[testcase].error_type });
+		for (const testcase of testcases) {
+			run_time = Math.max(run_time, Number(testcase.time));
+			memory = Math.max(memory, Number(testcase.memory));
+			if (judgeStatusValues.indexOf(status) < judgeStatusValues.indexOf(testcase.status)) {
+				status = testcase.status;
+			}
+			case_results.push({ case_name: testcase.testCase.case_name, run_time: Number(testcase.time), memory: Number(testcase.memory), status: testcase.status, error_type: testcase.error_type || undefined });
 			testCaseCnt++;
 		}
 
 		for (const testset of testsetData.sort((a, b) => a.set_index - b.set_index)) {
-			let status = JudgeStatus.WJ;
+			let status: JudgeStatus = JudgeStatus.WJ;
 			let run_time = -1;
 			let memory = -1;
 			let set_score = 0, interactive = false;
@@ -99,25 +153,31 @@ export async function evalSubmission(submission: Submission) {
 			for (const testcase of testset.TestCaseUse) {
 				set_testcase.push(testcase.testcase.case_name);
 				const case_name = testcase.testcase.case_name;
-				if (!testcases[case_name]) {
+				if (!testcase) {
 					run_time = -1;
 					memory = -1;
 					status = JudgeStatus.WJ;
 					break;
 				}
-				run_time = Math.max(run_time, testcases[case_name].time);
-				memory = Math.max(memory, testcases[case_name].memory);
-				status = Math.max(status, testcases[case_name].status);
-				if (testcases[case_name].score) {
-					set_score += testcases[case_name].score;
-					score += testcases[case_name].score;
+				const testcaseResult = testcases.find((tc) => tc.testCase.case_name == case_name);
+				if (!testcaseResult) {
+					continue;
+				}
+				run_time = Math.max(run_time, Number(testcaseResult.time));
+				memory = Math.max(memory, Number(testcaseResult.memory));
+				if (judgeStatusValues.indexOf(status) < judgeStatusValues.indexOf(testcaseResult.status)) {
+					status = testcaseResult.status;
+				}
+				if (testcaseResult.score !== undefined) {
+					set_score += Number(testcaseResult.score);
+					score += Number(testcaseResult.score);
 					interactive = true;
 				}
 			}
 			if (status == JudgeStatus.AC) {
 				if (!interactive) {
-					set_score += testset.score;
-					score += testset.score;
+					set_score += Number(testset.score);
+					score += Number(testset.score);
 				}
 			}
 			set_results.push({ set_name: testset.set_name, run_time, memory, status, score: set_score, testcase: set_testcase });
@@ -125,7 +185,7 @@ export async function evalSubmission(submission: Submission) {
 
 	}
 
-	if ([JudgeStatus.CE, JudgeStatus.IE, JudgeStatus.WJ, JudgeStatus.WR].includes(status)) {
+	if (([JudgeStatus.CE, JudgeStatus.IE, JudgeStatus.WJ, JudgeStatus.WR] as JudgeStatus[]).includes(status)) {
 
 		return { set_results, case_results, score, run_time, memory, status, display: JudgeStatus[status] };
 
@@ -137,34 +197,11 @@ export async function evalSubmission(submission: Submission) {
 
 export type EvalSubmissionReturnType = Awaited<ReturnType<typeof evalSubmission>>
 
-export async function getSubmissions(pageInt: number, where?: Prisma.SubmissionWhereInput, orderBy?: Prisma.SubmissionOrderByWithRelationInput){
+export async function getSubmissions(pageInt: number, where?: Prisma.SubmissionWhereInput, orderBy?: Prisma.SubmissionOrderByWithRelationInput) {
 
 	return await atsuocoder_db.submission.findMany({
 		where,
-		include: {
-			language: {
-				select: {
-					name: true,
-				},
-			},
-			contest: {
-				select: {
-					url_id: true,
-					TaskUse: {
-						select: {
-							assignment: true,
-							taskUnique_id: true,
-						},
-					},
-				},
-			},
-			task: {
-				select: {
-					url_id: true,
-					title: true,
-				},
-			},
-		},
+		include: evaluatableSubmissionIncluder,
 		orderBy: {
 			created_at: 'desc',
 			...orderBy,

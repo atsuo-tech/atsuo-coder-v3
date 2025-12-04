@@ -1,6 +1,7 @@
 import { unstable_cache } from "next/cache";
 import atsuocoder_db, { getContest } from "./atsuocoder_db";
-import { evalSubmission, JudgeStatus } from "./submission";
+import { evalSubmission, evaluatableSubmissionIncluder } from "./submission";
+import { JudgeStatus } from "@atsuo-tech/atsuo-coder-v3-prisma";
 
 export const getContestStandings = unstable_cache(
 	async (url_id: string, rated_only: boolean = false) => {
@@ -20,6 +21,7 @@ export const getContestStandings = unstable_cache(
 					lte: contestData.end_time,
 				},
 			},
+			include: evaluatableSubmissionIncluder,
 			orderBy: {
 				created_at: "asc",
 			},
@@ -43,6 +45,9 @@ export const getContestStandings = unstable_cache(
 				continue;
 			}
 			const evalData = await evalSubmission(submission);
+			if(!evalData) {
+				continue;
+			}
 			standings[submission.userDataUnique_id][submission.taskUnique_id] ??= { sets: {}, last_submission: submission.created_at, penalty: 0 };
 			evalData.set_results.forEach((set) => {
 				standings[submission.userDataUnique_id][submission.taskUnique_id].sets[set.set_name] ??= 0;
@@ -52,7 +57,7 @@ export const getContestStandings = unstable_cache(
 					standings[submission.userDataUnique_id][submission.taskUnique_id].last_submission = submission.created_at;
 				}
 			})
-			if (![JudgeStatus.AC, JudgeStatus.CE, JudgeStatus.IE, JudgeStatus.WJ, JudgeStatus.WR, JudgeStatus.Judging].includes(evalData.status)) {
+			if (!([JudgeStatus.AC, JudgeStatus.CE, JudgeStatus.IE, JudgeStatus.WJ, JudgeStatus.WR, JudgeStatus.Judging] as JudgeStatus[]).includes(evalData.status)) {
 				standings[submission.userDataUnique_id][submission.taskUnique_id].penalty++;
 			}
 		}
