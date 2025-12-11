@@ -1,9 +1,20 @@
 name: Publish Package
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version for the new release"
+        required: false
+        type: string
+      prerelease:
+        description: "Is this a prerelease?"
+        required: false
+        type: boolean
+      release_notes:
+        description: "Release notes for the new version"
+        required: false
+        type: string
 
 env:
   W_AUTH_DATABASE_URL: ${{ secrets.W_AUTH_DATABASE_URL }}
@@ -30,8 +41,45 @@ jobs:
       - run: npm run clean
       - run: npm run build
 
-  publish:
+  bump-version:
     needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: "@atsuo-tech"
+
+      - name: Set Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump npm version
+        run: |
+          $TAG=$(npm version ${{ github.event.inputs.version || 'prerelease --preid canary' }})
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          git push origin HEAD:canary --follow-tags
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ env.TAG }}
+          release_name: Canary Release ${{ env.TAG }}
+          draft: false
+          prerelease: ${{ github.event.inputs.prerelease }}
+          body: ${{ github.event.inputs.release_notes }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    needs: [build, bump-version]
     runs-on: ubuntu-latest
     permissions:
       contents: read
