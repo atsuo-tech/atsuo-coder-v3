@@ -54,4 +54,4 @@ jobs:
       - name: Bump npm version
         run: |
           npm version prerelease --preid canary
-          git push origin HEAD:canary
+          git push origin HEAD:canary --follow-tags
