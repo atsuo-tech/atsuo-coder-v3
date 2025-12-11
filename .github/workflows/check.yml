@@ -1,12 +1,6 @@
 name: Check Buildability
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_notes:
-        description: "Release notes for the new version"
-        required: false
-        type: string
   push:
 
 env:
