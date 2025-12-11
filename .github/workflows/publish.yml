@@ -63,7 +63,7 @@ jobs:
 
       - name: Bump npm version
         run: |
-          $TAG=$(npm version ${{ github.event.inputs.version || 'prerelease --preid canary' }})
+          TAG=$(npm version ${{ github.event.inputs.version || 'prerelease --preid canary' }})
           echo "TAG=$TAG" >> $GITHUB_ENV
           git push origin HEAD:canary --follow-tags
 
