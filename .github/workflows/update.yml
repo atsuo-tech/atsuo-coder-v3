@@ -1,4 +1,7 @@
 name: npm version on merge
+permissions:
+  contents: write
+  packages: write
 
 on:
   workflow_run:
