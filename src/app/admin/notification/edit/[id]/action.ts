@@ -1,6 +1,7 @@
 "use server";
 
 import atsuocoder_db, { restrictUser } from "@/lib/atsuocoder_db";
+import { revalidateTag } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 
 export default async function AdminNotificationEditAction(formData: FormData) {
@@ -28,6 +29,8 @@ export default async function AdminNotificationEditAction(formData: FormData) {
 			isPublic: isPublic == "true",
 		},
 	});
+
+	revalidateTag('notifications');
 
 	redirect("/admin/notification");
 

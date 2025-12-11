@@ -3,6 +3,7 @@
 import atsuocoder_db, { getContest, hasRole, restrictUser } from '@/lib/atsuocoder_db';
 import { ContestManagable } from '@/lib/contest';
 import { getCurrentUser } from '@/lib/w_auth_db';
+import { revalidateTag } from 'next/cache';
 import { notFound, redirect } from 'next/navigation';
 import { z } from 'zod';
 
@@ -36,8 +37,6 @@ export default async function ContestEditAction(
 		is_public: formData.get('is_public'),
 	});
 
-	const user = (await getCurrentUser())!!;
-
 	const contestData = await getContest(data.old_id);
 
 	if (!(await ContestManagable(contestData))) {
@@ -70,6 +69,8 @@ export default async function ContestEditAction(
 			is_public: data.is_public == 'true',
 		}
 	});
+	
+	revalidateTag('contests');
 
 	redirect("/admin/contest");
 
