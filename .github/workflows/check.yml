@@ -55,3 +55,13 @@ jobs:
         run: |
           npm version prerelease --preid canary
           git push origin HEAD:canary --follow-tags
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: $(git describe --tags --abbrev=0)
+          release_name: Canary Release $(git describe --tags --abbrev=0)
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
