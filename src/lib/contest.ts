@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache';
 import atsuocoder_db, { GetContestType, hasRole } from './atsuocoder_db';
 import { getCurrentUser } from './w_auth_db';
 
@@ -97,3 +98,18 @@ export async function ContestEnded(contestData: GetContestType) {
 	);
 
 }
+
+export const getPublicContests = unstable_cache(async () => {
+
+	const contests = await atsuocoder_db.contest.findMany({
+		where: {
+			is_public: true,
+		},
+		orderBy: {
+			start_time: "asc",
+		},
+	});
+
+	return contests;
+
+}, ["contest-list"], { revalidate: 60 * 60 });
