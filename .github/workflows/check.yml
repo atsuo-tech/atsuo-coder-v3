@@ -1,6 +1,12 @@
 name: Check Buildability
 
 on:
+  workflow_dispatch:
+    inputs:
+      release_notes:
+        description: "Release notes for the new version"
+        required: false
+        type: string
   push:
 
 env:
@@ -31,7 +37,7 @@ jobs:
       - run: npm run build
 
   bump-version:
-    if: ${{ github.ref == 'refs/heads/canary' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -53,15 +59,17 @@ jobs:
 
       - name: Bump npm version
         run: |
-          npm version prerelease --preid canary
+          TAG=$(npm version prerelease --preid canary | tr -d '"')
           git push origin HEAD:canary --follow-tags
+          echo "TAG=$TAG" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
         with:
-          tag_name: $(git describe --tags --abbrev=0)
-          release_name: Canary Release $(git describe --tags --abbrev=0)
+          tag_name: ${{ env.TAG }}
+          release_name: Canary Release ${{ env.TAG }}
           draft: false
           prerelease: true
+          body: ${{ github.event.inputs.release_notes }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
