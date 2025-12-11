@@ -1,26 +1,26 @@
 name: npm version on merge
 
 on:
-  push:
-    branches:
-      - canary
+  workflow_run:
+    workflows: ["Check Buildability"]
+    types:
+      - completed
 
 jobs:
   bump-version:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/canary' }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: https://registry.npmjs.org
-
-      - name: Install dependencies
-        run: npm install
+          registry-url: https://npm.pkg.github.com
+          scope: "@atsuo-tech"
+      - run: npm ci
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump npm version
         run: |
