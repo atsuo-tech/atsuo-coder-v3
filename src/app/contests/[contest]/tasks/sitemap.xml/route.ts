@@ -4,6 +4,8 @@ import assert from 'assert';
 import { MetadataRoute } from 'next';
 import { notFound } from 'next/navigation';
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
 	_: Request,
 	{

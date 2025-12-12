@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getPublicContests } from "@/lib/contest";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
 
 	const contests = (await getPublicContests()).filter(contest => contest.end_time.getTime() <= Date.now());
