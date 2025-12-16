@@ -9,8 +9,8 @@
     "clean": "rm -rf .next"
   },
   "dependencies": {
-    "@atsuo-tech/atsuo-coder-v3-prisma": "^2.0.0",
-    "@atsuo-tech/w-auth-prisma": "^2.0.0",
+    "@atsuo-tech/atsuo-coder-v3-prisma": "2.0.0",
+    "@atsuo-tech/w-auth-prisma": "2.0.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.2.0",
