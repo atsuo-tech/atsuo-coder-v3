@@ -125,6 +125,7 @@ export default async function RootLayout({
                 <li><Link href="/contests">コンテスト一覧</Link></li>
                 <li><Link href="/rankings">ランキング</Link></li>
                 <li><Link href="/posts">最近の投稿</Link></li>
+                <li><Link href="/about">AtsuoCoder について</Link></li>
               </ul>
             </div>
             <div>
