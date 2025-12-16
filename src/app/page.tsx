@@ -5,10 +5,11 @@ import { OutlinedIcon } from '@/components/material-symbols';
 import atsuocoder_db from '@/lib/atsuocoder_db';
 import Markdown from '@/components/markdown';
 import RankingsComponent from '../components/rankings';
-import { unstable_cache } from 'next/cache';
 
-const getNextContests = unstable_cache(async () => {
-    return await atsuocoder_db.contest.findMany({
+export default async function MainPage() {
+
+    // Next-4 Contests + Last-1 Contest
+    const next_contests = await atsuocoder_db.contest.findMany({
         where: {
             end_time: {
                 gt: new Date(),
@@ -21,10 +22,7 @@ const getNextContests = unstable_cache(async () => {
         },
         take: 4,
     });
-}, ['contests'], { revalidate: 6 * 60 * 60, tags: ['contests'] }); // 6 hours
-
-const getLastContests = unstable_cache(async () => {
-    return await atsuocoder_db.contest.findMany({
+    const last_contests = await atsuocoder_db.contest.findMany({
         where: {
             end_time: {
                 lte: new Date(),
@@ -37,26 +35,16 @@ const getLastContests = unstable_cache(async () => {
         },
         take: 1,
     });
-}, ['contests'], { revalidate: 6 * 60 * 60, tags: ['contests'] }); // 6 hours
 
-const getNotifications = unstable_cache(async () => {
-    return await atsuocoder_db.notification.findMany({
+    const notifications = await atsuocoder_db.notification.findMany({
         where: {
             isPublic: true,
         },
         orderBy: {
             created_at: "desc",
         },
-        take: 5,
+        take: 1,
     });
-}, ['notifications'], { revalidate: 6 * 60 * 60, tags: ['notifications'] }); // 6 hour
-
-export default async function MainPage() {
-
-    // Next-4 Contests + Last-1 Contest
-    const next_contests = await getNextContests();
-    const last_contests = await getLastContests();
-    const notifications = await getNotifications();
 
     return (
         <div className={styles.page}>

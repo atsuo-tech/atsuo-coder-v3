@@ -3,7 +3,6 @@ import { notFound, redirect } from "next/navigation";
 import { Button } from "@mui/material";
 import Markdown from "@/components/markdown";
 import { getNotification } from "@/app/admin/contest/lib";
-import { revalidateTag } from "next/cache";
 
 export default async function AdminNotificationEditPage(
 	{
@@ -42,7 +41,6 @@ export default async function AdminNotificationEditPage(
 							unique_id: id,
 						},
 					});
-					revalidateTag('notifications');
 					redirect("/admin/notification");
 				}}
 				fullWidth

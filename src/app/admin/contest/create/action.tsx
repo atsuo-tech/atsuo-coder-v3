@@ -1,7 +1,6 @@
 'use server';
 
 import atsuocoder_db, { restrictUser } from "@/lib/atsuocoder_db";
-import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 export default async function ContestCreateAction({ message }: { message: string }, formData: FormData) {
@@ -38,8 +37,6 @@ export default async function ContestCreateAction({ message }: { message: string
 			is_permanent: false,
 		}
 	});
-
-	revalidateTag('contests');
 
 	redirect(`/admin/contest/edit/${url_id}`);
 
