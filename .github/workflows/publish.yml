@@ -65,7 +65,7 @@ jobs:
         run: |
           TAG=$(npm version ${{ github.event.inputs.version || 'prerelease --preid canary' }})
           echo "TAG=$TAG" >> $GITHUB_ENV
-          git push origin HEAD --follow-tags
+          git push origin HEAD:canary --follow-tags
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
