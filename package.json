@@ -1,6 +1,6 @@
 {
   "name": "@atsuo-tech/atsuo-coder-v3",
-  "version": "1.0.11",
+  "version": "1.0.10",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
