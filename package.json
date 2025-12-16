@@ -1,6 +1,10 @@
 {
   "name": "@atsuo-tech/atsuo-coder-v3",
+<<<<<<< HEAD
   "version": "1.0.11",
+=======
+  "version": "1.0.8",
+>>>>>>> parent of 0182bbb (1.0.9)
   "scripts": {
     "dev": "next dev",
     "build": "next build",
